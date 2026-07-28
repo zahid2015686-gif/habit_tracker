@@ -27,4 +27,11 @@ class AppImages {
   final String night = 'assets/images/night.png';
   final String running = 'assets/images/running.png';
   final String walk = 'assets/images/walk.png';
+  final String premium = 'assets/images/premium.png';
+  final String star1 = 'assets/images/satr_1.png';
+  final String star2 = 'assets/images/satr_2.png';
+  final String star3 = 'assets/images/satr_3.png';
+  final String star4 = 'assets/images/satr_4.png';
+  final String tickIcon = 'assets/images/tick_icon.png';
+  final String verifiedIcon = 'assets/images/verfied.png';
 }
