@@ -1,9 +1,20 @@
-
 class AppImages {
-  final String logo =  'assets/images/logo.png';
-  final String logoLight =  'assets/images/logo_light.png';
-  final String onboardingImage_1 =  'assets/images/onboarding_image_1.png';
-  final String onboardingImage_2 =  'assets/images/onboarding_image_2.png';
-  final String onboardingImage_3 =  'assets/images/onboarding_image_3.png';
-
+  final String logo = 'assets/images/logo.png';
+  final String logoLight = 'assets/images/logo_light.png';
+  final String onboardingImage_1 = 'assets/images/onboarding_image_1.png';
+  final String onboardingImage_2 = 'assets/images/onboarding_image_2.png';
+  final String onboardingImage_3 = 'assets/images/onboarding_image_3.png';
+  final String onboardingIcon_1 = 'assets/images/onboarding_icon_1.png';
+  final String onboardingIcon_2 = 'assets/images/onboarding_icon_2.png';
+  final String onboardingIcon_3 = 'assets/images/onboarding_icon_3.png';
+  final String googleIcon = 'assets/images/google_icon.png';
+  final String appleIcon = 'assets/images/apple_icon.png';
+  final String facebookIcon = 'assets/images/facbook_icon.png';
+  final String home = 'assets/images/home.png';
+  final String habits = 'assets/images/habits.png';
+  final String profile = 'assets/images/profile.png';
+  final String rhythm = 'assets/images/rhythm.png';
+  final String upload = 'assets/images/upload.png';
+  final String message = 'assets/images/message.png';
+  final String notification = 'assets/images/notification.png';
 }

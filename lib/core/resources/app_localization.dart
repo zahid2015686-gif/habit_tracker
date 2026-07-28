@@ -1,14 +1,27 @@
 class AppLocalization {
   static Map<String, String> get englishLanguage => {
     'build_better_habits': 'build better habits',
+    'build_better_habits_capital_words': 'Build Better Habits',
     "skip": "Skip",
     "back": "Back",
     "next": "Next",
-    "build_better_habits_desc": "Create routines that fit your life instead of forcing perfect streaks.",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "build_better_habits_description": "Create routines that fit your life instead of forcing perfect streaks.",
     "find_your_rhythm": "Find Your Rhythm",
-    "find_your_rhythm_desc": "Life changes. Your habits should adapt. Keep moving forward at your own pace.",
+    "find_your_rhythm_description": "Life changes. Your habits should adapt. Keep moving forward at your own pace.",
     "stay_accountable": "Stay Accountable",
-    "stay_accountable_desc": "Upgrade to connect with a dedicated coach for guidance, encouragement, and support."
+    "stay_accountable_description": "Upgrade to connect with a dedicated coach for guidance, encouragement, and support.",
+    "welcome_to_rhythmi":"Welcome to Rhythmi",
+    "sign_in_to_continue_your_rhythm":"Sign in to continue your rhythm",
+    "continue_with_google":"Continue with Google",
+    "continue_with_apple":"Continue with Apple",
+    "sign_in_with_google":"Sign in with Google",
+    "choose_an_account_to_continue":"Choose an account to continue",
+    "sign_in_with_apple":"Sign in with Google",
+    "use_your_apple_id_to_continue":"Use your Apple ID to continue",
+    "good":"Good",
+    "your_rhythm":"Your Rhythm",
   };
 
   static Map<String, String> get codesES => {};

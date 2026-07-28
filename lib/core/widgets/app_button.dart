@@ -69,10 +69,10 @@ class AppButton extends StatelessWidget {
         margin: margin,
         decoration: BoxDecoration(
           color: enabled
-              ? (color ?? R.appColors.black)
+              ? (color ?? R.appColors.white)
               : R.appColors.black.withValues(alpha: 0.05),
           borderRadius:
-              BorderRadius.circular(borderRadius ?? 16.px),
+              BorderRadius.circular(borderRadius ?? 100.px),
           border: borderIsMandatory
               ? Border.all(
                   color: borderColor ??
@@ -87,7 +87,7 @@ class AppButton extends StatelessWidget {
           child: InkWell(
             onTap: enabled && !isLoading ? onTap : null,
             borderRadius:
-                BorderRadius.circular(borderRadius ?? 16.px),
+                BorderRadius.circular(borderRadius ?? 100.px),
             splashColor: splashColor ??
                 R.appColors.black.withValues(alpha: 0.15),
             highlightColor: highlightColor ??
@@ -117,7 +117,7 @@ class AppButton extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: textStyle ??
                                   R.appTextStyle.poppins(
-                                    color: R.appColors.black,
+                                    color: R.appColors.textGreen,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                   ),
