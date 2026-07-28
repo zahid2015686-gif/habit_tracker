@@ -17,4 +17,9 @@ class AppImages {
   final String upload = 'assets/images/upload.png';
   final String message = 'assets/images/message.png';
   final String notification = 'assets/images/notification.png';
+  final String drinkWater = 'assets/images/drink_water.png';
+  final String eveningJournal = 'assets/images/evening_journal.png';
+  final String morningMeditation = 'assets/images/morning_meditation.png';
+  final String readPages = 'assets/images/read_pages.png';
+  final String workout = 'assets/images/workout.png';
 }
