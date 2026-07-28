@@ -22,4 +22,9 @@ class AppImages {
   final String morningMeditation = 'assets/images/morning_meditation.png';
   final String readPages = 'assets/images/read_pages.png';
   final String workout = 'assets/images/workout.png';
+  final String bicycle = 'assets/images/cycle.png';
+  final String morning = 'assets/images/morning.png';
+  final String night = 'assets/images/night.png';
+  final String running = 'assets/images/running.png';
+  final String walk = 'assets/images/walk.png';
 }
