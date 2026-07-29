@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/core/utils/extension_methods.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatelessWidget {
   static const String route = '/home_view';
@@ -22,80 +26,38 @@ class HomeView extends StatelessWidget {
         titleSpacing: 20.px,
         title: _customAppBar(),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _rhythmCard(),
-            vSpacePx(20),
-            _sectionHeader(
-              title: 'todays_habits'.L(),
-              trailing: '2/5',
-              trailingColor: R.appColors.textGreen,
-            ),
-            vSpacePx(12),
-            _habitCard(
-              icon: R.appImages.message,
-              title: 'Morning Meditation',
-              subtitle: 'Daily · 07:00',
-              isDone: true,
-            ),
-            vSpacePx(12),
-            _habitCard(
-              icon: R.appImages.notification,
-              title: 'Read 20 Pages',
-              subtitle: 'Daily · 21:00',
-              isDone: false,
-            ),
-            vSpacePx(12),
-            _habitCard(
-              icon: R.appImages.notification,
-              title: 'Drink 8 Glasses Water',
-              subtitle: 'Daily · 10:00',
-              isDone: false,
-            ),
-            vSpacePx(12),
-            _habitCard(
-              icon: R.appImages.message,
-              title: 'Evening Journal',
-              subtitle: 'Daily · 22:00',
-              isDone: false,
-            ),
-            vSpacePx(12),
-            _habitCard(
-              icon: R.appImages.notification,
-              title: '30-Minute Workout',
-              subtitle: 'Weekly · 06:30',
-              isDone: true,
-            ),
-            vSpacePx(24),
-            _sectionHeader(title: 'upcoming_reminders'.L()),
-            vSpacePx(12),
-            _reminderCard(
-              icon: R.appImages.message,
-              iconBackground: R.appColors.softOrange.withValues(alpha: 0.12),
-              title: 'Read 20 Pages',
-              subtitle: 'Today at 21:00',
-            ),
-            vSpacePx(12),
-            _reminderCard(
-              icon: R.appImages.notification,
-              iconBackground: R.appColors.primary.withValues(alpha: 0.12),
-              title: 'Evening Journal',
-              subtitle: 'Today at 22:00',
-            ),
-            vSpacePx(24),
-            _sectionHeader(
-              title: 'weekly_progress'.L(),
-              trailing: 'view_all'.L(),
-              showTrailingArrow: true,
-            ),
-            vSpacePx(12),
-            _weeklyProgressCard(),
-            vSpacePx(20),
-            _quoteCard(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
+          child: Consumer<HabitVm>(
+            builder: (context, vm, child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _rhythmCard(),
+                  vSpacePx(20),
+                  _sectionHeader(
+                    title: 'today_habits'.L(),
+                    trailing: "${vm.completedHabits}/${vm.habits.length}",
+                    trailingColor: R.appColors.secondary,
+                  ),
+                  _todayHabitsCard(vm: vm),
+                  _sectionHeader(title: 'upcoming_reminders'.L()),
+                  _upcomingRemindersCard(vm: vm),
+                  _sectionHeaderWithArrow(
+                    title: 'weekly_progress'.L(),
+                    trailing: 'view_all'.L(),
+                    onTap: () {},
+                  ),
+                  vSpacePx(10),
+                  _weeklyProgressCard(),
+                  vSpacePx(20),
+                  _quoteCard(),
+                  vSpacePx(20),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -168,7 +130,7 @@ class HomeView extends StatelessWidget {
         border: Border.all(
           color: R.appColors.textLightBlack.withValues(alpha: 0.10),
           width: 1,
-        )
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +212,7 @@ class HomeView extends StatelessWidget {
                     ),
                     spots: List.generate(
                       values.length,
-                          (i) => FlSpot(i.toDouble(), values[i]),
+                      (i) => FlSpot(i.toDouble(), values[i]),
                     ),
                   ),
                 ],
@@ -263,14 +225,14 @@ class HomeView extends StatelessWidget {
             children: days
                 .map(
                   (d) => Text(
-                d,
-                style: R.appTextStyle.poppins(
-                  fontSize: 10,
-                  color: R.appColors.textLightBlack,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            )
+                    d,
+                    style: R.appTextStyle.poppins(
+                      fontSize: 10,
+                      color: R.appColors.textLightBlack,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -278,12 +240,35 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  /// Shared header row used for "Today's Habits", "Upcoming Reminders" and
-  /// "Weekly Progress" sections.
+  Widget _todayHabitsCard({required HabitVm vm}) {
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(vertical: 16.px),
+      shrinkWrap: true,
+      separatorBuilder: (context, index) => vSpace(1.px),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: vm.habits.length,
+      itemBuilder: (context, index) {
+        final habit = vm.habits[index];
+        return GestureDetector(
+          onTap: () => vm.toggleHabit(index),
+          child: _habitCard(
+            title: habit.title,
+            icon: habit.image,
+            iconColor: habit.imageBackground,
+            subtitle:
+                "${habit.scheduleType.title} • ${DateFormat('HH:mm').format(habit.reminderTime)}",
+            isDone: habit.isDone,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _sectionHeader({
     required String title,
     String? trailing,
     Color? trailingColor,
+    Color? trailingBackgroundColor,
     bool showTrailingArrow = false,
   }) {
     return Row(
@@ -300,16 +285,25 @@ class HomeView extends StatelessWidget {
         if (trailing != null)
           Row(
             children: [
-              Text(
-                trailing,
-                style: R.appTextStyle.poppins(
-                  fontSize: 13,
-                  color: trailingColor ?? R.appColors.darkBlack.withValues(alpha: 0.5),
-                  fontWeight: FontWeight.w600,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.px,
+                  vertical: 4.px,
+                ),
+                decoration: R.appDecorations.cardDecoration(
+                  color: trailingBackgroundColor,
+                ),
+                child: Text(
+                  trailing,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 12,
+                    color:
+                        trailingColor ??
+                        R.appColors.darkBlack.withValues(alpha: 0.5),
+                  ),
                 ),
               ),
               if (showTrailingArrow) ...[
-                hSpacePx(2),
                 Icon(
                   Icons.chevron_right,
                   size: 16.px,
@@ -322,33 +316,90 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  /// A single row in the "Today's Habits" list.
+  Widget _sectionHeaderWithArrow({
+    required String title,
+    required String trailing,
+    required VoidCallback onTap,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: R.appTextStyle.poppins(
+            fontSize: 16,
+            color: R.appColors.darkBlack,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Material(
+          color: R.appColors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Row(
+              children: [
+                Text(
+                  trailing,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 12,
+                    color: R.appColors.darkBlack.withValues(alpha: 0.5),
+                  ),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  size: 16.px,
+                  color: R.appColors.darkBlack.withValues(alpha: 0.5),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _habitCard({
     required String icon,
+    required Color iconColor,
     required String title,
     required String subtitle,
     required bool isDone,
   }) {
+    final selected = isDone;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(14.px),
       decoration: R.appDecorations.cardDecoration(
-        color: isDone
-            ? R.appColors.textGreen.withValues(alpha: 0.06)
-            : R.appColors.white,
-        borderRadius: BorderRadius.circular(16.px),
+        color: R.appColors.white,
+        borderRadius: BorderRadius.circular(20.px),
+        border: Border.all(color: R.appColors.border, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.border.withValues(alpha: 0.04),
+            offset: Offset(0, 10),
+            blurRadius: 20,
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: R.appColors.border.withValues(alpha: 0.07),
+            offset: Offset(0, 2),
+            blurRadius: 15,
+            spreadRadius: -3,
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
-            width: 38.px,
-            height: 38.px,
+            width: 44.px,
+            height: 44.px,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: R.appColors.screenBackground2,
-              borderRadius: BorderRadius.circular(12.px),
+            padding: EdgeInsets.all(13.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: selected ? iconColor : R.appColors.screenBackground2,
+              borderRadius: BorderRadius.circular(16.px),
             ),
-            child: Image.asset(icon, width: 18.px, height: 18.px),
+            child: Image.asset(icon),
           ),
           hSpacePx(12),
           Expanded(
@@ -358,19 +409,22 @@ class HomeView extends StatelessWidget {
                 Text(
                   title,
                   style: R.appTextStyle.poppins(
-                    fontSize: 13,
-                    color: isDone
-                        ? R.appColors.darkBlack.withValues(alpha: 0.45)
+                    fontSize: 15,
+                    color: selected
+                        ? R.appColors.textLightBlack.withValues(alpha: 0.80)
                         : R.appColors.darkBlack,
                     fontWeight: FontWeight.w600,
+                    textDecoration: selected
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    decorationColor: R.appColors.textLightBlack,
                   ),
                 ),
                 Text(
                   subtitle,
                   style: R.appTextStyle.poppins(
-                    fontSize: 11,
-                    color: R.appColors.darkBlack.withValues(alpha: 0.35),
-                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: R.appColors.textLightBlack,
                   ),
                 ),
               ],
@@ -380,18 +434,22 @@ class HomeView extends StatelessWidget {
             width: 24.px,
             height: 24.px,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            decoration: R.appDecorations.cardDecoration(
               shape: BoxShape.circle,
-              color: isDone ? R.appColors.textGreen : R.appColors.white,
+              color: selected ? R.appColors.secondary : R.appColors.white,
               border: Border.all(
-                color: isDone
-                    ? R.appColors.textGreen
-                    : R.appColors.darkBlack.withValues(alpha: 0.15),
+                color: selected
+                    ? R.appColors.secondary
+                    : R.appColors.textLightBlack.withValues(alpha: 0.33),
                 width: 1.5,
               ),
             ),
-            child: isDone
-                ? Icon(Icons.check, size: 14.px, color: R.appColors.white)
+            child: selected
+                ? Image.asset(
+                    R.appImages.tickIcon,
+                    width: 12,
+                    color: R.appColors.white,
+                  )
                 : null,
           ),
         ],
@@ -399,7 +457,26 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  /// A single row in the "Upcoming Reminders" list.
+  Widget _upcomingRemindersCard({required HabitVm vm}) {
+    return ListView.separated(
+      padding: EdgeInsets.symmetric(vertical: 16.px),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: vm.upcomingHabits.length,
+      separatorBuilder: (context, index) => vSpace(1.px),
+      itemBuilder: (context, index) {
+        final habit = vm.upcomingHabits[index];
+        return _reminderCard(
+          icon: habit.image,
+          iconBackground: habit.imageBackground.withValues(alpha: 0.55),
+          title: habit.title,
+          subtitle:
+              "Today at ${DateFormat('HH:mm').format(habit.reminderTime)}",
+        );
+      },
+    );
+  }
+
   Widget _reminderCard({
     required String icon,
     required Color iconBackground,
@@ -416,14 +493,15 @@ class HomeView extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 38.px,
-            height: 38.px,
+            width: 36.px,
+            height: 36.px,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            padding: EdgeInsets.all(10.px),
+            decoration: R.appDecorations.cardDecoration(
               color: iconBackground,
               borderRadius: BorderRadius.circular(12.px),
             ),
-            child: Image.asset(icon, width: 18.px, height: 18.px),
+            child: Image.asset(icon),
           ),
           hSpacePx(12),
           Expanded(
@@ -433,34 +511,33 @@ class HomeView extends StatelessWidget {
                 Text(
                   title,
                   style: R.appTextStyle.poppins(
-                    fontSize: 13,
+                    fontSize: 14,
                     color: R.appColors.darkBlack,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
                   subtitle,
                   style: R.appTextStyle.poppins(
-                    fontSize: 11,
+                    fontSize: 12,
                     color: R.appColors.darkBlack.withValues(alpha: 0.35),
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            width: 26.px,
-            height: 26.px,
+            width: 28.px,
+            height: 28.px,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: R.appColors.textGreen.withValues(alpha: 0.12),
+            padding: EdgeInsets.all(8.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: R.appColors.screenBackground3,
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.access_time_rounded,
-              size: 14.px,
-              color: R.appColors.textGreen,
+            child: Image.asset(
+              R.appImages.upcoming,
+              color: R.appColors.secondary,
             ),
           ),
         ],
@@ -468,18 +545,27 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  /// "Weekly Progress" bar chart card.
   Widget _weeklyProgressCard() {
     final List<int> percentages = [80, 60, 100, 40, 80, 60, 50];
     final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-    final List<Color> colors = [
-      R.appColors.textGreen,
-      R.appColors.primary,
-      R.appColors.textGreen,
-      R.appColors.textGreen,
-      R.appColors.textGreen,
-      R.appColors.primary,
-      R.appColors.primary,
+
+    final List<List<Color>> gradients = [
+      [
+        R.appColors.textLightGreen,
+        R.appColors.textLightGreen.withValues(alpha: 0.6),
+      ],
+      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
+      [
+        R.appColors.textLightGreen,
+        R.appColors.textLightGreen.withValues(alpha: 0.6),
+      ],
+      [R.appColors.orange, R.appColors.orange.withValues(alpha: 0.6)],
+      [
+        R.appColors.textLightGreen,
+        R.appColors.textLightGreen.withValues(alpha: 0.6),
+      ],
+      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
+      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
     ];
 
     return Container(
@@ -488,114 +574,346 @@ class HomeView extends StatelessWidget {
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(20.px),
+        border: Border.all(color: R.appColors.border, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.04),
+            offset: const Offset(0, 10),
+            blurRadius: 20,
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.04),
+            offset: const Offset(0, 7),
+            blurRadius: 15,
+            spreadRadius: -3,
+          ),
+        ],
       ),
-      child: SizedBox(
-        height: 130.px,
-        child: BarChart(
-          BarChartData(
-            maxY: 120,
-            minY: 0,
-            alignment: BarChartAlignment.spaceAround,
-            gridData: const FlGridData(show: false),
-            borderData: FlBorderData(show: false),
-            barTouchData: BarTouchData(enabled: false),
-            titlesData: FlTitlesData(
-              leftTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 22.px,
-                  getTitlesWidget: (value, meta) {
-                    final int index = value.toInt();
-                    if (index < 0 || index >= days.length) {
-                      return const SizedBox.shrink();
-                    }
-                    return Padding(
-                      padding: EdgeInsets.only(top: 6.px),
-                      child: Text(
-                        days[index],
-                        style: R.appTextStyle.poppins(
-                          fontSize: 11,
-                          color: R.appColors.darkBlack.withValues(alpha: 0.35),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 6.px),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: percentages.map((p) {
+                return Text(
+                  '$p%',
+                  style: R.appTextStyle.poppins(
+                    fontSize: 10,
+                    color: R.appColors.textLightBlack,
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
+              }).toList(),
             ),
-            barGroups: List.generate(percentages.length, (i) {
-              return BarChartGroupData(
-                x: i,
-                barRods: [
-                  BarChartRodData(
-                    toY: percentages[i].toDouble(),
-                    color: colors[i],
-                    width: 16.px,
-                    borderRadius: BorderRadius.circular(6.px),
-                    backDrawRodData: BackgroundBarChartRodData(
-                      show: true,
-                      toY: 120,
-                      color: R.appColors.screenBackground2,
+          ),
+
+          SizedBox(
+            height: 100.px,
+            child: BarChart(
+              BarChartData(
+                maxY: 120,
+                minY: 0,
+                alignment: BarChartAlignment.spaceAround,
+                gridData: const FlGridData(show: false),
+                borderData: FlBorderData(show: false),
+                barTouchData: BarTouchData(enabled: false),
+                titlesData: FlTitlesData(
+                  leftTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 22.px,
+                      getTitlesWidget: (value, meta) {
+                        final int index = value.toInt();
+                        if (index < 0 || index >= days.length) {
+                          return const SizedBox.shrink();
+                        }
+                        return Padding(
+                          padding: EdgeInsets.only(top: 6.px),
+                          child: Text(
+                            days[index],
+                            style: R.appTextStyle.poppins(
+                              fontSize: 10,
+                              color: R.appColors.darkBlack.withValues(
+                                alpha: 0.35,
+                              ),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                ],
-                showingTooltipIndicators: const [],
-              );
-            }),
+                ),
+                barGroups: List.generate(percentages.length, (i) {
+                  return BarChartGroupData(
+                    x: i,
+                    barRods: [
+                      BarChartRodData(
+                        toY: percentages[i].toDouble(),
+                        gradient: LinearGradient(
+                          colors: gradients[i],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                        width: 30.px,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(12.px),
+                        ),
+                        backDrawRodData: BackgroundBarChartRodData(
+                          show: true,
+                          toY: 120,
+                          color: R.appColors.white,
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  /// Motivational quote card at the bottom of the screen.
   Widget _quoteCard() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(18.px),
-      decoration: BoxDecoration(
+      padding: EdgeInsets.all(21.px),
+      decoration: R.appDecorations.cardDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+          stops: const [0.0, 0.5, 1.0],
           colors: [
-            R.appColors.textGreen.withValues(alpha: 0.15),
-            R.appColors.primary.withValues(alpha: 0.12),
+            R.appColors.textLightGreen.withValues(alpha: 0.10),
+            R.appColors.indigo.withValues(alpha: 0.10),
+           R.appColors.blue.withValues(alpha: 0.10),
           ],
         ),
         borderRadius: BorderRadius.circular(20.px),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Text(
-            '"Small daily improvements are the key to staggering long-term results."',
-            style: R.appTextStyle.poppins(
-              fontSize: 13,
-              color: R.appColors.darkBlack.withValues(alpha: 0.8),
-              fontWeight: FontWeight.w500,
-              //fontStyle: FontStyle.italic,
+          Positioned(
+            top: -20,
+            right: -10,
+            child: Opacity(
+              opacity: 0.12,
+              child: Container(
+                width: 80.px,
+                height: 80.px,
+                padding: EdgeInsets.all(10.px),
+                child: Image.asset(
+                  R.appImages.quoteIcon,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ),
-          vSpacePx(8),
-          Text(
-            '— Robin Sharma',
-            style: R.appTextStyle.poppins(
-              fontSize: 12,
-              color: R.appColors.darkBlack.withValues(alpha: 0.45),
-              fontWeight: FontWeight.w500,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                child: Text(
+                  '"Small daily improvements are the key to staggering long-term result…"',
+                  style: R.appTextStyle.poppins(
+                    color: R.appColors.textBlack,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              vSpacePx(10),
+              Text(
+                '— Robin Sharma',
+                style: R.appTextStyle.poppins(
+                  fontSize: 12.px,
+                  color: R.appColors.textLightBlack,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _welcomePremium(BuildContext context){
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(horizontal: 24.px),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // ---------------- Main white card ----------------
+          Container(
+            padding: EdgeInsets.fromLTRB(24.px, 40.px, 24.px, 28.px),
+            decoration: BoxDecoration(
+              color: R.appColors.white,
+              borderRadius: BorderRadius.circular(28.px),
+              boxShadow: [
+                BoxShadow(
+                  color: R.appColors.black.withValues(alpha: 0.15),
+                  blurRadius: 30,
+                  offset: const Offset(0, 12),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ---------------- Crown icon circle ----------------
+                Container(
+                  width: 84.px,
+                  height: 84.px,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: R.appColors.orange.withValues(alpha: 0.12),
+                    border: Border.all(
+                      color: R.appColors.orange.withValues(alpha: 0.3),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.emoji_events_rounded,
+                    color: R.appColors.orange,
+                    size: 40,
+                  ),
+                ),
+                SizedBox(height: 20.px),
+
+                // ---------------- Title ----------------
+                Text(
+                  'Welcome to Premium!',
+                  textAlign: TextAlign.center,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: R.appColors.black,
+                  ),
+                ),
+                SizedBox(height: 12.px),
+
+                // ---------------- Subtitle ----------------
+                Text(
+                  "You've unlocked unlimited habits, live coach access, and deep analytics. Your rhythm just leveled up.",
+                  textAlign: TextAlign.center,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 13.5,
+                    color: R.appColors.black.withValues(alpha: 0.55),
+                    height: 1.4,
+                  ),
+                ),
+                SizedBox(height: 18.px),
+
+                // ---------------- Feature pills ----------------
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 8.px,
+                  runSpacing: 8.px,
+                  children: [
+                    _featurePill(
+                      label: 'Unlimited Habits',
+                      textColor: R.appColors.textGreen,
+                      bgColor: R.appColors.textGreen.withValues(alpha: 0.12),
+                    ),
+                    _featurePill(
+                      label: 'Live Coach',
+                      textColor: R.appColors.primary,
+                      bgColor: R.appColors.primary.withValues(alpha: 0.12),
+                    ),
+                    _featurePill(
+                      label: 'Deep Analytics',
+                      textColor: Colors.blue.shade600,
+                      bgColor: Colors.blue.withValues(alpha: 0.12),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24.px),
+
+                // ---------------- Let's go button ----------------
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: R.appColors.textGreen,
+                      padding: EdgeInsets.symmetric(vertical: 15.px),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14.px),
+                      ),
+                    ),
+                    child: Text(
+                      "Let's go!",
+                      style: R.appTextStyle.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: R.appColors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // ---------------- Decorative stars (assets) ----------------
+          Positioned(
+            top: -6.px,
+            left: 4.px,
+            child: Image.asset(R.appImages.star1, width: 22.px),
+          ),
+          Positioned(
+            bottom: -10.px,
+            left: -12.px,
+            child: Image.asset(R.appImages.star2, width: 26.px),
+          ),
+          Positioned(
+            bottom: 30.px,
+            right: -14.px,
+            child: Image.asset(R.appImages.star3, width: 22.px),
+          ),
+          Positioned(
+            top: 60.px,
+            right: -10.px,
+            child: Image.asset(R.appImages.star4, width: 18.px),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _featurePill({
+    required String label,
+    required Color textColor,
+    required Color bgColor,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.px, vertical: 7.px),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20.px),
+      ),
+      child: Text(
+        label,
+        style: R.appTextStyle.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: textColor,
+        ),
       ),
     );
   }

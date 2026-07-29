@@ -159,8 +159,11 @@ class _OnboardingViewState extends State<OnboardingView> {
         margin: EdgeInsets.fromLTRB(20.px, 0.px, 20.px, 16.px),
         padding: EdgeInsets.symmetric(horizontal: 24.px, vertical: 28.px),
         decoration: R.appDecorations.cardDecoration(
-          color: R.appColors.white.withValues(alpha: 0.16),
+          color: R.appColors.screenBackground5.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(32.px),
+          border: Border.all(
+            color: R.appColors.white.withValues(alpha: 0.15),
+          ),
           boxShadow: [
             BoxShadow(
               color: R.appColors.black.withValues(alpha: 0.08),
@@ -180,8 +183,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                     width: 48.px,
                     height: 48.px,
                     decoration: R.appDecorations.cardDecoration(
-                      color: R.appColors.white.withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
+                      color: R.appColors.white.withValues(alpha: 0.10),
+                      border: Border.all(color: R.appColors.white.withValues(alpha: 0.10)),
+                      borderRadius: BorderRadius.circular(16.px),
                     ),
                     padding: EdgeInsets.all(13.px),
                     child: Image.asset(

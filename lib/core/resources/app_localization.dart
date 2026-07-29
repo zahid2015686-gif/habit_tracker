@@ -22,6 +22,18 @@ class AppLocalization {
     "use_your_apple_id_to_continue":"Use your Apple ID to continue",
     "good":"Good",
     "your_rhythm":"Your Rhythm",
+    "today_habits":"Today's Habits",
+    "upcoming_reminders":"Upcoming Reminders",
+    "weekly_progress":"Weekly Progress",
+    "view_all":"View all",
+    "create_habit":"Create Habit",
+    "icon":"Icon",
+    "done":"Done",
+    "by_continuing_you_agree_to_our":"By continuing, you agree to our ",
+    "terms":"Terms",
+    "and":" and\n",
+    "privacy_policy":"Privacy Policy",
+    "add_another_account":"Add another account",
   };
 
   static Map<String, String> get codesES => {};

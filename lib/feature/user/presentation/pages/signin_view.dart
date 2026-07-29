@@ -2,12 +2,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
-import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
+import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
 import 'package:sizer/sizer.dart';
 
 class SigninView extends StatefulWidget {
@@ -44,9 +43,9 @@ class _SigninViewState extends State<SigninView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            vSpacePx(60),
+            vSpacePx(50),
             Image.asset(R.appImages.logo, width: 50.w),
-            vSpacePx(10),
+            vSpacePx(20),
             Text(
               'welcome_to_rhythmi'.L(),
               style: R.appTextStyle.poppins(
@@ -58,7 +57,7 @@ class _SigninViewState extends State<SigninView> {
             Text(
               'sign_in_to_continue_your_rhythm'.L(),
               style: R.appTextStyle.poppins(
-                color: R.appColors.darkBlack.withValues(alpha: 0.20),
+                color: R.appColors.textLightBlack,
               ),
             ),
             vSpacePx(20),
@@ -122,7 +121,7 @@ class _SigninViewState extends State<SigninView> {
           );
         },
         leftIconSpce: 10.px,
-        leftIcon: Image.asset(R.appImages.appleIcon, width: 16.px),
+        leftIcon: Image.asset(R.appImages.appleIcon, width: 18.px),
       ),
     );
   }
@@ -133,24 +132,24 @@ class _SigninViewState extends State<SigninView> {
       text: TextSpan(
         style: R.appTextStyle.poppins(
           fontSize: 12,
-          color: R.appColors.darkBlack.withValues(alpha: 0.33),
+          color: R.appColors.slateGray,
           height: 1.4,
         ),
         children: [
-          TextSpan(text: 'By continuing, you agree to our '),
+          TextSpan(text: 'by_continuing_you_agree_to_our'.L()),
           TextSpan(
-            text: 'Terms',
+            text: 'terms'.L(),
             style: R.appTextStyle.poppins(
               fontSize: 12,
-              color: R.appColors.oliveGreen,
+              color: R.appColors.seaGreen,
             ),
           ),
-          const TextSpan(text: ' and\n'),
+          TextSpan(text: 'and'.L()),
           TextSpan(
-            text: 'Privacy Policy',
+            text: 'privacy_policy'.L(),
             style: R.appTextStyle.poppins(
               fontSize: 12,
-              color: R.appColors.oliveGreen,
+              color: R.appColors.seaGreen,
             ),
           ),
         ],
@@ -251,7 +250,7 @@ class _SigninViewState extends State<SigninView> {
                   color: R.appColors.black.withValues(alpha: 0.33),
                 ),
                 onTap: () {
-                  Get.offAllNamed(BaseView.route);
+                  Get.offAllNamed(PremiumView.route);
                 },
               ),
               ListTile(
@@ -282,22 +281,20 @@ class _SigninViewState extends State<SigninView> {
                   color: R.appColors.black.withValues(alpha: 0.33),
                 ),
                 onTap: () {
-                  Get.offAllNamed(BaseView.route);
+                  Get.offAllNamed(PremiumView.route);
                 },
               ),
               ListTile(
                 leading: DottedBorder(
                   options: OvalDottedBorderOptions(
-                    color: Color(0xFFBDBDBD),
+                    color: R.appColors.slateGray,
                     strokeWidth: 2,
                     dashPattern: [4, 3],
                     padding: EdgeInsets.zero,
                   ),
-                  child: Container(
-                    width: 40.px,
-                    height: 40.px,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    radius: 20.px,
+                    backgroundColor: R.appColors.white,
                     child: Icon(
                       Icons.add,
                       color: R.appColors.black.withValues(alpha: 0.33),
@@ -305,8 +302,8 @@ class _SigninViewState extends State<SigninView> {
                   ),
                 ),
                 title: Text(
-                  "Add another account",
-                  style: TextStyle(
+                  "add_another_account".L(),
+                  style: R.appTextStyle.poppins(
                     fontWeight: FontWeight.w500,
                     color: R.appColors.darkBlack,
                   ),
@@ -396,17 +393,17 @@ class _SigninViewState extends State<SigninView> {
                 padding: EdgeInsets.symmetric(horizontal: 20.px),
                 child: InkWell(
                   onTap: () {
-                    Get.offAllNamed(BaseView.route);
+                    Get.offAllNamed(PremiumView.route);
                   },
                   borderRadius: BorderRadius.circular(16.px),
                   child: Container(
                     width: double.infinity,
                     padding: EdgeInsets.all(16.px),
                     decoration: R.appDecorations.cardDecoration(
-                      color: R.appColors.cardBackground.withValues(alpha: 0.70),
+                      color: R.appColors.screenBackground2,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: R.appColors.darkBlack.withValues(alpha: 0.05),
+                        color: R.appColors.cardBackground.withValues(alpha: 0.70),
                         width: 1.5,
                       ),
                     ),
@@ -418,7 +415,7 @@ class _SigninViewState extends State<SigninView> {
                           padding: EdgeInsets.all(10),
                           decoration: R.appDecorations.cardDecoration(
                             shape: BoxShape.circle,
-                            color: R.appColors.textGreen.withValues(alpha: 0.2),
+                            color: R.appColors.screenBackground3,
                           ),
                           child: Image.asset(
                             R.appImages.facebookIcon,
@@ -434,7 +431,6 @@ class _SigninViewState extends State<SigninView> {
                               Text(
                                 "willi.jame@icloud.com",
                                 style: R.appTextStyle.poppins(
-                                  fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: R.appColors.darkBlack,
                                 ),
@@ -468,7 +464,7 @@ class _SigninViewState extends State<SigninView> {
                     fontWeight: FontWeight.w600,
                   ),
                   onTap: () {
-                    Get.offAllNamed(BaseView.route);
+                    Get.offAllNamed(PremiumView.route);
                   },
                 ),
               ),

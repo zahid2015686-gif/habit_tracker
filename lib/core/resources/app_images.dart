@@ -34,4 +34,47 @@ class AppImages {
   final String star4 = 'assets/images/satr_4.png';
   final String tickIcon = 'assets/images/tick_icon.png';
   final String verifiedIcon = 'assets/images/verfied.png';
+  final String upcoming = 'assets/images/upcoming.png';
+  final String quoteIcon = 'assets/images/quote_icon.png';
+}
+
+
+
+
+
+
+import 'package:flutter/material.dart';
+import 'package:habit_tracker/core/constants/width_height.dart';
+import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/feature/base/premium/presentation/vm/welcome_premium_vm.dart';
+import 'package:provider/provider.dart';
+
+/// Call this after a successful purchase / on home screen load.
+/// It checks SharedPreferences (via [WelcomePremiumVm]) and only
+/// shows the dialog the very first time — never again after that.
+Future<void> checkAndShowWelcomePremiumDialog(BuildContext context) async {
+  final vm = WelcomePremiumVm();
+  final bool shouldShow = await vm.shouldShowWelcomeDialog();
+  if (!shouldShow || !context.mounted) return;
+
+  await vm.markWelcomeDialogAsShown();
+  if (!context.mounted) return;
+
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    barrierColor: Colors.black.withValues(alpha: 0.55),
+    builder: (_) => const WelcomePremiumDialog(),
+  );
+}
+
+class WelcomePremiumDialog extends StatelessWidget {
+  const WelcomePremiumDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+
+  }
+
+
 }

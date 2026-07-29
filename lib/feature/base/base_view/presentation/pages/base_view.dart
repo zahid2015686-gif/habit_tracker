@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/profile_view.dart';
@@ -76,7 +77,7 @@ class _BaseViewState extends State<BaseView> {
             _navItem(vm, 1),
             GestureDetector(
               onTap: () {
-                vm.changeIndex(2);
+                showCreateHabitSheetView(context);
               },
               child: Image.asset(
                 R.appImages.upload,

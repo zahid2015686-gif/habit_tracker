@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habit_tracker/core/routes/app_routes.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
 import 'package:habit_tracker/feature/landing/presentation/pages/splash_view.dart';
 import 'package:habit_tracker/injector.dart';
 import 'package:sizer/sizer.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       initialRoute: SplashView.route,
+      //initialRoute: HomeView.route,
       getPages: AppRoutes.pages,
 
     );

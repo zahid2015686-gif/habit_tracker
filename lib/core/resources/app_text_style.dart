@@ -11,6 +11,7 @@ class AppTextStyle {
     double? fontSize,
     bool shouldApplyTextHeight = false,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
     double? letterSpacing,
     double? height,
   }) {
@@ -18,6 +19,7 @@ class AppTextStyle {
       fontSize: (fontSize ?? 14).px,
       color: color ?? R.appColors.black,
       fontWeight: fontWeight ?? FontWeight.w400,
+      fontStyle: fontStyle ?? FontStyle.normal,
       letterSpacing: letterSpacing,
       decoration: textDecoration,
       decorationColor: decorationColor,
