@@ -34,6 +34,9 @@ class AppLocalization {
     "and":" and\n",
     "privacy_policy":"Privacy Policy",
     "add_another_account":"Add another account",
+    "upgrade":"Upgrade",
+    "build_better_habits_with_real_coaching":"Build Better Habits\nWith Real Coaching",
+    "unlock_unlimited_habits_and_deep_analytics": "Unlock unlimited habits and deep\nanalytics. Build the life you want — with\na coach in your pocket."
   };
 
   static Map<String, String> get codesES => {};

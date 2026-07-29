@@ -32,6 +32,7 @@ class AppImages {
   final String star2 = 'assets/images/satr_2.png';
   final String star3 = 'assets/images/satr_3.png';
   final String star4 = 'assets/images/satr_4.png';
+  final String star5 = 'assets/images/start_5.png';
   final String tickIcon = 'assets/images/tick_icon.png';
   final String verifiedIcon = 'assets/images/verfied.png';
   final String upcoming = 'assets/images/upcoming.png';

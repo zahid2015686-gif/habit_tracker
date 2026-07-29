@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habit_tracker/core/constants/enums.dart';
+import 'package:habit_tracker/core/constants/width_height.dart';
+import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/profile/data/models/premium_model.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/vm/profile_vm.dart';
 import 'package:provider/provider.dart';
@@ -12,45 +16,40 @@ class PremiumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _PremiumViewBody();
+    return _PremiumViewBody();
   }
 }
 
 class _PremiumViewBody extends StatelessWidget {
-  const _PremiumViewBody();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: R.appColors.white,
+      backgroundColor: R.appColors.screenBackground2,
       body: Consumer<ProfileVm>(
         builder: (context, vm, _) {
           return SafeArea(
             child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _upgradeBadge(),
-                  SizedBox(height: 16.px),
+                  vSpacePx(10),
                   _headerText(),
-                  SizedBox(height: 24.px),
-
+                  vSpacePx(10),
                   // ---------------- Standard Plan ----------------
                   _planCard(
                     context: context,
                     vm: vm,
-                    plan: PremiumPlanModel.standard,
+                    plan: ProfileVm.standard,
                     headerGradient: null,
                     headerColor: R.appColors.white,
                   ),
-                  SizedBox(height: 14.px),
-
+                  vSpacePx(10),
                   // ---------------- Premium Plan ----------------
                   _planCard(
                     context: context,
                     vm: vm,
-                    plan: PremiumPlanModel.premium,
+                    plan: ProfileVm.premium,
                     headerGradient: LinearGradient(
                       colors: [R.appColors.orange, R.appColors.textGreen],
                       begin: Alignment.centerLeft,
@@ -58,9 +57,7 @@ class _PremiumViewBody extends StatelessWidget {
                     ),
                     headerColor: null,
                   ),
-                  SizedBox(height: 20.px),
-
-                  // ---------------- Purchase Now ----------------
+                  vSpacePx(10),
                   _primaryButton(
                     label: vm.purchaseButtonLabel,
                     isLoading: vm.isPurchasing,
@@ -125,30 +122,33 @@ class _PremiumViewBody extends StatelessWidget {
     );
   }
 
-  // ---------------- Upgrade badge ----------------
   Widget _upgradeBadge() {
     return Center(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 14.px, vertical: 6.px),
-        decoration: BoxDecoration(
-          color: R.appColors.textGreen.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(20.px),
+        padding: EdgeInsets.symmetric(horizontal: 13.px, vertical: 7.px),
+        decoration: R.appDecorations.cardDecoration(
+          color: R.appColors.screenBackground4,
+          borderRadius: BorderRadius.circular(100.px),
+          border: Border.all(
+            color: R.appColors.border2.withValues(alpha: 0.50),
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.workspace_premium,
-              size: 14,
-              color: R.appColors.textGreen,
+            Image.asset(
+              R.appImages.premium,
+              width: 11,
+              color: R.appColors.successGreen,
             ),
             SizedBox(width: 6.px),
             Text(
-              'Upgrade',
+              'upgrade'.L(),
               style: R.appTextStyle.poppins(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
-                color: R.appColors.textGreen,
+                color: R.appColors.successGreen,
               ),
             ),
           ],
@@ -162,22 +162,21 @@ class _PremiumViewBody extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Build Better Habits\nWith Real Coaching',
+          'build_better_habits_with_real_coaching'.L(),
           textAlign: TextAlign.center,
           style: R.appTextStyle.poppins(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-            color: R.appColors.black,
+            fontSize: 26,
+            fontWeight: FontWeight.w700,
+            color: R.appColors.darkBlack,
             height: 1.3,
           ),
         ),
-        SizedBox(height: 10.px),
+        vSpacePx(10),
         Text(
-          'Unlock unlimited habits and deep analytics. Build the life\nyou want — with a coach in your pocket.',
+          'unlock_unlimited_habits_and_deep_analytics'.L(),
           textAlign: TextAlign.center,
           style: R.appTextStyle.poppins(
-            fontSize: 13,
-            color: R.appColors.black.withValues(alpha: 0.5),
+            color: R.appColors.textLightBlack,
             height: 1.4,
           ),
         ),
@@ -199,58 +198,110 @@ class _PremiumViewBody extends StatelessWidget {
     return GestureDetector(
       onTap: () => vm.selectPlan(plan.type),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        decoration: BoxDecoration(
+        duration: Duration(milliseconds: 250),
+        decoration: R.appDecorations.cardDecoration(
           color: R.appColors.white,
-          borderRadius: BorderRadius.circular(18.px),
+          borderRadius: BorderRadius.circular(16.px),
           border: Border.all(
-            color: isSelected ? R.appColors.textGreen : R.appColors.border,
-            width: isSelected ? 1.5 : 1,
+            color: isSelected
+                ? R.appColors.seaGreen
+                : R.appColors.cardBackground,
+            width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: R.appColors.black.withValues(alpha: 0.10),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+              spreadRadius: -4,
+            ),
+            BoxShadow(
+              color: R.appColors.black.withValues(alpha: 0.10),
+              blurRadius: 6,
+              offset: const Offset(0, 4),
+              spreadRadius: -1,
+            ),
+          ],
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [
-            // ---------- Header row ----------
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.px, vertical: 14.px),
-              decoration: BoxDecoration(
+              padding: EdgeInsets.symmetric(horizontal: 16.px, vertical: 10.px),
+              decoration: R.appDecorations.cardDecoration(
                 gradient: isPremium ? headerGradient : null,
                 color: isPremium ? null : headerColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.px),
+                  topRight: Radius.circular(16.px),
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        isPremium ? Icons.workspace_premium : Icons.star_border,
-                        size: 18,
-                        color: isPremium
-                            ? R.appColors.white
-                            : R.appColors.black,
+                      Container(
+                        width: 24.px,
+                        height: 24.px,
+                        padding: EdgeInsets.all(6.px),
+                        decoration: R.appDecorations.cardDecoration(
+                          color: () {
+                            if (isPremium) {
+                              return isSelected
+                                  ? R.appColors.white.withValues(alpha: 0.25)
+                                  : R.appColors.white;
+                            }
+
+                            return isSelected
+                                ? R.appColors.screenBackground3
+                                : R.appColors.border;
+                          }(),
+                        ),
+                        child: Image.asset(
+                          isPremium ? R.appImages.premium : R.appImages.star5,
+                          width: 12.px,
+                          color: () {
+                            if (isPremium) {
+                              return isSelected
+                                  ? R.appColors.white
+                                  : R.appColors.warmGold;
+                            }
+
+                            return isSelected
+                                ? R.appColors.textLightGreen
+                                : R.appColors.slateGray;
+                          }(),
+                        ),
                       ),
-                      SizedBox(width: 8.px),
+                      hSpacePx(10),
                       Text(
                         plan.title,
                         style: R.appTextStyle.poppins(
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          color: isPremium
-                              ? R.appColors.white
-                              : R.appColors.black,
+                          color: () {
+                            if (isPremium) {
+                              return isSelected
+                                  ? R.appColors.white
+                                  : R.appColors.white.withValues(alpha: 0.90);
+                            }
+                            return isSelected
+                                ? R.appColors.darkBlack
+                                : R.appColors.textBlack;
+                          }(),
                         ),
                       ),
                       if (plan.badge != null) ...[
-                        SizedBox(width: 8.px),
+                        hSpacePx(8),
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 8.px,
+                            horizontal: 6.px,
                             vertical: 2.px,
                           ),
-                          decoration: BoxDecoration(
-                            color: R.appColors.white.withValues(alpha: 0.25),
-                            borderRadius: BorderRadius.circular(20.px),
+                          decoration: R.appDecorations.cardDecoration(
+                            color: R.appColors.white.withValues(alpha: 0.20),
+                            borderRadius: BorderRadius.circular(100.px),
                           ),
                           child: Text(
                             plan.badge!,
@@ -262,42 +313,61 @@ class _PremiumViewBody extends StatelessWidget {
                           ),
                         ),
                       ],
-                      const Spacer(),
+                      Spacer(),
                       RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
                               text: plan.price,
                               style: R.appTextStyle.poppins(
-                                fontSize: 15,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w800,
-                                color: isPremium
-                                    ? R.appColors.white
-                                    : R.appColors.black,
+                                color: () {
+                                  if (isPremium) {
+                                    return isSelected
+                                        ? R.appColors.white
+                                        : R.appColors.white.withValues(
+                                            alpha: 0.90,
+                                          );
+                                  }
+                                  return isSelected
+                                      ? R.appColors.darkBlack
+                                      : R.appColors.textBlack;
+                                }(),
                               ),
                             ),
-                            TextSpan(
-                              text: '/mo',
-                              style: R.appTextStyle.poppins(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                                color: isPremium
-                                    ? R.appColors.white.withValues(alpha: 0.8)
-                                    : R.appColors.black.withValues(alpha: 0.5),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.top,
+                              child: Transform.translate(
+                                offset: const Offset(0, -5),
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 2.px),
+                                  child: Text(
+                                    '/mo',
+                                    style: R.appTextStyle.poppins(
+                                      fontSize: 11,
+                                      color: isPremium
+                                          ? R.appColors.white.withValues(
+                                              alpha: 0.60,
+                                            )
+                                          : R.appColors.slateGray,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 10.px),
+                      hSpacePx(8),
                       _selectIndicator(
                         isSelected: isSelected,
                         isPremium: isPremium,
                       ),
                     ],
                   ),
-                  if (isPremium) ...[
-                    SizedBox(height: 4.px),
+                  if (isPremium && isSelected) ...[
+                    vSpacePx(4),
                     Text(
                       plan.subtitle,
                       style: R.appTextStyle.poppins(
@@ -312,7 +382,7 @@ class _PremiumViewBody extends StatelessWidget {
 
             // ---------- Expanded content ----------
             AnimatedCrossFade(
-              duration: const Duration(milliseconds: 250),
+              duration: Duration(milliseconds: 250),
               crossFadeState: isSelected
                   ? CrossFadeState.showFirst
                   : CrossFadeState.showSecond,
@@ -403,24 +473,33 @@ class _PremiumViewBody extends StatelessWidget {
 
   Widget _selectIndicator({required bool isSelected, required bool isPremium}) {
     return Container(
-      width: 22,
-      height: 22,
-      decoration: BoxDecoration(
+      width: 20.px,
+      height: 20.px,
+      padding: EdgeInsets.all(4.px),
+      decoration: R.appDecorations.cardDecoration(
         shape: BoxShape.circle,
-        color: isSelected
-            ? R.appColors.textGreen
-            : (isPremium ? Colors.transparent : R.appColors.white),
+        color: () {
+          if (isPremium) {
+            return isSelected ? R.appColors.white : R.appColors.transparent;
+          }
+          return isSelected ? R.appColors.seaGreen : R.appColors.transparent;
+        }(),
         border: Border.all(
-          color: isSelected
-              ? R.appColors.textGreen
-              : (isPremium
-                    ? R.appColors.white.withValues(alpha: 0.7)
-                    : R.appColors.border),
+          color: () {
+            if (isPremium) {
+              return isSelected ? R.appColors.white : R.appColors.border3;
+            }
+            return isSelected ? R.appColors.seaGreen : R.appColors.border3;
+          }(),
           width: 1.5,
         ),
       ),
       child: isSelected
-          ? const Icon(Icons.check, size: 14, color: Colors.white)
+          ? Image.asset(
+              R.appImages.tickIcon,
+              width: 20,
+              color: isPremium ? R.appColors.mossGreen : R.appColors.white,
+            )
           : null,
     );
   }
@@ -456,52 +535,23 @@ class _PremiumViewBody extends StatelessWidget {
     );
   }
 
-  // ---------------- Primary button ----------------
   Widget _primaryButton({
     required String label,
     required bool isLoading,
     required VoidCallback onTap,
   }) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: isLoading ? null : onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: R.appColors.textGreen,
-          padding: EdgeInsets.symmetric(vertical: 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-        child: isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.workspace_premium,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 8.px),
-                  Text(
-                    label,
-                    style: R.appTextStyle.poppins(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: R.appColors.white,
-                    ),
-                  ),
-                ],
-              ),
+    return AppButton(
+      onTap: (){},
+      text: label,
+      textStyle: R.appTextStyle.poppins(
+        color: R.appColors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
       ),
+      isLoading: false,
+      leftIcon: Image.asset(R.appImages.premium, width: 14, color: R.appColors.white,),
+      color: R.appColors.seaGreen,
+      borderRadius: 12,
     );
   }
 }
