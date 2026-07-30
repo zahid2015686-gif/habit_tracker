@@ -19,6 +19,7 @@ class AppColors {
   final Color screenBackground4 = const Color(0xFFF0FDF4);
   final Color screenBackground5 = const Color(0xFFBCBCBC);
   final Color cardBackground = const Color(0xFFE2E8F0);
+  final Color warmCream  = const Color(0xFFFFFBEB);
 
 
 
@@ -31,11 +32,15 @@ class AppColors {
   final Color slateGray  = const Color(0xFF94A3B8);
   final Color successGreen  = const Color(0xFF16A34A);
   final Color mossGreen = const Color(0xFF99B251);
+  final Color slate  = const Color(0xFF475569);
+  final Color coolGray   = const Color(0xFF9EA0A3);
+  final Color dimGray   = const Color(0xFF686868);
 
   // Border
   final Color border = const Color(0xFFF1F5F9);
   final Color border2 = const Color(0xFFBBF7D0);
   final Color border3 = const Color(0xFFCBD5E1);
+  final Color softGold  = const Color(0xFFFDE68A);
 
 // Gradient
   final Color oliveGreen = const Color(0xFFB7CE76);
@@ -44,4 +49,9 @@ class AppColors {
   final Color indigo = const Color(0xFF6366F1);
   final Color blue = const Color(0xFF0EA5E9);
   final Color warmGold = const Color(0xFFE8B578);
+  final Color royalBlue  = const Color(0xFF4F46E5);
+  final Color skyBlue   = const Color(0xFF0284C7);
+  final Color avocado  = const Color(0xFF99B351);
+  final Color peach  = const Color(0xFFEFB57C);
+  final Color azureBlue  = const Color(0xFF1E72EA);
 }

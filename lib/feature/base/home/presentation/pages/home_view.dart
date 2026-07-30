@@ -1,18 +1,72 @@
+import 'dart:ui';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/utils/extension_methods.dart';
+import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   static const String route = '/home_view';
+  final bool? isPremium;
 
-  const HomeView({super.key});
+  const HomeView({super.key, this.isPremium});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  static bool _hasShownWelcomePremium = false;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: R.appColors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+
+        systemNavigationBarColor: R.appColors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+    if (widget.isPremium! ?? false) {
+      _maybeShowWelcomePremium();
+    }
+  }
+
+  void _maybeShowWelcomePremium() {
+    if (_hasShownWelcomePremium) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      _hasShownWelcomePremium = true;
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierColor: Colors.black.withValues(alpha: 0.50),
+        builder: (_) {
+          return BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            child: _welcomePremium(context),
+          );
+        },
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,38 +81,118 @@ class HomeView extends StatelessWidget {
         title: _customAppBar(),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
-          child: Consumer<HabitVm>(
-            builder: (context, vm, child) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _rhythmCard(),
-                  vSpacePx(20),
-                  _sectionHeader(
-                    title: 'today_habits'.L(),
-                    trailing: "${vm.completedHabits}/${vm.habits.length}",
-                    trailingColor: R.appColors.secondary,
+        child: widget.isPremium == true
+            ? SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.px,
+                  vertical: 16.px,
+                ),
+                child: Consumer<HabitVm>(
+                  builder: (context, vm, child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _rhythmCard(),
+                        vSpacePx(20),
+                        _sectionHeader(
+                          title: 'today_habits'.L(),
+                          trailing: "${vm.completedHabits}/${vm.habits.length}",
+                          trailingColor: R.appColors.secondary,
+                        ),
+                        _todayHabitsCard(vm: vm),
+                        _sectionHeader(title: 'upcoming_reminders'.L()),
+                        _upcomingRemindersCard(vm: vm),
+                        _sectionHeaderWithArrow(
+                          title: 'weekly_progress'.L(),
+                          trailing: 'view_all'.L(),
+                          onTap: () {},
+                        ),
+                        vSpacePx(10),
+                        _weeklyProgressCard(),
+                        vSpacePx(20),
+                        _quoteCard(),
+                        vSpacePx(20),
+                      ],
+                    );
+                  },
+                ),
+              )
+            : Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50.px, vertical: 20.px),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 56.px,
+                        height: 56.px,
+                        padding: EdgeInsets.all(16.px),
+                        decoration: R.appDecorations.cardDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [R.appColors.avocado, R.appColors.peach],
+                          ),
+                        ),
+                        child: Image.asset(
+                          R.appImages.tickIcon,
+                          color: Colors.white,
+                        ),
+                      ),
+                      vSpacePx(10),
+                      Text(
+                        'you_all_set'.L(),
+                        style: R.appTextStyle.poppins(
+                          color: R.appColors.darkBlack,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      vSpacePx(10),
+                      Text(
+                        'pick_habits_to_get_started'.L(),
+                        style: R.appTextStyle.poppins(
+                          color: R.appColors.dimGray,
+                          fontSize: 12,
+                        ),
+                      ),
+                      vSpacePx(20),
+                      Row(
+                        children: [
+                          Image.asset(
+                            R.appImages.quickStartTemplates,
+                            color: R.appColors.orange,
+                            width: 10.px,
+                          ),
+                          hSpacePx(10),
+                          Expanded(
+                            child: Text(
+                              'quick_start_templates'.L(),
+                              style: R.appTextStyle.poppins(
+                                color: R.appColors.darkBlack,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          hSpacePx(10),
+                          GestureDetector(
+                              onTap: () {
+                                // Your code
+                              },
+                              child: Text('view_all'.L(), style: R.appTextStyle.poppins(
+                                color: R.appColors.azureBlue,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                              ),)
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  _todayHabitsCard(vm: vm),
-                  _sectionHeader(title: 'upcoming_reminders'.L()),
-                  _upcomingRemindersCard(vm: vm),
-                  _sectionHeaderWithArrow(
-                    title: 'weekly_progress'.L(),
-                    trailing: 'view_all'.L(),
-                    onTap: () {},
-                  ),
-                  vSpacePx(10),
-                  _weeklyProgressCard(),
-                  vSpacePx(20),
-                  _quoteCard(),
-                  vSpacePx(20),
-                ],
-              );
-            },
-          ),
-        ),
+                ),
+              ),
       ),
     );
   }
@@ -80,13 +214,44 @@ class HomeView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Text(
-                'Williams',
-                style: R.appTextStyle.poppins(
-                  fontSize: 20,
-                  color: R.appColors.darkBlack,
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Williams',
+                    style: R.appTextStyle.poppins(
+                      fontSize: 20,
+                      color: R.appColors.darkBlack,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  if (widget.isPremium ?? false) ...[
+                    hSpacePx(10),
+                    Container(
+                      width: 22.px,
+                      height: 22.px,
+                      padding: EdgeInsets.all(5.px),
+                      decoration: R.appDecorations.cardDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            R.appColors.warmCream,
+                            R.appColors.warmCream,
+                          ],
+                        ),
+                        border: Border.all(
+                          color: R.appColors.softGold,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Image.asset(
+                        R.appImages.premium,
+                        color: R.appColors.orange,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ],
           ),
@@ -254,7 +419,7 @@ class HomeView extends StatelessWidget {
           child: _habitCard(
             title: habit.title,
             icon: habit.image,
-            iconColor: habit.imageBackground,
+            iconColor: habit.imageColor,
             subtitle:
                 "${habit.scheduleType.title} • ${DateFormat('HH:mm').format(habit.reminderTime)}",
             isDone: habit.isDone,
@@ -468,7 +633,7 @@ class HomeView extends StatelessWidget {
         final habit = vm.upcomingHabits[index];
         return _reminderCard(
           icon: habit.image,
-          iconBackground: habit.imageBackground.withValues(alpha: 0.55),
+          iconBackground: habit.imageColor.withValues(alpha: 0.55),
           title: habit.title,
           subtitle:
               "Today at ${DateFormat('HH:mm').format(habit.reminderTime)}",
@@ -699,7 +864,7 @@ class HomeView extends StatelessWidget {
           colors: [
             R.appColors.textLightGreen.withValues(alpha: 0.10),
             R.appColors.indigo.withValues(alpha: 0.10),
-           R.appColors.blue.withValues(alpha: 0.10),
+            R.appColors.blue.withValues(alpha: 0.10),
           ],
         ),
         borderRadius: BorderRadius.circular(20.px),
@@ -715,10 +880,7 @@ class HomeView extends StatelessWidget {
                 width: 80.px,
                 height: 80.px,
                 padding: EdgeInsets.all(10.px),
-                child: Image.asset(
-                  R.appImages.quoteIcon,
-                  fit: BoxFit.contain,
-                ),
+                child: Image.asset(R.appImages.quoteIcon, fit: BoxFit.contain),
               ),
             ),
           ),
@@ -752,165 +914,148 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _welcomePremium(BuildContext context){
+  Widget _welcomePremium(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.symmetric(horizontal: 24.px),
+      backgroundColor: R.appColors.transparent,
+      insetPadding: EdgeInsets.all(32.px),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // ---------------- Main white card ----------------
           Container(
-            padding: EdgeInsets.fromLTRB(24.px, 40.px, 24.px, 28.px),
-            decoration: BoxDecoration(
+            padding: EdgeInsets.all(32.px),
+            decoration: R.appDecorations.cardDecoration(
               color: R.appColors.white,
               borderRadius: BorderRadius.circular(28.px),
               boxShadow: [
                 BoxShadow(
-                  color: R.appColors.black.withValues(alpha: 0.15),
-                  blurRadius: 30,
-                  offset: const Offset(0, 12),
+                  color: R.appColors.black.withValues(alpha: 0.25),
+                  blurRadius: 50,
+                  offset: const Offset(0, 25),
+                  spreadRadius: -12,
                 ),
               ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ---------------- Crown icon circle ----------------
                 Container(
-                  width: 84.px,
-                  height: 84.px,
-                  decoration: BoxDecoration(
+                  width: 88.px,
+                  height: 88.px,
+                  padding: EdgeInsets.all(25.px),
+                  decoration: R.appDecorations.cardDecoration(
                     shape: BoxShape.circle,
-                    color: R.appColors.orange.withValues(alpha: 0.12),
-                    border: Border.all(
-                      color: R.appColors.orange.withValues(alpha: 0.3),
-                      width: 1.5,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [R.appColors.warmCream, R.appColors.warmCream],
                     ),
+                    border: Border.all(color: R.appColors.softGold, width: 1.5),
                   ),
-                  child: Icon(
-                    Icons.emoji_events_rounded,
+                  child: Image.asset(
+                    R.appImages.premium,
                     color: R.appColors.orange,
-                    size: 40,
                   ),
                 ),
-                SizedBox(height: 20.px),
-
-                // ---------------- Title ----------------
+                vSpacePx(14),
                 Text(
-                  'Welcome to Premium!',
+                  'welcome_to_premium'.L(),
                   textAlign: TextAlign.center,
                   style: R.appTextStyle.poppins(
                     fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: R.appColors.black,
+                    fontWeight: FontWeight.w700,
+                    color: R.appColors.darkBlack,
                   ),
                 ),
-                SizedBox(height: 12.px),
-
-                // ---------------- Subtitle ----------------
+                vSpacePx(10),
                 Text(
-                  "You've unlocked unlimited habits, live coach access, and deep analytics. Your rhythm just leveled up.",
+                  "welcome_premium_subtitle".L(),
                   textAlign: TextAlign.center,
                   style: R.appTextStyle.poppins(
-                    fontSize: 13.5,
-                    color: R.appColors.black.withValues(alpha: 0.55),
+                    color: R.appColors.slate,
                     height: 1.4,
                   ),
                 ),
-                SizedBox(height: 18.px),
-
-                // ---------------- Feature pills ----------------
+                vSpacePx(15),
                 Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 8.px,
                   runSpacing: 8.px,
                   children: [
                     _featurePill(
-                      label: 'Unlimited Habits',
-                      textColor: R.appColors.textGreen,
-                      bgColor: R.appColors.textGreen.withValues(alpha: 0.12),
+                      label: 'unlimited_habits'.L(),
+                      textColor: R.appColors.successGreen,
+                      bgColor: R.appColors.successGreen.withValues(alpha: 0.12),
                     ),
                     _featurePill(
-                      label: 'Live Coach',
-                      textColor: R.appColors.primary,
-                      bgColor: R.appColors.primary.withValues(alpha: 0.12),
+                      label: 'live_coach'.L(),
+                      textColor: R.appColors.royalBlue,
+                      bgColor: R.appColors.royalBlue.withValues(alpha: 0.12),
                     ),
                     _featurePill(
-                      label: 'Deep Analytics',
-                      textColor: Colors.blue.shade600,
-                      bgColor: Colors.blue.withValues(alpha: 0.12),
+                      label: 'deep_analytics'.L(),
+                      textColor: R.appColors.skyBlue,
+                      bgColor: R.appColors.skyBlue.withValues(alpha: 0.12),
                     ),
                   ],
                 ),
-                SizedBox(height: 24.px),
-
-                // ---------------- Let's go button ----------------
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: R.appColors.textGreen,
-                      padding: EdgeInsets.symmetric(vertical: 15.px),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.px),
-                      ),
-                    ),
-                    child: Text(
-                      "Let's go!",
-                      style: R.appTextStyle.poppins(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: R.appColors.white,
-                      ),
-                    ),
+                vSpacePx(20),
+                AppButton(
+                  onTap: () {
+                    // Get.offAllNamed();
+                  },
+                  text: 'let_go'.L(),
+                  textStyle: R.appTextStyle.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: R.appColors.white,
                   ),
+                  color: R.appColors.seaGreen,
+                  borderRadius: 16,
                 ),
               ],
             ),
           ),
 
-          // ---------------- Decorative stars (assets) ----------------
           Positioned(
-            top: -6.px,
-            left: 4.px,
-            child: Image.asset(R.appImages.star1, width: 22.px),
+            top: -70.px,
+            left: 5.px,
+            child: Image.asset(R.appImages.star2, width: 30.px),
           ),
           Positioned(
-            bottom: -10.px,
-            left: -12.px,
-            child: Image.asset(R.appImages.star2, width: 26.px),
+            bottom: -40.px,
+            left: 20.px,
+            child: Image.asset(R.appImages.star4, width: 20.px),
           ),
           Positioned(
-            bottom: 30.px,
-            right: -14.px,
-            child: Image.asset(R.appImages.star3, width: 22.px),
+            bottom: -50.px,
+            right: 20.px,
+            child: Image.asset(R.appImages.star3, width: 20.px),
           ),
           Positioned(
-            top: 60.px,
-            right: -10.px,
-            child: Image.asset(R.appImages.star4, width: 18.px),
+            top: -90.px,
+            right: 10.px,
+            child: Image.asset(R.appImages.star1, width: 18.px),
           ),
         ],
       ),
     );
   }
+
   Widget _featurePill({
     required String label,
     required Color textColor,
     required Color bgColor,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.px, vertical: 7.px),
-      decoration: BoxDecoration(
+      padding: EdgeInsets.symmetric(horizontal: 11.px, vertical: 5.px),
+      decoration: R.appDecorations.cardDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(20.px),
+        borderRadius: BorderRadius.circular(100.px),
       ),
       child: Text(
         label,
         style: R.appTextStyle.poppins(
-          fontSize: 12,
+          fontSize: 10,
           fontWeight: FontWeight.w600,
           color: textColor,
         ),

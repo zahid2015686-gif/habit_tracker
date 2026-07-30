@@ -36,7 +36,23 @@ class AppLocalization {
     "add_another_account":"Add another account",
     "upgrade":"Upgrade",
     "build_better_habits_with_real_coaching":"Build Better Habits\nWith Real Coaching",
-    "unlock_unlimited_habits_and_deep_analytics": "Unlock unlimited habits and deep\nanalytics. Build the life you want — with\na coach in your pocket."
+    "unlock_unlimited_habits_and_deep_analytics": "Unlock unlimited habits and deep\nanalytics. Build the life you want — with\na coach in your pocket.",
+    "welcome_to_premium":"Welcome to Premium!",
+    "welcome_premium_subtitle": "You've unlocked unlimited habits, live coach access, and deep analytics. Your rhythm just leveled up.",
+    "unlimited_habits":"Unlimited Habits",
+    "live_coach":"Live Coach",
+    "deep_analytics":"Deep Analytics",
+    "let_go":"Let's go!",
+    "proceed_with_free_package":"Proceed with Free Package",
+    'premium_money_back_guarantee': '30-day money-back guarantee',
+    'money_back_description': 'If you are not building better habits within 30\ndays, we will refund you — no questions asked.',
+    'cancel_anytime_no_lock_in': 'Cancel anytime · No lock-in',
+    'you_all_set': '''You're all set!''',
+    "pick_habits_to_get_started": "Pick a few habits to get started, or create\nyour own. Your coach is ready when you are.",
+    "quick_start_templates":"Quick-Start Templates",
+    "habits":"Habits",
+    "discover_habits":"Discover Habits",
+    "discover_habits_subtitle":"Browse curated habits across\nwellness, fitness, mindset & more",
   };
 
   static Map<String, String> get codesES => {};

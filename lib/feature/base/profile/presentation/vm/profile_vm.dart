@@ -59,28 +59,21 @@ class ProfileVm extends ChangeNotifier{
 
   bool isExpanded(PlanType type) => selectedPlan == type;
 
-// ---------------- UI-only labels ----------------
   String get purchaseButtonLabel =>
       'Start ${selectedPlanModel.title} · ${selectedPlanModel.price}/mo';
 
-  String get getStartedButtonLabel => 'Get Started';
+  String get getStartedButtonLabel => 'Get Started  ${selectedPlanModel.price}/mo';
 
-// ---------------- Actions ----------------
-  void purchaseSelectedPlan(BuildContext context) {
-    isPurchasing = true;
-    notifyListeners();
+  // Premium
+  void goToHome(ProfileVm vm) {
+    final bool isPremium = vm.selectedPlan == PlanType.premium;
 
-    isPurchasing = false;
-    notifyListeners();
+    Get.offAllNamed(
+      BaseView.route,
+      arguments: {
+        'isPremium': isPremium,
+      },
+    );
   }
-
-  void proceedWithFreePackage(BuildContext context) {
-    Get.offAllNamed(BaseView.route);
-  }
-
-  void getStarted(BuildContext context) {
-    Get.offAllNamed(BaseView.route);
-  }
-
 
 }

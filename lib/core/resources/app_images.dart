@@ -28,13 +28,16 @@ class AppImages {
   final String running = 'assets/images/running.png';
   final String walk = 'assets/images/walk.png';
   final String premium = 'assets/images/premium.png';
-  final String star1 = 'assets/images/satr_1.png';
-  final String star2 = 'assets/images/satr_2.png';
-  final String star3 = 'assets/images/satr_3.png';
-  final String star4 = 'assets/images/satr_4.png';
+  final String star1 = 'assets/images/star_1.png';
+  final String star2 = 'assets/images/star_2.png';
+  final String star3 = 'assets/images/star_3.png';
+  final String star4 = 'assets/images/star_4.png';
   final String star5 = 'assets/images/start_5.png';
   final String tickIcon = 'assets/images/tick_icon.png';
   final String verifiedIcon = 'assets/images/verfied.png';
   final String upcoming = 'assets/images/upcoming.png';
   final String quoteIcon = 'assets/images/quote_icon.png';
+  final String quickStartTemplates = 'assets/images/quick_start_templates.png';
+  final String discoverHabitsBackground = 'assets/images/discover_habits_background.png';
+  final String discover_habits = 'assets/images/discover_habits.png';
 }

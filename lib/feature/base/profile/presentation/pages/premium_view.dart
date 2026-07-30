@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
 import 'package:habit_tracker/feature/base/profile/data/models/premium_model.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/vm/profile_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class PremiumView extends StatelessWidget {
+class PremiumView extends StatefulWidget {
   static const String route = '/premium_view';
 
   const PremiumView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return _PremiumViewBody();
-  }
+  State<PremiumView> createState() => _PremiumViewState();
 }
 
-class _PremiumViewBody extends StatelessWidget {
+class _PremiumViewState extends State<PremiumView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: R.appColors.screenBackground2,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+
+        systemNavigationBarColor: R.appColors.screenBackground2,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,62 +74,61 @@ class _PremiumViewBody extends StatelessWidget {
                     ),
                     headerColor: null,
                   ),
-                  vSpacePx(10),
+                  vSpacePx(14),
                   _primaryButton(
                     label: vm.purchaseButtonLabel,
                     isLoading: vm.isPurchasing,
-                    onTap: () => vm.purchaseSelectedPlan(context),
+                    onTap: () {
+                      vm.goToHome(vm);
+                    },
                   ),
-                  SizedBox(height: 14.px),
-
-                  // ---------------- Proceed with Free Package ----------------
+                  vSpacePx(14),
                   Center(
                     child: GestureDetector(
-                      onTap: () => vm.proceedWithFreePackage(context),
+                      onTap: () {
+                        vm.selectPlan(PlanType.standard);
+                        vm.goToHome(vm);
+                      },
                       child: Text(
-                        'Proceed with Free Package',
+                        'proceed_with_free_package'.L(),
                         style: R.appTextStyle.poppins(
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: R.appColors.orange,
+                          color: R.appColors.primary,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 14.px),
-
-                  // ---------------- Money-back guarantee pill ----------------
+                  vSpacePx(12),
                   Center(child: _guaranteePill()),
-                  SizedBox(height: 10.px),
-
+                  vSpacePx(10),
                   Text(
-                    'If you are not building better habits within 30 days, we will refund you — no questions asked.',
+                    'money_back_description'.L(),
                     textAlign: TextAlign.center,
                     style: R.appTextStyle.poppins(
                       fontSize: 12,
-                      color: R.appColors.black.withValues(alpha: 0.45),
+                      color: R.appColors.slateGray,
                     ),
                   ),
-                  SizedBox(height: 20.px),
-
-                  // ---------------- Get Started ----------------
+                  vSpacePx(10),
                   _primaryButton(
                     label: vm.getStartedButtonLabel,
                     isLoading: false,
-                    onTap: () => vm.getStarted(context),
+                    onTap: () {
+                      vm.goToHome(vm);
+                    },
                   ),
-                  SizedBox(height: 8.px),
-
+                  vSpacePx(8),
                   Center(
                     child: Text(
-                      'Cancel anytime · No lock-in',
+                      'cancel_anytime_no_lock_in'.L(),
                       style: R.appTextStyle.poppins(
-                        fontSize: 11,
-                        color: R.appColors.black.withValues(alpha: 0.35),
+                        fontSize: 10,
+                        color: R.appColors.coolGray,
                       ),
                     ),
                   ),
-                  SizedBox(height: 12.px),
+                  vSpacePx(12),
                 ],
               ),
             ),
@@ -157,7 +173,6 @@ class _PremiumViewBody extends StatelessWidget {
     );
   }
 
-  // ---------------- Header text ----------------
   Widget _headerText() {
     return Column(
       children: [
@@ -408,20 +423,30 @@ class _PremiumViewBody extends StatelessWidget {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.check,
-                              size: 15,
-                              color: R.appColors.textGreen,
+                            Container(
+                              width: 16.px,
+                              height: 16.px,
+                              padding: EdgeInsets.all(4.px),
+                              decoration: R.appDecorations.cardDecoration(
+                                color: isPremium
+                                    ? R.appColors.screenBackground3
+                                    : R.appColors.border,
+                              ),
+                              child: Image.asset(
+                                R.appImages.tickIcon,
+                                width: 10,
+                                color: isPremium
+                                    ? R.appColors.successGreen
+                                    : R.appColors.textLightBlack,
+                              ),
                             ),
-                            SizedBox(width: 8.px),
+                            hSpacePx(10),
                             Expanded(
                               child: Text(
                                 f,
                                 style: R.appTextStyle.poppins(
-                                  fontSize: 12.5,
-                                  color: R.appColors.black.withValues(
-                                    alpha: 0.75,
-                                  ),
+                                  fontSize: 12,
+                                  color: R.appColors.textBlack,
                                 ),
                               ),
                             ),
@@ -429,32 +454,32 @@ class _PremiumViewBody extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 6.px),
+                    hSpacePx(10),
                     Container(
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(
-                        horizontal: 12.px,
-                        vertical: 8.px,
+                        horizontal: 10.px,
+                        vertical: 6.px,
                       ),
-                      decoration: BoxDecoration(
-                        color: R.appColors.textGreen.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(10.px),
+                      decoration: R.appDecorations.cardDecoration(
+                        color: R.appColors.screenBackground4,
+                        borderRadius: BorderRadius.circular(12.px),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.verified_outlined,
-                            size: 14,
-                            color: R.appColors.textGreen,
+                          Image.asset(
+                            R.appImages.verifiedIcon,
+                            width: 11,
+                            color: R.appColors.successGreen,
                           ),
-                          SizedBox(width: 6.px),
+                          hSpacePx(10),
                           Text(
                             plan.trialText,
                             style: R.appTextStyle.poppins(
-                              fontSize: 11,
+                              fontSize: 10,
                               fontWeight: FontWeight.w500,
-                              color: R.appColors.textGreen,
+                              color: R.appColors.successGreen,
                             ),
                           ),
                         ],
@@ -507,27 +532,30 @@ class _PremiumViewBody extends StatelessWidget {
   // ---------------- Guarantee pill ----------------
   Widget _guaranteePill() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.px, vertical: 8.px),
-      decoration: BoxDecoration(
-        color: R.appColors.textGreen.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(20.px),
-        border: Border.all(color: R.appColors.textGreen.withValues(alpha: 0.3)),
+      padding: EdgeInsets.symmetric(horizontal: 19.px, vertical: 9.px),
+      decoration: R.appDecorations.cardDecoration(
+        color: R.appColors.seaGreen.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(100.px),
+        border: Border.all(
+          color: R.appColors.seaGreen.withValues(alpha: 0.50),
+          width: 1,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.verified_user_outlined,
-            size: 14,
-            color: R.appColors.textGreen,
+          Image.asset(
+            R.appImages.verifiedIcon,
+            width: 11,
+            color: R.appColors.seaGreen,
           ),
           SizedBox(width: 6.px),
           Text(
-            '30-day money-back guarantee',
+            'premium_money_back_guarantee'.L(),
             style: R.appTextStyle.poppins(
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w600,
-              color: R.appColors.textGreen,
+              color: R.appColors.seaGreen,
             ),
           ),
         ],
@@ -541,7 +569,7 @@ class _PremiumViewBody extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return AppButton(
-      onTap: (){},
+      onTap: onTap,
       text: label,
       textStyle: R.appTextStyle.poppins(
         color: R.appColors.white,
@@ -549,7 +577,11 @@ class _PremiumViewBody extends StatelessWidget {
         fontWeight: FontWeight.w700,
       ),
       isLoading: false,
-      leftIcon: Image.asset(R.appImages.premium, width: 14, color: R.appColors.white,),
+      leftIcon: Image.asset(
+        R.appImages.premium,
+        width: 14,
+        color: R.appColors.white,
+      ),
       color: R.appColors.seaGreen,
       borderRadius: 12,
     );

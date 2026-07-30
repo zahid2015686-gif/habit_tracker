@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
@@ -63,6 +64,12 @@ abstract class AppRoutes {
     GetPage(
       name: PremiumView.route,
       page: () => const PremiumView(),
+      curve: Curves.easeInOut,
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: HabitDiscoverView.route,
+      page: () => const HabitDiscoverView(),
       curve: Curves.easeInOut,
       transition: Transition.noTransition,
     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
@@ -20,7 +21,6 @@ class BaseView extends StatefulWidget {
 }
 
 class _BaseViewState extends State<BaseView> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -40,13 +40,17 @@ class _BaseViewState extends State<BaseView> {
 
   @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as Map?;
+    final bool isPremium = args?['isPremium'] ?? false;
     return Consumer<BaseVm>(
       builder: (context, vm, _) {
         return Scaffold(
           body: IndexedStack(
             index: vm.currentIndex,
-            children: const [
-              HomeView(),
+            children: [
+              HomeView(
+                isPremium: isPremium,
+              ),
               HabitsView(),
               Center(child: Text("Upload")),
               RhythmView(),
