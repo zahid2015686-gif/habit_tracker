@@ -54,6 +54,21 @@ class AppLocalization {
     "light":"Light",
     "discover_habits":"Discover Habits",
     "discover_habits_subtitle":"Browse curated habits across\nwellness, fitness, mindset & more",
+    "search_habits":"Search habits...",
+    "all":"All",
+    "mindset":"Mindset",
+    "wellness":"Wellness",
+    "fitness":"Fitness",
+    "health":"Health",
+    "productivity":"Productivity",
+    "sleep":"Sleep",
+    "learning":"Learning",
+    "beauty":"Beauty",
+    "popular":"Popular",
+    "most_added":"Most added",
+    "suggested_for_you":"Suggested for You",
+    "curated_picks":"Curated picks",
+    "add":"Add",
   };
 
   static Map<String, String> get codesES => {};

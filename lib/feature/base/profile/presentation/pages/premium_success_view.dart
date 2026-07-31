@@ -127,7 +127,9 @@ class PremiumSuccessContent extends StatelessWidget {
               color: habit.imageColor.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(12.px),
             ),
-            child: Image.asset(habit.image, color: habit.imageColor),
+            child: habit.image != null
+                ? Image.asset(habit.image!, color: habit.imageColor)
+                : Icon(habit.icon, color: habit.imageColor, size: 18),
           ),
           hSpacePx(10),
           Expanded(

@@ -85,10 +85,9 @@ class _HomeViewState extends State<HomeView> {
         title: _customAppBar(),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            if(widget.isPremium == true) ... [
-              SingleChildScrollView(
+        child: widget.isPremium == false
+            ? const PremiumSuccessContent()
+            : SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
                 child: Consumer<HabitVm>(
                   builder: (context, vm, child) {
@@ -120,12 +119,6 @@ class _HomeViewState extends State<HomeView> {
                   },
                 ),
               ),
-            ],
-            if(widget.isPremium == false) ... [
-              Expanded(child: PremiumSuccessContent()),
-            ]
-          ],
-        ),
       ),
     );
   }
