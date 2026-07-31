@@ -51,6 +51,7 @@ class AppLocalization {
     "pick_habits_to_get_started": "Pick a few habits to get started, or create\nyour own. Your coach is ready when you are.",
     "quick_start_templates":"Quick-Start Templates",
     "habits":"Habits",
+    "light":"Light",
     "discover_habits":"Discover Habits",
     "discover_habits_subtitle":"Browse curated habits across\nwellness, fitness, mindset & more",
   };

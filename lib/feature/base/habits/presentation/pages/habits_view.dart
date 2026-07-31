@@ -60,13 +60,11 @@ class _HabitsViewState extends State<HabitsView> {
                 children: [
                   _discoverHabitsCard(),
                   vSpacePx(20),
-
-                  // Habit list
                   ListView.separated(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: vm.habits.length,
-                    separatorBuilder: (_, __) => vSpacePx(12),
+                    separatorBuilder: (_, __) => vSpacePx(10),
                     itemBuilder: (context, index) {
                       final habit = vm.habits[index];
                       return _habitTile(habit);
@@ -198,25 +196,43 @@ class _HabitsViewState extends State<HabitsView> {
   Widget _habitTile(HabitModel habit) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 14.px, vertical: 14.px),
+      padding: EdgeInsets.all(17.px),
       decoration: R.appDecorations.cardDecoration(
-        borderRadius: BorderRadius.circular(16.px),
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(15.px),
+        border: Border.all(
+          color: R.appColors.border,
+          width: 1,
+        ),
+        color: R.appColors.white,
+        boxShadow:[
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.04),
+            offset: Offset(0, 10),
+            blurRadius: 20,
+            spreadRadius: -2,
+          ),
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.07),
+            offset: Offset(0, 2),
+            blurRadius: 15,
+            spreadRadius: -3,
+          ),
+        ]
       ),
       child: Row(
         children: [
           Container(
             width: 44.px,
             height: 44.px,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: habit.imageColor,
+            padding: EdgeInsets.all(12.px),
+            decoration: R.appDecorations.cardDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: habit.imageColor.withValues(alpha: 0.10),
             ),
             alignment: Alignment.center,
             child: Image.asset(
               habit.image,
-              width: 20.px,
-              height: 20.px,
+              color: habit.imageColor,
             ),
           ),
           hSpacePx(12),
@@ -230,7 +246,9 @@ class _HabitsViewState extends State<HabitsView> {
                       child: Text(
                         habit.title,
                         style: R.appTextStyle.poppins(
-
+                          color: R.appColors.darkSlate,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -239,17 +257,19 @@ class _HabitsViewState extends State<HabitsView> {
                       hSpacePx(8),
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 8.px,
+                          horizontal: 6.px,
                           vertical: 2.px,
                         ),
-                        decoration: BoxDecoration(
-                          color: R.appColors.secondary.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20.px),
+                        decoration: R.appDecorations.cardDecoration(
+                          color: R.appColors.secondary.withValues(alpha: 0.10),
+                          borderRadius: BorderRadius.circular(100.px),
                         ),
                         child: Text(
                           'light'.L(),
                           style: R.appTextStyle.poppins(
-
+                            color: R.appColors.seaGreen,
+                            fontSize:9,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
@@ -260,7 +280,8 @@ class _HabitsViewState extends State<HabitsView> {
                 Text(
                   _habitScheduleText(habit),
                   style: R.appTextStyle.poppins(
-
+                    fontSize: 12,
+                    color: R.appColors.textLightBlack,
                   ),
                 ),
               ],
@@ -269,7 +290,7 @@ class _HabitsViewState extends State<HabitsView> {
           hSpacePx(8),
           Icon(
             Icons.chevron_right,
-            color: R.appColors.darkBlack,
+            color: R.appColors.slateGray,
           ),
         ],
       ),

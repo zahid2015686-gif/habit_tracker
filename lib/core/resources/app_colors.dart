@@ -35,6 +35,7 @@ class AppColors {
   final Color slate  = const Color(0xFF475569);
   final Color coolGray   = const Color(0xFF9EA0A3);
   final Color dimGray   = const Color(0xFF686868);
+  final Color darkSlate   = const Color(0xFF1E293B);
 
   // Border
   final Color border = const Color(0xFFF1F5F9);
@@ -54,4 +55,6 @@ class AppColors {
   final Color avocado  = const Color(0xFF99B351);
   final Color peach  = const Color(0xFFEFB57C);
   final Color azureBlue  = const Color(0xFF1E72EA);
+  final Color errorRed  = const Color(0xFFEF4444);
+  final Color violet  = const Color(0xFF8B5CF6);
 }

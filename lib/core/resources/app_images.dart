@@ -39,5 +39,6 @@ class AppImages {
   final String quoteIcon = 'assets/images/quote_icon.png';
   final String quickStartTemplates = 'assets/images/quick_start_templates.png';
   final String discoverHabitsBackground = 'assets/images/discover_habits_background.png';
+  final String discoverHabits = 'assets/images/discover_habits.png';
   final String discover_habits = 'assets/images/discover_habits.png';
 }

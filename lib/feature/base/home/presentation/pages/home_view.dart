@@ -9,7 +9,11 @@ import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/utils/extension_methods.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
+import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
+import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl/intl.dart';
@@ -81,12 +85,11 @@ class _HomeViewState extends State<HomeView> {
         title: _customAppBar(),
       ),
       body: SafeArea(
-        child: widget.isPremium == true
-            ? SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.px,
-                  vertical: 16.px,
-                ),
+        child: Column(
+          children: [
+            if(widget.isPremium == true) ... [
+              SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.px, vertical: 16.px),
                 child: Consumer<HabitVm>(
                   builder: (context, vm, child) {
                     return Column(
@@ -116,83 +119,13 @@ class _HomeViewState extends State<HomeView> {
                     );
                   },
                 ),
-              )
-            : Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50.px, vertical: 20.px),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 56.px,
-                        height: 56.px,
-                        padding: EdgeInsets.all(16.px),
-                        decoration: R.appDecorations.cardDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [R.appColors.avocado, R.appColors.peach],
-                          ),
-                        ),
-                        child: Image.asset(
-                          R.appImages.tickIcon,
-                          color: Colors.white,
-                        ),
-                      ),
-                      vSpacePx(10),
-                      Text(
-                        'you_all_set'.L(),
-                        style: R.appTextStyle.poppins(
-                          color: R.appColors.darkBlack,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      vSpacePx(10),
-                      Text(
-                        'pick_habits_to_get_started'.L(),
-                        style: R.appTextStyle.poppins(
-                          color: R.appColors.dimGray,
-                          fontSize: 12,
-                        ),
-                      ),
-                      vSpacePx(20),
-                      Row(
-                        children: [
-                          Image.asset(
-                            R.appImages.quickStartTemplates,
-                            color: R.appColors.orange,
-                            width: 10.px,
-                          ),
-                          hSpacePx(10),
-                          Expanded(
-                            child: Text(
-                              'quick_start_templates'.L(),
-                              style: R.appTextStyle.poppins(
-                                color: R.appColors.darkBlack,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          hSpacePx(10),
-                          GestureDetector(
-                              onTap: () {
-                                // Your code
-                              },
-                              child: Text('view_all'.L(), style: R.appTextStyle.poppins(
-                                color: R.appColors.azureBlue,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                              ),)
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
               ),
+            ],
+            if(widget.isPremium == false) ... [
+              Expanded(child: PremiumSuccessContent()),
+            ]
+          ],
+        ),
       ),
     );
   }
@@ -1001,7 +934,9 @@ class _HomeViewState extends State<HomeView> {
                 vSpacePx(20),
                 AppButton(
                   onTap: () {
-                    // Get.offAllNamed();
+                    _hasShownWelcomePremium = false;
+                    context.read<BaseVm>().changeIndex(0);
+                    Get.offAllNamed(BaseView.route);
                   },
                   text: 'let_go'.L(),
                   textStyle: R.appTextStyle.poppins(

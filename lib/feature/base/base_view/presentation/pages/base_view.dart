@@ -7,6 +7,7 @@ import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dar
 import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
+import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/profile_view.dart';
 import 'package:habit_tracker/feature/base/rhythm/presentation/pages/rhythm_view.dart';
 import 'package:provider/provider.dart';
@@ -48,9 +49,13 @@ class _BaseViewState extends State<BaseView> {
           body: IndexedStack(
             index: vm.currentIndex,
             children: [
-              HomeView(
-                isPremium: isPremium,
-              ),
+             if(isPremium == true) ... [
+               HomeView(
+                 isPremium: isPremium,
+               ),
+             ] else ... [
+               PremiumSuccessView(),
+             ],
               HabitsView(),
               Center(child: Text("Upload")),
               RhythmView(),

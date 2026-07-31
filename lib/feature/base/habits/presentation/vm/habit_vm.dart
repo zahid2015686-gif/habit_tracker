@@ -4,6 +4,7 @@ import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_activity_model.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_calendar_model.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_model.dart';
+import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 
 
 class HabitVm extends ChangeNotifier {
@@ -140,7 +141,7 @@ class HabitVm extends ChangeNotifier {
 
     HabitModel(
       image: R.appImages.morningMeditation,
-      imageColor: const Color(0xFFEAE9FF),
+      imageColor: R.appColors.indigo,
       title: "Morning Meditation",
       subTitle: "Start the day with 10 minutes of mindfulness",
       tagline: "Mindfulness",
@@ -203,7 +204,7 @@ class HabitVm extends ChangeNotifier {
 
     HabitModel(
       image: R.appImages.readPages,
-      imageColor: const Color(0xFFFFF3E6),
+      imageColor: R.appColors.orange,
       title: "Read 20 Pages",
       subTitle: "Improve your reading habit",
       tagline: "Reading",
@@ -225,7 +226,7 @@ class HabitVm extends ChangeNotifier {
 
     HabitModel(
       image: R.appImages.drinkWater,
-      imageColor: const Color(0xFFE9FBF0),
+      imageColor: R.appColors.textLightGreen,
       title: "Drink 8 Glasses Water",
       subTitle: "Stay hydrated every day",
       tagline: "Health",
@@ -264,7 +265,7 @@ class HabitVm extends ChangeNotifier {
 
     HabitModel(
       image: R.appImages.eveningJournal,
-      imageColor: const Color(0xFFF2E9FF),
+      imageColor: R.appColors.violet,
       title: "Evening Journal",
       subTitle: "Reflect on your day",
       tagline: "Journaling",
@@ -309,7 +310,7 @@ class HabitVm extends ChangeNotifier {
 
     HabitModel(
       image: R.appImages.workout,
-      imageColor: const Color(0xFFFFEEEE),
+      imageColor: R.appColors.errorRed,
       title: "30-Minute Workout",
       subTitle: "Build strength and endurance",
       tagline: "Fitness",
@@ -353,7 +354,52 @@ class HabitVm extends ChangeNotifier {
     ),
   ];
 
+  final List<HabitTemplateModel> templates = [
+    HabitTemplateModel(
+      image: R.appImages.eveningJournal,
+      imageColor: R.appColors.violet,
+      title: "Morning Gratitude",
+      duration: "Daily · 5m",
+    ),
+
+    HabitTemplateModel(
+      image: R.appImages.morningMeditation,
+      imageColor: R.appColors.violet,
+      title: "5-Minute Meditation",
+      duration: "Daily · 5m",
+    ),
+
+    HabitTemplateModel(
+      image: R.appImages.drinkWater,
+      imageColor: R.appColors.violet,
+      title: "Drink 8 Glasses Water",
+      duration: "Daily · 10m",
+    ),
+
+    HabitTemplateModel(
+      image: R.appImages.readPages,
+      imageColor: R.appColors.violet,
+      title: "Read 20 Pages",
+      duration: "Daily · 20m",
+    ),
+
+    HabitTemplateModel(
+      image: R.appImages.eveningJournal,
+      imageColor: R.appColors.violet,
+      title: "Evening Journal",
+      duration: "Daily · 10m",
+    ),
+
+    HabitTemplateModel(
+      image: R.appImages.workout,
+      imageColor: R.appColors.violet,
+      title: "30-Minute Workout",
+      duration: "Mon · Tue · Wed",
+    ),
+  ];
+
   List<HabitModel> get habits => _habits;
+  List<HabitTemplateModel> get templatesHabits => templates;
 
   /// Completed Habits
   int get completedHabits => _habits.where((e) => e.isDone).length;
