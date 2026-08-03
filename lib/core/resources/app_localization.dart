@@ -52,7 +52,7 @@ class AppLocalization {
     "quick_start_templates":"Quick-Start Templates",
     "habits":"Habits",
     "light":"Light",
-    "discover_habits":"Discover Habits",
+    "discover_habits":"Discover",
     "discover_habits_subtitle":"Browse curated habits across\nwellness, fitness, mindset & more",
     "search_habits":"Search habits...",
     "all":"All",
@@ -69,6 +69,7 @@ class AppLocalization {
     "suggested_for_you":"Suggested for You",
     "curated_picks":"Curated picks",
     "add":"Add",
+    "beginner":"beginner",
   };
 
   static Map<String, String> get codesES => {};

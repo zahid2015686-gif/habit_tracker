@@ -12,6 +12,7 @@ import 'package:sizer/sizer.dart';
 
 class HabitDiscoverView extends StatefulWidget {
   static const String route = '/habit_discover_view';
+
   const HabitDiscoverView({super.key});
 
   @override
@@ -20,6 +21,7 @@ class HabitDiscoverView extends StatefulWidget {
 
 class _HabitDiscoverViewState extends State<HabitDiscoverView> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -38,119 +40,101 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: R.appColors.screenBackground2,
-      appBar: AppBar(
-        backgroundColor: R.appColors.white,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 18.px,
-            color: R.appColors.darkBlack,
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: R.appColors.screenBackground2,
+        appBar: AppBar(
+          backgroundColor: R.appColors.white,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: SafeArea(
+            child: _customAppBar(),
           ),
         ),
-        titleSpacing: 0,
-        title: Text(
-          'discover_habits'.L(),
-          style: R.appTextStyle.poppins(
-            fontSize: 18,
-            color: R.appColors.darkBlack,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Consumer<HabitVm>(
-          builder: (context, vm, _) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 16.px),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.px),
-                    child: _searchBar(vm),
-                  ),
-                  vSpacePx(14),
-                  _categoryChips(vm),
-                  vSpacePx(20),
-                  if (vm.selectedDiscoverCategory == HabitDiscoverCategory.all) ...[
-                    if (vm.popularHabits.isNotEmpty) ...[
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.px),
-                        child: _sectionHeader(
-                          title: 'popular'.L(),
-                          badge: 'most_added'.L(),
+        body: SafeArea(
+          child: Consumer<HabitVm>(
+            builder: (context, vm, _) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: 16.px),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.px),
+                      child: _searchBar(vm),
+                    ),
+                    vSpacePx(14),
+                    _categoryChips(vm),
+                    vSpacePx(20),
+                    if (vm.selectedDiscoverCategory ==
+                        HabitDiscoverCategory.all) ...[
+                      if (vm.popularHabits.isNotEmpty) ...[
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.px),
+                          child: _sectionHeader(
+                            title: 'popular'.L(),
+                            badge: 'most_added'.L(),
+                          ),
                         ),
-                      ),
-                      vSpacePx(12),
-                      _horizontalHabitList(vm.popularHabits),
-                      vSpacePx(20),
-                    ],
-                    if (vm.suggestedHabits.isNotEmpty) ...[
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.px),
-                        child: _sectionHeader(
-                          title: 'suggested_for_you'.L(),
-                          badge: 'curated_picks'.L(),
+                        vSpacePx(12),
+                        _horizontalHabitList(vm.popularHabits),
+                        vSpacePx(20),
+                      ],
+                      if (vm.suggestedHabits.isNotEmpty) ...[
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.px),
+                          child: _sectionHeader(
+                            title: 'suggested_for_you'.L(),
+                            badge: 'curated_picks'.L(),
+                          ),
                         ),
-                      ),
-                      vSpacePx(12),
-                      _horizontalHabitList(vm.suggestedHabits),
-                      vSpacePx(20),
+                        vSpacePx(12),
+                        _horizontalHabitList(vm.suggestedHabits),
+                        vSpacePx(20),
+                      ],
                     ],
+                    ..._categorySections(vm),
                   ],
-                  ..._categorySections(vm),
-                ],
-              ),
-            );
-          },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
   Widget _searchBar(HabitVm vm) {
-    return TextField(
+    return TextFormField(
       controller: _searchController,
+      focusNode: _searchFocusNode,
+      textInputAction: TextInputAction.done,
+      keyboardType: TextInputType.text,
       onChanged: vm.updateDiscoverSearch,
       style: R.appTextStyle.poppins(
-        fontSize: 13,
-        color: R.appColors.darkSlate,
+        color: R.appColors.darkBlack,
+        fontWeight: FontWeight.w500,
       ),
-      decoration: InputDecoration(
+      decoration: R.appDecorations.textField(
         hintText: 'search_habits'.L(),
         hintStyle: R.appTextStyle.poppins(
-          fontSize: 13,
           color: R.appColors.slateGray,
+          fontWeight: FontWeight.w500,
         ),
-        filled: true,
-        fillColor: R.appColors.white,
-        prefixIcon: Icon(
-          Icons.search_rounded,
-          color: R.appColors.slateGray,
-          size: 22.px,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 16.px,
-          vertical: 14.px,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.px),
-          borderSide: BorderSide(color: R.appColors.border3.withValues(alpha: 0.50)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.px),
-          borderSide: BorderSide(color: R.appColors.seaGreen),
-        ),
+        enabledBorderColor: R.appColors.cardBackground,
+        errorBorderColor: R.appColors.errorRed,
+        focusedBorderColor: R.appColors.seaGreen,
+        focusedErrorBorderColor: R.appColors.errorRed,
       ),
     );
   }
@@ -169,32 +153,32 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
           return GestureDetector(
             onTap: () => vm.selectDiscoverCategory(category),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 14.px, vertical: 8.px),
+              padding: EdgeInsets.symmetric(horizontal: 16.px, vertical: 10.px),
               decoration: R.appDecorations.cardDecoration(
                 color: isSelected
                     ? R.appColors.seaGreen
-                    : R.appColors.cardBackground.withValues(alpha: 0.45),
+                    : R.appColors.border,
                 borderRadius: BorderRadius.circular(100.px),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  Image.asset(
+                    width: 11,
                     _categoryIcon(category),
-                    size: 16.px,
                     color: isSelected
                         ? R.appColors.white
-                        : R.appColors.textLightBlack,
+                        : R.appColors.slate,
                   ),
                   hSpacePx(6),
                   Text(
                     _categoryLabel(category),
                     style: R.appTextStyle.poppins(
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: isSelected
                           ? R.appColors.white
-                          : R.appColors.darkSlate,
+                          : R.appColors.slate,
                     ),
                   ),
                 ],
@@ -221,9 +205,9 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
         ),
         if (badge != null)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 4.px),
+            padding: EdgeInsets.symmetric(horizontal: 8.px, vertical: 2.px),
             decoration: R.appDecorations.cardDecoration(
-              color: R.appColors.cardBackground.withValues(alpha: 0.55),
+              color: R.appColors.border,
               borderRadius: BorderRadius.circular(100.px),
             ),
             child: Text(
@@ -231,7 +215,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
               style: R.appTextStyle.poppins(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color: R.appColors.textLightBlack,
+                color: R.appColors.slateGray,
               ),
             ),
           ),
@@ -239,14 +223,14 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
     );
   }
 
-  Widget _horizontalHabitList(List<HabitTemplateModel> habits) {
+  Widget _horizontalHabitList(List<HabitTemplateModel> habits,) {
     return SizedBox(
-      height: 168.px,
+      height: 180.px,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 20.px),
         itemCount: habits.length,
-        separatorBuilder: (_, __) => hSpacePx(12),
+        separatorBuilder: (_, __) => hSpacePx(10),
         itemBuilder: (context, index) {
           return _horizontalHabitCard(habits[index]);
         },
@@ -255,50 +239,81 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
   }
 
   Widget _horizontalHabitCard(HabitTemplateModel habit) {
+    final accent = habit.isSuggested
+        ? R.appColors.goldenAmber
+        : R.appColors.sageGreen;
+
     return Container(
-      width: 220.px,
-      padding: EdgeInsets.all(14.px),
+      width: 240.px,
+      padding: EdgeInsets.all(17.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(16.px),
+        border: Border.all(color: R.appColors.cardBackground),
         boxShadow: [
           BoxShadow(
-            color: R.appColors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 8),
-            blurRadius: 16,
-            spreadRadius: -2,
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0,
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 36.px,
-            height: 36.px,
-            padding: EdgeInsets.all(8.px),
-            decoration: R.appDecorations.cardDecoration(
-              color: habit.imageColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12.px),
-            ),
-            child: _habitIcon(habit, size: 18),
+          Row(
+            children: [
+              Container(
+                width: 40.px,
+                height: 40.px,
+                padding: EdgeInsets.all(12.px),
+                decoration: R.appDecorations.cardDecoration(
+                  color: accent.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(16.px),
+                ),
+                child: Image.asset(
+                  habit.image,
+                  color: accent,
+                ),
+              ),
+              const Spacer(),
+              if (habit.isBeginner)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8.px,
+                    vertical: 2.px,
+                  ),
+                  decoration: R.appDecorations.cardDecoration(
+                    color: R.appColors.secondary.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(100.px),
+                  ),
+                  child: Text(
+                    'beginner'.L(),
+                    style: R.appTextStyle.poppins(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: R.appColors.darkOlive,
+                    ),
+                  ),
+                ),
+            ],
           ),
-          vSpacePx(10),
+          vSpacePx(12),
           Text(
             habit.title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: R.appTextStyle.poppins(
-              fontSize: 14,
               fontWeight: FontWeight.w700,
               color: R.appColors.darkBlack,
             ),
           ),
-          vSpacePx(4),
+          vSpacePx(6),
           Expanded(
             child: Text(
               habit.description,
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: R.appTextStyle.poppins(
                 fontSize: 11,
@@ -306,12 +321,12 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
               ),
             ),
           ),
-          vSpacePx(8),
+          vSpacePx(10),
           Row(
             children: [
-              Icon(
-                Icons.access_time_rounded,
-                size: 14.px,
+              Image.asset(
+                R.appImages.timer,
+                width: 9.px,
                 color: R.appColors.slateGray,
               ),
               hSpacePx(4),
@@ -319,8 +334,8 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                 child: Text(
                   habit.duration,
                   style: R.appTextStyle.poppins(
-                    fontSize: 11,
-                    color: R.appColors.textLightBlack,
+                    fontSize: 10,
+                    color: R.appColors.slateGray,
                   ),
                 ),
               ),
@@ -332,8 +347,16 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                     vertical: 6.px,
                   ),
                   decoration: R.appDecorations.cardDecoration(
-                    color: R.appColors.warmGold,
+                    color: accent,
                     borderRadius: BorderRadius.circular(100.px),
+                    boxShadow: [
+                      BoxShadow(
+                        color: R.appColors.black.withValues(alpha: 0.05),
+                        offset: const Offset(0, 1),
+                        blurRadius: 2,
+                        spreadRadius: 0,
+                      ),
+                    ],
                   ),
                   child: Text(
                     'add'.L(),
@@ -390,6 +413,47 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
     return widgets;
   }
 
+  Widget _customAppBar(){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.px),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Get.back(),
+            child: Container(
+              width: 36.px,
+              height: 36.px,
+              decoration: R.appDecorations.cardDecoration(
+                color: R.appColors.border,
+                borderRadius: BorderRadius.circular(12.px),
+
+              ),
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.arrow_back_rounded,
+                size: 18,
+                color: R.appColors.darkBlack,
+              ),
+            ),
+          ),
+
+          Expanded(
+            child: Center(
+              child: Text(
+                'discover_habits'.L(),
+                style: R.appTextStyle.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: R.appColors.darkBlack,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _verticalHabitTile(HabitTemplateModel habit) {
     return Container(
       width: double.infinity,
@@ -397,26 +461,22 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(16.px),
-        boxShadow: [
-          BoxShadow(
-            color: R.appColors.black.withValues(alpha: 0.03),
-            offset: const Offset(0, 4),
-            blurRadius: 12,
-            spreadRadius: -2,
-          ),
-        ],
+        border: Border.all(color: R.appColors.cardBackground),
       ),
       child: Row(
         children: [
           Container(
-            width: 44.px,
-            height: 44.px,
-            padding: EdgeInsets.all(11.px),
+            width: 40.px,
+            height: 40.px,
+            padding: EdgeInsets.all(12.px),
             decoration: R.appDecorations.cardDecoration(
-              color: habit.imageColor.withValues(alpha: 0.12),
+              color: habit.imageColor.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(14.px),
             ),
-            child: _habitIcon(habit, size: 20),
+            child: Image.asset(
+              habit.image,
+              color: habit.imageColor,
+            ),
           ),
           hSpacePx(12),
           Expanded(
@@ -454,31 +514,12 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
               height: 32.px,
               decoration: R.appDecorations.cardDecoration(
                 color: habit.imageColor,
-                shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.add,
-                color: R.appColors.white,
-                size: 18.px,
-              ),
+              child: Icon(Icons.add, color: R.appColors.white, size: 18.px),
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _habitIcon(HabitTemplateModel habit, {required double size}) {
-    if (habit.image != null) {
-      return Image.asset(
-        habit.image!,
-        color: habit.imageColor,
-      );
-    }
-    return Icon(
-      habit.icon ?? Icons.circle,
-      color: habit.imageColor,
-      size: size.px,
     );
   }
 
@@ -505,26 +546,26 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
     }
   }
 
-  IconData _categoryIcon(HabitDiscoverCategory category) {
+  String _categoryIcon(HabitDiscoverCategory category) {
     switch (category) {
       case HabitDiscoverCategory.all:
-        return Icons.apps_rounded;
+        return R.appImages.all;
       case HabitDiscoverCategory.mindset:
-        return Icons.psychology_outlined;
+        return R.appImages.mindset;
       case HabitDiscoverCategory.wellness:
-        return Icons.favorite_border;
+        return R.appImages.wellness;
       case HabitDiscoverCategory.fitness:
-        return Icons.directions_run_rounded;
+        return R.appImages.fitness;
       case HabitDiscoverCategory.health:
-        return Icons.health_and_safety_outlined;
+        return R.appImages.health;
       case HabitDiscoverCategory.productivity:
-        return Icons.work_outline_rounded;
+        return R.appImages.productivity;
       case HabitDiscoverCategory.sleep:
-        return Icons.nightlight_round;
+        return R.appImages.sleep;
       case HabitDiscoverCategory.learning:
-        return Icons.menu_book_outlined;
+        return R.appImages.learning;
       case HabitDiscoverCategory.beauty:
-        return Icons.spa_outlined;
+        return R.appImages.beauty;
     }
   }
 }

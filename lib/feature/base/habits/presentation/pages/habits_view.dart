@@ -152,7 +152,7 @@ class _HabitsViewState extends State<HabitsView> {
                       color: Colors.white.withValues(alpha: 0.20),
                     ),
                     child: Image.asset(
-                      R.appImages.discover_habits,
+                      R.appImages.discoverHabits,
                       color: R.appColors.white,
                     ),
                   ),

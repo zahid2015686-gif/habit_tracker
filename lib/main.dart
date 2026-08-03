@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habit_tracker/core/routes/app_routes.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
 import 'package:habit_tracker/feature/landing/presentation/pages/splash_view.dart';
@@ -46,8 +47,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      //initialRoute: SplashView.route,
-      initialRoute: PremiumView.route,
+      initialRoute: SplashView.route,
+      //initialRoute: HabitDiscoverView.route,
       getPages: AppRoutes.pages,
 
     );

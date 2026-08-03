@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
 
-// Sirf CONTENT — Scaffold nahi, kahin bhi embed ho sakta hai
+
 class PremiumSuccessContent extends StatelessWidget {
   const PremiumSuccessContent({super.key});
 
@@ -73,7 +74,9 @@ class PremiumSuccessContent extends StatelessWidget {
                   ),
                   hSpacePx(10),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      context.read<BaseVm>().changeIndex(1);
+                    },
                     child: Text(
                       'view_all'.L(),
                       style: R.appTextStyle.poppins(
@@ -127,9 +130,7 @@ class PremiumSuccessContent extends StatelessWidget {
               color: habit.imageColor.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(12.px),
             ),
-            child: habit.image != null
-                ? Image.asset(habit.image!, color: habit.imageColor)
-                : Icon(habit.icon, color: habit.imageColor, size: 18),
+            child: Image.asset(habit.image, color: habit.imageColor),
           ),
           hSpacePx(10),
           Expanded(

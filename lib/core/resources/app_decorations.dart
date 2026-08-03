@@ -9,6 +9,11 @@ class AppDecorations {
     TextStyle? hintStyle,
     Widget? prefixIcon,
     Widget? suffixIcon,
+    Color? enabledBorderColor,
+    Color? focusedBorderColor,
+    Color? errorBorderColor,
+    Color? focusedErrorBorderColor,
+    Color? errorColor,
   }) {
     return InputDecoration(
       hintText: hintText,
@@ -23,26 +28,26 @@ class AppDecorations {
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius ?? 16.px),
         borderSide: BorderSide(
-          color: R.appColors.black,
+          color: enabledBorderColor ?? R.appColors.black,
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius ?? 16.px),
         borderSide: BorderSide(
-          color: R.appColors.black,
+          color: focusedBorderColor ?? R.appColors.black,
           width: 1.5,
         ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius ?? 16.px),
         borderSide: BorderSide(
-          color: R.appColors.black,
+          color: errorBorderColor ?? R.appColors.black,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius ?? 16.px),
         borderSide: BorderSide(
-          color: R.appColors.black,
+          color: focusedErrorBorderColor ?? R.appColors.black,
           width: 1.5,
         ),
       ),
@@ -52,7 +57,7 @@ class AppDecorations {
       ),
       errorStyle: R.appTextStyle.poppins(
         fontSize: 11,
-        color: R.appColors.black,
+        color: errorColor ?? R.appColors.errorRed,
       ),
     );
   }

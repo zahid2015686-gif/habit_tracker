@@ -40,5 +40,20 @@ class AppImages {
   final String quickStartTemplates = 'assets/images/quick_start_templates.png';
   final String discoverHabitsBackground = 'assets/images/discover_habits_background.png';
   final String discoverHabits = 'assets/images/discover_habits.png';
-  final String discover_habits = 'assets/images/discover_habits.png';
+  final String wellness = 'assets/images/wellness.png';
+  final String sleep = 'assets/images/sleep.png';
+  final String productivity = 'assets/images/productivity.png';
+  final String mindset = 'assets/images/mindset.png';
+  final String learning = 'assets/images/learning.png';
+  final String health = 'assets/images/health.png';
+  final String fitness = 'assets/images/fitness.png';
+  final String beauty = 'assets/images/beauty.png';
+  final String all = 'assets/images/all.png';
+  final String stretchRoutine = 'assets/images/stretch_routine.png';
+  final String planTomorrowToNight = 'assets/images/plan_tomorrow_tonight.png';
+  final String timer = 'assets/images/timer.png';
+  final String digitalDetoxHour = 'assets/images/digital_detox_hour.png';
+  final String natureWalk = 'assets/images/nature_walk.png';
+  final String listenToAPodcast = 'assets/images/listen_to_a_podcast.png';
+  final String inboxZero = 'assets/images/iInbox_zero.png';
 }
