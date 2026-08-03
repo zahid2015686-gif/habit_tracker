@@ -6,6 +6,7 @@ import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/add_habit_template_sheet_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -340,7 +341,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () => showAddHabitTemplateSheet(context, habit: habit),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 14.px,
@@ -508,12 +509,13 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
           ),
           hSpacePx(10),
           GestureDetector(
-            onTap: () {},
+            onTap: () => showAddHabitTemplateSheet(context, habit: habit),
             child: Container(
               width: 32.px,
               height: 32.px,
               decoration: R.appDecorations.cardDecoration(
                 color: habit.imageColor,
+                shape: BoxShape.circle,
               ),
               child: Icon(Icons.add, color: R.appColors.white, size: 18.px),
             ),

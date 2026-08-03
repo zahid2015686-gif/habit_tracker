@@ -70,6 +70,18 @@ class AppLocalization {
     "curated_picks":"Curated picks",
     "add":"Add",
     "beginner":"beginner",
+    "customize_before_adding":"Customize before adding",
+    "target_count":"Target Count",
+    "schedule":"Schedule",
+    "duration_minutes":"Duration (minutes)",
+    "reminder_time":"Reminder Time",
+    "add_habit":"Add Habit",
+    "daily":"Daily",
+    "weekly":"Weekly",
+    "custom":"Custom",
+    "active_days":"Active Days",
+    "repeat_every":"Repeat Every",
+    "build_your_own_habit":"Build Your Own Habit",
   };
 
   static Map<String, String> get codesES => {};

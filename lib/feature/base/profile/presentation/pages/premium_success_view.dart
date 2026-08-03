@@ -4,11 +4,12 @@ import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/add_habit_template_sheet_view.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:math' as math;
-
 
 class PremiumSuccessContent extends StatelessWidget {
   const PremiumSuccessContent({super.key});
@@ -97,11 +98,16 @@ class PremiumSuccessContent extends StatelessWidget {
                     itemCount: math.min(vm.templatesHabits.length, 2),
                     separatorBuilder: (_, __) => vSpacePx(8),
                     itemBuilder: (context, index) {
-                      return _templateHabitCard(vm.templatesHabits[index]);
+                      return _templateHabitCard(
+                        context,
+                        vm.templatesHabits[index],
+                      );
                     },
                   );
                 },
               ),
+              vSpacePx(12),
+              _buildYourOwnHabitCard(context),
               vSpacePx(16),
             ],
           ),
@@ -110,7 +116,7 @@ class PremiumSuccessContent extends StatelessWidget {
     );
   }
 
-  Widget _templateHabitCard(HabitTemplateModel habit) {
+  Widget _templateHabitCard(BuildContext context, HabitTemplateModel habit) {
     return Container(
       padding: EdgeInsets.all(13.px),
       decoration: R.appDecorations.cardDecoration(
@@ -159,7 +165,7 @@ class PremiumSuccessContent extends StatelessWidget {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {},
+              onTap: () => showAddHabitTemplateSheet(context, habit: habit),
               borderRadius: BorderRadius.circular(12.px),
               child: Container(
                 width: 32.px,
@@ -167,7 +173,10 @@ class PremiumSuccessContent extends StatelessWidget {
                 decoration: R.appDecorations.cardDecoration(
                   color: R.appColors.white,
                   borderRadius: BorderRadius.circular(12.px),
-                  border: Border.all(color: R.appColors.cardBackground, width: 2),
+                  border: Border.all(
+                    color: R.appColors.cardBackground,
+                    width: 2,
+                  ),
                 ),
                 child: Icon(Icons.add, color: R.appColors.seaGreen, size: 12),
               ),
@@ -177,9 +186,87 @@ class PremiumSuccessContent extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildYourOwnHabitCard(BuildContext context) {
+    return GestureDetector(
+      onTap: () => showCreateHabitSheetView(context),
+      child: CustomPaint(
+        painter: _DashedBorderPainter(
+          color: R.appColors.cardBackground,
+          radius: 16.px,
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 14.px),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.edit_outlined,
+                size: 16.px,
+                color: R.appColors.darkBlack,
+              ),
+              hSpacePx(8),
+              Text(
+                'build_your_own_habit'.L(),
+                style: R.appTextStyle.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: R.appColors.darkBlack,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-// ROUTE ke liye — apna Scaffold rakhta hai
+class _DashedBorderPainter extends CustomPainter {
+  final Color color;
+  final double radius;
+
+  _DashedBorderPainter({required this.color, required this.radius});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    final path = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          Radius.circular(radius),
+        ),
+      );
+
+    const dashWidth = 5.0;
+    const dashSpace = 4.0;
+
+    for (final metric in path.computeMetrics()) {
+      double distance = 0;
+      while (distance < metric.length) {
+        final next = distance + dashWidth;
+        canvas.drawPath(
+          metric.extractPath(distance, next.clamp(0, metric.length)),
+          paint,
+        );
+        distance = next + dashSpace;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DashedBorderPainter oldDelegate) {
+    return oldDelegate.color != color || oldDelegate.radius != radius;
+  }
+}
+
 class PremiumSuccessView extends StatelessWidget {
   static const String route = '/premium_success_view';
   const PremiumSuccessView({super.key});

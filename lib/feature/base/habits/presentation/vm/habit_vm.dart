@@ -108,6 +108,32 @@ class HabitVm extends ChangeNotifier {
     }
   }
 
+  void loadFromTemplate(HabitTemplateModel template) {
+    scheduleType = HabitScheduleType.daily;
+    selectedDays = {};
+    customRepeatDays = 2;
+    reminderTime = const TimeOfDay(hour: 8, minute: 0);
+    target = 3;
+    durationMinutes = _parseDurationMinutes(template.duration);
+    notifyListeners();
+  }
+
+  int _parseDurationMinutes(String duration) {
+    final match = RegExp(r'(\d+)\s*m').firstMatch(duration.toLowerCase());
+    if (match != null) {
+      return int.tryParse(match.group(1)!) ?? 5;
+    }
+    final digits = RegExp(r'(\d+)').firstMatch(duration);
+    if (digits != null) {
+      final value = int.tryParse(digits.group(1)!) ?? 5;
+      if (duration.toLowerCase().contains('x') || value > 120) {
+        return 5;
+      }
+      return value;
+    }
+    return 5;
+  }
+
   // ---------------- Validation ----------------
   bool get canSave {
     if (scheduleType == HabitScheduleType.weekly && selectedDays.isEmpty) {
