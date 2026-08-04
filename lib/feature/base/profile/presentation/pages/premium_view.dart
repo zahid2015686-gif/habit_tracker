@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
@@ -20,22 +19,6 @@ class PremiumView extends StatefulWidget {
 }
 
 class _PremiumViewState extends State<PremiumView> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: R.appColors.screenBackground2,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-
-        systemNavigationBarColor: R.appColors.screenBackground2,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

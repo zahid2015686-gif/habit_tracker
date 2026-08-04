@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
@@ -28,20 +27,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool _isWeekSelected = true;
   final int _missedDayIndex = 1; // Tuesday
+  DateTime _rhythmMonth = DateTime(2026, 7);
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: R.appColors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-
-        systemNavigationBarColor: R.appColors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
 
     if (widget.isPremium == true) {
       _maybeShowWelcomePremium();
@@ -212,7 +202,7 @@ class _HomeViewState extends State<HomeView> {
   Widget _coachCard() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(14.px),
+      clipBehavior: Clip.hardEdge,
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(20.px),
@@ -222,120 +212,133 @@ class _HomeViewState extends State<HomeView> {
         ),
         boxShadow: [
           BoxShadow(
-            color: R.appColors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 8),
-            blurRadius: 16,
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, 1),
+            blurRadius: 2,
             spreadRadius: -2,
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Row(
-            children: [
-              Text(
-                'your_coach'.L(),
-                style: R.appTextStyle.poppins(
-                  fontSize: 12,
-                  color: R.appColors.textLightBlack,
-                  fontWeight: FontWeight.w500,
-                ),
+          Positioned(
+            right: -8.px,
+            bottom: -10.px,
+            child: Opacity(
+              opacity: 0.12,
+              child: Image.asset(
+                R.appImages.coachCardBackgroundIcon,
+                width: 72.px,
+                height: 72.px,
+                color: R.appColors.slateGray,
               ),
-              hSpacePx(8),
-              Container(
-                width: 7.px,
-                height: 7.px,
-                decoration: R.appDecorations.cardDecoration(
-                  shape: BoxShape.circle,
-                  color: R.appColors.successGreen,
-                ),
-              ),
-              hSpacePx(4),
-              Text(
-                'online'.L(),
-                style: R.appTextStyle.poppins(
-                  fontSize: 11,
-                  color: R.appColors.successGreen,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+            ),
           ),
-          vSpacePx(12),
-          Row(
-            children: [
-              Container(
-                width: 44.px,
-                height: 44.px,
-                decoration: R.appDecorations.cardDecoration(
-                  shape: BoxShape.circle,
-                  color: R.appColors.screenBackground2,
-                ),
-                child: Icon(
-                  Icons.person,
-                  color: R.appColors.slateGray,
-                  size: 24.px,
-                ),
-              ),
-              hSpacePx(12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'coach_sarah'.L(),
-                      style: R.appTextStyle.poppins(
-                        fontSize: 15,
-                        color: R.appColors.darkBlack,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      'new_insights_waiting'.L(),
-                      style: R.appTextStyle.poppins(
-                        fontSize: 11,
-                        color: R.appColors.textLightBlack,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              hSpacePx(8),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.px,
-                    vertical: 8.px,
-                  ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14.px, vertical: 12.px),
+            child: Row(
+              children: [
+                Container(
+                  width: 48.px,
+                  height: 48.px,
+                  padding: EdgeInsets.all(12.px),
                   decoration: R.appDecorations.cardDecoration(
-                    color: R.appColors.seaGreen,
-                    borderRadius: BorderRadius.circular(12.px),
+                    shape: BoxShape.circle,
+                    color: R.appColors.screenBackground4,
                   ),
-                  child: Text(
-                    'view'.L(),
-                    style: R.appTextStyle.poppins(
-                      fontSize: 13,
-                      color: R.appColors.white,
-                      fontWeight: FontWeight.w600,
+                  child: Image.asset(R.appImages.coachIcon),
+                ),
+                hSpacePx(12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'your_coach'.L(),
+                            style: R.appTextStyle.poppins(
+                              fontSize: 11,
+                              color: R.appColors.textLightBlack,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          hSpacePx(6),
+                          Container(
+                            width: 6.px,
+                            height: 6.px,
+                            decoration: R.appDecorations.cardDecoration(
+                              shape: BoxShape.circle,
+                              color: R.appColors.successGreen,
+                            ),
+                          ),
+                          hSpacePx(4),
+                          Text(
+                            'online'.L(),
+                            style: R.appTextStyle.poppins(
+                              fontSize: 11,
+                              color: R.appColors.successGreen,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                      vSpacePx(2),
+                      Text(
+                        'coach_sarah'.L(),
+                        style: R.appTextStyle.poppins(
+                          fontSize: 15,
+                          color: R.appColors.darkBlack,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'new_insights_waiting'.L(),
+                        style: R.appTextStyle.poppins(
+                          fontSize: 11,
+                          color: R.appColors.textLightBlack,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                hSpacePx(8),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.px,
+                      vertical: 9.px,
+                    ),
+                    decoration: R.appDecorations.cardDecoration(
+                      color: R.appColors.seaGreen,
+                      borderRadius: BorderRadius.circular(12.px),
+                    ),
+                    child: Text(
+                      'view'.L(),
+                      style: R.appTextStyle.poppins(
+                        fontSize: 13,
+                        color: R.appColors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _rhythmCard() {
-    final List<double> values = [0.75, 0.25, 0.85, 0.55, 0.9, 0.45, 0.7];
-    final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  Color _softIconBg(Color color) {
+    return Color.lerp(R.appColors.white, color, 0.10)!;
+  }
 
+  Widget _rhythmCard() {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(17.px),
@@ -382,104 +385,240 @@ class _HomeViewState extends State<HomeView> {
               fontWeight: FontWeight.w400,
             ),
           ),
-          vSpacePx(16),
-          SizedBox(
-            height: 120.px,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final tipLeft = (constraints.maxWidth *
-                        (_missedDayIndex / (values.length - 1))) -
-                    50.px;
-
-                return Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 36.px),
-                      child: LineChart(
-                        LineChartData(
-                          minY: 0,
-                          maxY: 1,
-                          gridData: const FlGridData(show: false),
-                          titlesData: const FlTitlesData(show: false),
-                          borderData: FlBorderData(show: false),
-                          lineTouchData: const LineTouchData(enabled: false),
-                          lineBarsData: [
-                            LineChartBarData(
-                              isCurved: true,
-                              curveSmoothness: 0.35,
-                              barWidth: 2.5,
-                              gradient: LinearGradient(
-                                colors: [
-                                  R.appColors.oliveGreen,
-                                  R.appColors.softOrange,
-                                  R.appColors.oliveGreen,
-                                ],
-                              ),
-                              dotData: FlDotData(
-                                show: true,
-                                getDotPainter: (spot, percent, bar, index) {
-                                  final isMissed = index == _missedDayIndex;
-                                  return FlDotCirclePainter(
-                                    radius: isMissed ? 5 : 4,
-                                    color: isMissed
-                                        ? R.appColors.softOrange
-                                        : R.appColors.oliveGreen,
-                                    strokeWidth: 2,
-                                    strokeColor: R.appColors.white,
-                                  );
-                                },
-                              ),
-                              belowBarData: BarAreaData(
-                                show: true,
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    R.appColors.textGreen.withValues(
-                                      alpha: 0.18,
-                                    ),
-                                    R.appColors.white.withValues(alpha: 0.0),
-                                  ],
-                                ),
-                              ),
-                              spots: List.generate(
-                                values.length,
-                                (i) => FlSpot(i.toDouble(), values[i]),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: tipLeft.clamp(0.0, constraints.maxWidth - 150.px),
-                      child: _missedDayTip(),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          vSpacePx(4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: days
-                .map(
-                  (d) => Text(
-                    d,
-                    style: R.appTextStyle.poppins(
-                      fontSize: 10,
-                      color: R.appColors.textLightBlack,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
+          if (!_isWeekSelected) ...[
+            vSpacePx(14),
+            _monthNavigator(),
+          ],
+          vSpacePx(14),
+          if (_isWeekSelected) _weekRhythmChart() else _monthRhythmChart(),
         ],
       ),
+    );
+  }
+
+  Widget _monthNavigator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _rhythmMonth = DateTime(_rhythmMonth.year, _rhythmMonth.month - 1);
+            });
+          },
+          child: Icon(
+            Icons.chevron_left,
+            size: 22.px,
+            color: R.appColors.slate,
+          ),
+        ),
+        hSpacePx(8),
+        Text(
+          DateFormat('MMMM yyyy').format(_rhythmMonth),
+          style: R.appTextStyle.poppins(
+            fontSize: 13,
+            color: R.appColors.darkSlate,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        hSpacePx(8),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _rhythmMonth = DateTime(_rhythmMonth.year, _rhythmMonth.month + 1);
+            });
+          },
+          child: Icon(
+            Icons.chevron_right,
+            size: 22.px,
+            color: R.appColors.slate,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _weekRhythmChart() {
+    final List<double> values = [0.75, 0.25, 0.85, 0.55, 0.9, 0.45, 0.7];
+    final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 120.px,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final tipLeft = (constraints.maxWidth *
+                      (_missedDayIndex / (values.length - 1))) -
+                  50.px;
+
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 36.px),
+                    child: LineChart(
+                      LineChartData(
+                        minY: 0,
+                        maxY: 1,
+                        gridData: const FlGridData(show: false),
+                        titlesData: const FlTitlesData(show: false),
+                        borderData: FlBorderData(show: false),
+                        lineTouchData: const LineTouchData(enabled: false),
+                        lineBarsData: [
+                          LineChartBarData(
+                            isCurved: true,
+                            curveSmoothness: 0.35,
+                            barWidth: 2.5,
+                            gradient: LinearGradient(
+                              colors: [
+                                R.appColors.oliveGreen,
+                                R.appColors.softOrange,
+                                R.appColors.oliveGreen,
+                              ],
+                            ),
+                            dotData: FlDotData(
+                              show: true,
+                              getDotPainter: (spot, percent, bar, index) {
+                                final isMissed = index == _missedDayIndex;
+                                return FlDotCirclePainter(
+                                  radius: isMissed ? 5 : 4,
+                                  color: isMissed
+                                      ? R.appColors.softOrange
+                                      : R.appColors.oliveGreen,
+                                  strokeWidth: 2,
+                                  strokeColor: R.appColors.white,
+                                );
+                              },
+                            ),
+                            belowBarData: BarAreaData(
+                              show: true,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  R.appColors.textGreen.withValues(alpha: 0.18),
+                                  R.appColors.white.withValues(alpha: 0.0),
+                                ],
+                              ),
+                            ),
+                            spots: List.generate(
+                              values.length,
+                              (i) => FlSpot(i.toDouble(), values[i]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: tipLeft.clamp(0.0, constraints.maxWidth - 150.px),
+                    child: _missedDayTip(),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+        vSpacePx(4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: days
+              .map(
+                (d) => Text(
+                  d,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 10,
+                    color: R.appColors.textLightBlack,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _monthRhythmChart() {
+    final List<double> values = [
+      0.55, 0.7, 0.45, 0.8, 0.6, 0.75, 0.5, 0.85, 0.65,
+    ];
+    final List<int> dayLabels = [1, 5, 9, 13, 17, 21, 25, 29, 31];
+    final lastIndex = values.length - 1;
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 100.px,
+          child: LineChart(
+            LineChartData(
+              minY: 0,
+              maxY: 1,
+              gridData: const FlGridData(show: false),
+              titlesData: const FlTitlesData(show: false),
+              borderData: FlBorderData(show: false),
+              lineTouchData: const LineTouchData(enabled: false),
+              lineBarsData: [
+                LineChartBarData(
+                  isCurved: true,
+                  curveSmoothness: 0.35,
+                  barWidth: 2.5,
+                  color: R.appColors.softOrange,
+                  dotData: FlDotData(
+                    show: true,
+                    getDotPainter: (spot, percent, bar, index) {
+                      final isLast = index == lastIndex;
+                      return FlDotCirclePainter(
+                        radius: isLast ? 5.5 : 3.5,
+                        color: isLast
+                            ? R.appColors.white
+                            : R.appColors.softOrange,
+                        strokeWidth: isLast ? 2 : 0,
+                        strokeColor: isLast
+                            ? R.appColors.softOrange
+                            : R.appColors.transparent,
+                      );
+                    },
+                  ),
+                  belowBarData: BarAreaData(show: false),
+                  spots: List.generate(
+                    values.length,
+                    (i) => FlSpot(i.toDouble(), values[i]),
+                  ),
+                ),
+              ],
+              extraLinesData: ExtraLinesData(
+                verticalLines: [
+                  VerticalLine(
+                    x: lastIndex.toDouble(),
+                    color: R.appColors.softOrange.withValues(alpha: 0.45),
+                    strokeWidth: 1.2,
+                    dashArray: [4, 4],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        vSpacePx(6),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: dayLabels
+              .map(
+                (d) => Text(
+                  '$d',
+                  style: R.appTextStyle.poppins(
+                    fontSize: 10,
+                    color: R.appColors.textLightBlack,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ],
     );
   }
 
@@ -518,25 +657,14 @@ class _HomeViewState extends State<HomeView> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.px, vertical: 5.px),
         decoration: R.appDecorations.cardDecoration(
-          color: selected ? R.appColors.white : R.appColors.transparent,
+          color: selected ? R.appColors.darkSlate : R.appColors.transparent,
           borderRadius: BorderRadius.circular(100.px),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: R.appColors.black.withValues(alpha: 0.06),
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ]
-              : null,
         ),
         child: Text(
           label,
           style: R.appTextStyle.poppins(
             fontSize: 11,
-            color: selected
-                ? R.appColors.darkBlack
-                : R.appColors.textLightBlack,
+            color: selected ? R.appColors.white : R.appColors.textLightBlack,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -546,7 +674,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _missedDayTip() {
     return Container(
-      constraints: BoxConstraints(maxWidth: 160.px),
+      constraints: BoxConstraints(maxWidth: 168.px),
       padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 8.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.warmCream,
@@ -719,9 +847,9 @@ class _HomeViewState extends State<HomeView> {
             width: 44.px,
             height: 44.px,
             alignment: Alignment.center,
-            padding: EdgeInsets.all(12.px),
+            padding: EdgeInsets.all(11.px),
             decoration: R.appDecorations.cardDecoration(
-              color: iconColor.withValues(alpha: 0.12),
+              color: _softIconBg(iconColor),
               borderRadius: BorderRadius.circular(14.px),
             ),
             child: Image.asset(icon, color: iconColor),
@@ -827,7 +955,7 @@ class _HomeViewState extends State<HomeView> {
             alignment: Alignment.center,
             padding: EdgeInsets.all(9.px),
             decoration: R.appDecorations.cardDecoration(
-              color: iconColor.withValues(alpha: 0.12),
+              color: _softIconBg(iconColor),
               borderRadius: BorderRadius.circular(12.px),
             ),
             child: Image.asset(icon, color: iconColor),
@@ -875,7 +1003,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _weeklyProgressCard() {
-    final List<int> percentages = [80, 60, 100, 40, 80, 60, 50];
+    final List<int> percentages = [80, 55, 100, 30, 80, 55, 72];
     final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
     final List<List<Color>> gradients = [
@@ -883,18 +1011,21 @@ class _HomeViewState extends State<HomeView> {
         R.appColors.textLightGreen,
         R.appColors.textLightGreen.withValues(alpha: 0.6),
       ],
-      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
+      [R.appColors.softOrange, R.appColors.softOrange.withValues(alpha: 0.6)],
       [
         R.appColors.textLightGreen,
         R.appColors.textLightGreen.withValues(alpha: 0.6),
       ],
-      [R.appColors.orange, R.appColors.orange.withValues(alpha: 0.6)],
+      [R.appColors.orange, R.appColors.orange.withValues(alpha: 0.7)],
       [
         R.appColors.textLightGreen,
         R.appColors.textLightGreen.withValues(alpha: 0.6),
       ],
-      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
-      [R.appColors.indigo, R.appColors.indigo.withValues(alpha: 0.6)],
+      [R.appColors.softOrange, R.appColors.softOrange.withValues(alpha: 0.6)],
+      [
+        R.appColors.textLightGreen,
+        R.appColors.textLightGreen.withValues(alpha: 0.65),
+      ],
     ];
 
     return Container(

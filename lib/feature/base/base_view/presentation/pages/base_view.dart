@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
@@ -21,22 +20,6 @@ class BaseView extends StatefulWidget {
 }
 
 class _BaseViewState extends State<BaseView> {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-
-        // Navigation bar
-        systemNavigationBarColor: R.appColors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments as Map?;

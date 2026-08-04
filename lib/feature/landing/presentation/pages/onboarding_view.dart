@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
@@ -25,22 +24,6 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   void _finishOnboarding(BuildContext context) {
     Get.offAllNamed(SigninView.route);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: R.appColors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-
-        systemNavigationBarColor: R.appColors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-    );
   }
 
   @override

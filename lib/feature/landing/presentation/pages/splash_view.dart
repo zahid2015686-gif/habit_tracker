@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
@@ -20,15 +19,6 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: R.appColors.screenBackground,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: R.appColors.screenBackground,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
 
     Future.delayed(const Duration(seconds: 3), () {
       Get.offNamed(OnboardingView.route);

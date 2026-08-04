@@ -59,4 +59,6 @@ class AppImages {
   final String inboxZero = 'assets/images/iInbox_zero.png';
   final String reminderTime = 'assets/images/reminder_time.png';
   final String buildYourOwnHabit = 'assets/images/build_your_own_habit.png';
+  final String coachCardBackgroundIcon = 'assets/images/coach_card_background_icon.png';
+  final String coachIcon = 'assets/images/coach_icon.png';
 }

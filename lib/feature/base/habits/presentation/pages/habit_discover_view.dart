@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
@@ -23,20 +22,6 @@ class HabitDiscoverView extends StatefulWidget {
 class _HabitDiscoverViewState extends State<HabitDiscoverView> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: R.appColors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: R.appColors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-  }
 
   @override
   void dispose() {
