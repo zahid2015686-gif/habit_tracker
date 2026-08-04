@@ -14,3 +14,5 @@ enum HabitDiscoverCategory {
   learning,
   beauty,
 }
+enum NotificationCategory { habitReminder, coachMessage, coachReminder }
+enum NotificationSection { today, yesterday }

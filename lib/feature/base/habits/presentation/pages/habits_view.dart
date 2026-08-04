@@ -9,6 +9,7 @@ import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_model.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
+import 'package:habit_tracker/feature/base/notification/presentation/pages/notification_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -88,15 +89,18 @@ class _HabitsViewState extends State<HabitsView> {
           child: Image.asset(R.appImages.message),
         ),
         hSpacePx(10),
-        Container(
-          width: 40.px,
-          height: 40.px,
-          padding: EdgeInsets.all(12.px),
-          decoration: R.appDecorations.cardDecoration(
-            color: R.appColors.screenBackground2,
-            borderRadius: BorderRadius.circular(14.px),
+        GestureDetector(
+          onTap: () => Get.toNamed(NotificationView.route),
+          child: Container(
+            width: 40.px,
+            height: 40.px,
+            padding: EdgeInsets.all(12.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: R.appColors.screenBackground2,
+              borderRadius: BorderRadius.circular(14.px),
+            ),
+            child: Image.asset(R.appImages.notification),
           ),
-          child: Image.asset(R.appImages.notification),
         ),
       ],
     );

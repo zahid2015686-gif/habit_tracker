@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
@@ -9,6 +10,7 @@ import 'package:habit_tracker/core/utils/extension_methods.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
+import 'package:habit_tracker/feature/base/notification/presentation/pages/notification_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -185,15 +187,18 @@ class _HomeViewState extends State<HomeView> {
           child: Image.asset(R.appImages.message),
         ),
         hSpacePx(10),
-        Container(
-          width: 40.px,
-          height: 40.px,
-          padding: EdgeInsets.all(12.px),
-          decoration: R.appDecorations.cardDecoration(
-            color: R.appColors.screenBackground2,
-            borderRadius: BorderRadius.circular(14.px),
+        GestureDetector(
+          onTap: () => Get.toNamed(NotificationView.route),
+          child: Container(
+            width: 40.px,
+            height: 40.px,
+            padding: EdgeInsets.all(12.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: R.appColors.screenBackground2,
+              borderRadius: BorderRadius.circular(14.px),
+            ),
+            child: Image.asset(R.appImages.notification),
           ),
-          child: Image.asset(R.appImages.notification),
         ),
       ],
     );

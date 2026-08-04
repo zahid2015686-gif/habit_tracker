@@ -4,6 +4,7 @@ import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_vie
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
+import 'package:habit_tracker/feature/base/notification/presentation/pages/notification_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/profile_view.dart';
@@ -79,6 +80,12 @@ abstract class AppRoutes {
       page: () => const PremiumSuccessView(),
       curve: Curves.easeInOut,
       transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: NotificationView.route,
+      page: () => const NotificationView(),
+      curve: Curves.easeInOut,
+      transition: Transition.cupertino,
     ),
   ];
 }
