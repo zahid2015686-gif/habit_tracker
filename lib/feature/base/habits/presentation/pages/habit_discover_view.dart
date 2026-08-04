@@ -48,7 +48,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
@@ -58,9 +58,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
           elevation: 0,
           scrolledUnderElevation: 0,
           automaticallyImplyLeading: false,
-          flexibleSpace: SafeArea(
-            child: _customAppBar(),
-          ),
+          flexibleSpace: SafeArea(child: _customAppBar()),
         ),
         body: SafeArea(
           child: Consumer<HabitVm>(
@@ -147,7 +145,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 20.px),
         itemCount: HabitVm.discoverCategories.length,
-        separatorBuilder: (_, __) => hSpacePx(8),
+        separatorBuilder: (_, _) => hSpacePx(8),
         itemBuilder: (context, index) {
           final category = HabitVm.discoverCategories[index];
           final isSelected = vm.selectedDiscoverCategory == category;
@@ -156,9 +154,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.px, vertical: 10.px),
               decoration: R.appDecorations.cardDecoration(
-                color: isSelected
-                    ? R.appColors.seaGreen
-                    : R.appColors.border,
+                color: isSelected ? R.appColors.seaGreen : R.appColors.border,
                 borderRadius: BorderRadius.circular(100.px),
               ),
               child: Row(
@@ -167,9 +163,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                   Image.asset(
                     width: 11,
                     _categoryIcon(category),
-                    color: isSelected
-                        ? R.appColors.white
-                        : R.appColors.slate,
+                    color: isSelected ? R.appColors.white : R.appColors.slate,
                   ),
                   hSpacePx(6),
                   Text(
@@ -177,9 +171,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                     style: R.appTextStyle.poppins(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? R.appColors.white
-                          : R.appColors.slate,
+                      color: isSelected ? R.appColors.white : R.appColors.slate,
                     ),
                   ),
                 ],
@@ -224,14 +216,14 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
     );
   }
 
-  Widget _horizontalHabitList(List<HabitTemplateModel> habits,) {
+  Widget _horizontalHabitList(List<HabitTemplateModel> habits) {
     return SizedBox(
       height: 180.px,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 20.px),
         itemCount: habits.length,
-        separatorBuilder: (_, __) => hSpacePx(10),
+        separatorBuilder: (_, _) => hSpacePx(10),
         itemBuilder: (context, index) {
           return _horizontalHabitCard(habits[index]);
         },
@@ -273,10 +265,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
                   color: accent.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(16.px),
                 ),
-                child: Image.asset(
-                  habit.image,
-                  color: accent,
-                ),
+                child: Image.asset(habit.image, color: accent),
               ),
               const Spacer(),
               if (habit.isBeginner)
@@ -401,7 +390,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: habits.length,
-            separatorBuilder: (_, __) => vSpacePx(10),
+            separatorBuilder: (_, _) => vSpacePx(10),
             itemBuilder: (context, index) {
               return _verticalHabitTile(habits[index]);
             },
@@ -414,7 +403,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
     return widgets;
   }
 
-  Widget _customAppBar(){
+  Widget _customAppBar() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.px),
       child: Row(
@@ -427,7 +416,6 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
               decoration: R.appDecorations.cardDecoration(
                 color: R.appColors.border,
                 borderRadius: BorderRadius.circular(12.px),
-
               ),
               alignment: Alignment.center,
               child: Icon(
@@ -474,10 +462,7 @@ class _HabitDiscoverViewState extends State<HabitDiscoverView> {
               color: habit.imageColor.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(14.px),
             ),
-            child: Image.asset(
-              habit.image,
-              color: habit.imageColor,
-            ),
+            child: Image.asset(habit.image, color: habit.imageColor),
           ),
           hSpacePx(12),
           Expanded(

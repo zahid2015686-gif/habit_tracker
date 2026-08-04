@@ -20,7 +20,6 @@ class SigninView extends StatefulWidget {
 
 class _SigninViewState extends State<SigninView> {
   @override
-  @override
   void initState() {
     super.initState();
 
@@ -56,9 +55,7 @@ class _SigninViewState extends State<SigninView> {
             ),
             Text(
               'sign_in_to_continue_your_rhythm'.L(),
-              style: R.appTextStyle.poppins(
-                color: R.appColors.textLightBlack,
-              ),
+              style: R.appTextStyle.poppins(color: R.appColors.textLightBlack),
             ),
             vSpacePx(20),
             _continueWithGoogleButton(),
@@ -403,7 +400,9 @@ class _SigninViewState extends State<SigninView> {
                       color: R.appColors.screenBackground2,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: R.appColors.cardBackground.withValues(alpha: 0.70),
+                        color: R.appColors.cardBackground.withValues(
+                          alpha: 0.70,
+                        ),
                         width: 1.5,
                       ),
                     ),

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
@@ -9,7 +11,6 @@ import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habi
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'dart:math' as math;
 
 class PremiumSuccessContent extends StatelessWidget {
   const PremiumSuccessContent({super.key});
@@ -96,7 +97,7 @@ class PremiumSuccessContent extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: math.min(vm.templatesHabits.length, 2),
-                    separatorBuilder: (_, __) => vSpacePx(8),
+                    separatorBuilder: (_, _) => vSpacePx(8),
                     itemBuilder: (context, index) {
                       return _templateHabitCard(
                         context,

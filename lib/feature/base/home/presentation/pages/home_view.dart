@@ -11,7 +11,6 @@ import 'package:habit_tracker/core/utils/extension_methods.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
-import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
 
-    if (widget.isPremium! ?? false) {
+    if (widget.isPremium!) {
       _maybeShowWelcomePremium();
     }
   }

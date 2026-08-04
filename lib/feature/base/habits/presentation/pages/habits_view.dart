@@ -38,6 +38,7 @@ class _HabitsViewState extends State<HabitsView> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +65,7 @@ class _HabitsViewState extends State<HabitsView> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: vm.habits.length,
-                    separatorBuilder: (_, __) => vSpacePx(10),
+                    separatorBuilder: (_, _) => vSpacePx(10),
                     itemBuilder: (context, index) {
                       final habit = vm.habits[index];
                       return _habitTile(habit);
@@ -83,7 +84,7 @@ class _HabitsViewState extends State<HabitsView> {
     return Row(
       children: [
         Expanded(
-          child:  Text(
+          child: Text(
             'habits'.L(),
             style: R.appTextStyle.poppins(
               fontSize: 20,
@@ -117,11 +118,12 @@ class _HabitsViewState extends State<HabitsView> {
       ],
     );
   }
+
   Widget _discoverHabitsCard() {
     return Material(
       color: R.appColors.transparent,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           Get.toNamed(HabitDiscoverView.route);
         },
         child: Container(
@@ -139,10 +141,7 @@ class _HabitsViewState extends State<HabitsView> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.px),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 4,
-                    sigmaY: 4,
-                  ),
+                  filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                   child: Container(
                     width: 44.px,
                     height: 44.px,
@@ -199,12 +198,9 @@ class _HabitsViewState extends State<HabitsView> {
       padding: EdgeInsets.all(17.px),
       decoration: R.appDecorations.cardDecoration(
         borderRadius: BorderRadius.circular(15.px),
-        border: Border.all(
-          color: R.appColors.border,
-          width: 1,
-        ),
+        border: Border.all(color: R.appColors.border, width: 1),
         color: R.appColors.white,
-        boxShadow:[
+        boxShadow: [
           BoxShadow(
             color: R.appColors.black.withValues(alpha: 0.04),
             offset: Offset(0, 10),
@@ -217,7 +213,7 @@ class _HabitsViewState extends State<HabitsView> {
             blurRadius: 15,
             spreadRadius: -3,
           ),
-        ]
+        ],
       ),
       child: Row(
         children: [
@@ -230,10 +226,7 @@ class _HabitsViewState extends State<HabitsView> {
               color: habit.imageColor.withValues(alpha: 0.10),
             ),
             alignment: Alignment.center,
-            child: Image.asset(
-              habit.image,
-              color: habit.imageColor,
-            ),
+            child: Image.asset(habit.image, color: habit.imageColor),
           ),
           hSpacePx(12),
           Expanded(
@@ -268,7 +261,7 @@ class _HabitsViewState extends State<HabitsView> {
                           'light'.L(),
                           style: R.appTextStyle.poppins(
                             color: R.appColors.seaGreen,
-                            fontSize:9,
+                            fontSize: 9,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -288,10 +281,7 @@ class _HabitsViewState extends State<HabitsView> {
             ),
           ),
           hSpacePx(8),
-          Icon(
-            Icons.chevron_right,
-            color: R.appColors.slateGray,
-          ),
+          Icon(Icons.chevron_right, color: R.appColors.slateGray),
         ],
       ),
     );
@@ -305,9 +295,7 @@ class _HabitsViewState extends State<HabitsView> {
         return 'Daily · $time';
 
       case HabitScheduleType.weekly:
-        final days = (habit.weekDays ?? [])
-            .map(_weekDayShort)
-            .join(' · ');
+        final days = (habit.weekDays ?? []).map(_weekDayShort).join(' · ');
         return '$days · $time';
 
       case HabitScheduleType.custom:

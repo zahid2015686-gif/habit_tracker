@@ -1,40 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:habit_tracker/core/routes/app_routes.dart';
-import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
-import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
-import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
+import 'package:habit_tracker/core/utils/global_functions.dart';
 import 'package:habit_tracker/feature/landing/presentation/pages/splash_view.dart';
 import 'package:habit_tracker/injector.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
-  await _preloadFonts();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await GlobalFunctions.preloadFonts();
   runApp(
     Sizer(
       builder: (context, orientation, deviceType) {
-        return Injector(
-          routerWidget: const MyApp(),
-        );
+        return Injector(routerWidget: const MyApp());
       },
     ),
   );
 }
-
-Future<void> _preloadFonts() async {
-  await Future.wait([
-    GoogleFonts.pendingFonts([
-      GoogleFonts.poppins(),
-    ]),
-  ]);
-}
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -44,14 +28,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       initialRoute: SplashView.route,
       //initialRoute: HabitDiscoverView.route,
       getPages: AppRoutes.pages,
-
     );
   }
 }
-

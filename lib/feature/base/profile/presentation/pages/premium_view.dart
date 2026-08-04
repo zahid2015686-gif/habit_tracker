@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
-import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
 import 'package:habit_tracker/feature/base/profile/data/models/premium_model.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/vm/profile_vm.dart';
 import 'package:provider/provider.dart';

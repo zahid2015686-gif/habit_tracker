@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
@@ -49,13 +48,11 @@ class _BaseViewState extends State<BaseView> {
           body: IndexedStack(
             index: vm.currentIndex,
             children: [
-             if(isPremium == true) ... [
-               HomeView(
-                 isPremium: isPremium,
-               ),
-             ] else ... [
-               PremiumSuccessView(),
-             ],
+              if (isPremium == true) ...[
+                HomeView(isPremium: isPremium),
+              ] else ...[
+                PremiumSuccessView(),
+              ],
               HabitsView(),
               Center(child: Text("Upload")),
               RhythmView(),
@@ -73,9 +70,7 @@ class _BaseViewState extends State<BaseView> {
       padding: EdgeInsets.symmetric(vertical: 12.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(12),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: SafeArea(
         top: false,
@@ -88,10 +83,7 @@ class _BaseViewState extends State<BaseView> {
               onTap: () {
                 showCreateHabitSheetView(context);
               },
-              child: Image.asset(
-                R.appImages.upload,
-                height: 30.px,
-              ),
+              child: Image.asset(R.appImages.upload, height: 30.px),
             ),
             _navItem(vm, 3),
             _navItem(vm, 4),
@@ -114,7 +106,9 @@ class _BaseViewState extends State<BaseView> {
             item.imagePath,
             height: 26.px,
             width: 26.px,
-            color: isSelected ? null : R.appColors.black.withValues(alpha: 0.33),
+            color: isSelected
+                ? null
+                : R.appColors.black.withValues(alpha: 0.33),
           ),
           Text(
             item.label,
@@ -122,7 +116,7 @@ class _BaseViewState extends State<BaseView> {
               fontSize: 12,
               color: isSelected
                   ? R.appColors.secondary
-                  :  R.appColors.black.withValues(alpha: 0.33),
+                  : R.appColors.black.withValues(alpha: 0.33),
             ),
           ),
         ],
@@ -130,4 +124,3 @@ class _BaseViewState extends State<BaseView> {
     );
   }
 }
-

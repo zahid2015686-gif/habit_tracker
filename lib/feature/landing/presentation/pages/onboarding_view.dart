@@ -8,8 +8,6 @@ import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/landing/presentation/vm/onboarding_vm.dart';
 import 'package:habit_tracker/feature/user/presentation/pages/signin_view.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as math;
-
 import 'package:sizer/sizer.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -78,7 +76,10 @@ class _OnboardingViewState extends State<OnboardingView> {
           FadeTransition(opacity: animation, child: child),
       layoutBuilder: (currentChild, previousChildren) => Stack(
         alignment: Alignment.center,
-        children: [...previousChildren, if (currentChild != null) currentChild],
+        children: [
+          ...previousChildren,
+          ?currentChild,
+        ],
       ),
       child: Container(
         key: ValueKey(vm.currentIndex),
@@ -161,9 +162,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         decoration: R.appDecorations.cardDecoration(
           color: R.appColors.screenBackground5.withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(32.px),
-          border: Border.all(
-            color: R.appColors.white.withValues(alpha: 0.15),
-          ),
+          border: Border.all(color: R.appColors.white.withValues(alpha: 0.15)),
           boxShadow: [
             BoxShadow(
               color: R.appColors.black.withValues(alpha: 0.08),
@@ -184,7 +183,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                     height: 48.px,
                     decoration: R.appDecorations.cardDecoration(
                       color: R.appColors.white.withValues(alpha: 0.10),
-                      border: Border.all(color: R.appColors.white.withValues(alpha: 0.10)),
+                      border: Border.all(
+                        color: R.appColors.white.withValues(alpha: 0.10),
+                      ),
                       borderRadius: BorderRadius.circular(16.px),
                     ),
                     padding: EdgeInsets.all(13.px),

@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/data/models/base_view_model.dart';
 
 class BaseVm extends ChangeNotifier {
   //Lists
-  List<BaseViewModel> _sideItems = [
+  final List<BaseViewModel> _sideItems = [
     BaseViewModel(imagePath: R.appImages.home, label: 'Home'),
     BaseViewModel(imagePath: R.appImages.habits, label: 'Habits'),
     BaseViewModel(imagePath: R.appImages.rhythm, label: 'Rhythm'),
