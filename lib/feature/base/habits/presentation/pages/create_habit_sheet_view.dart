@@ -6,20 +6,28 @@ import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/widgets/habit_created_success_dialog.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-Future<dynamic> showCreateHabitSheetView(BuildContext context) {
+Future<dynamic> showCreateHabitSheetView(BuildContext context) async {
   context.read<HabitVm>().resetCreateForm();
 
-  return showModalBottomSheet(
+  final result = await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (_) => const CreateHabitSheet(),
   );
+
+  if (result != null && context.mounted) {
+    await showHabitCreatedSuccessDialog(context);
+    if (context.mounted) {
+      context.read<BaseVm>().goToHome();
+    }
+  }
 }
 
 class CreateHabitSheet extends StatefulWidget {
@@ -240,7 +248,6 @@ class _CreateHabitSheetState extends State<CreateHabitSheet>
                                   lightVersionName:
                                       _lightNameController.text.trim(),
                                 );
-                                context.read<BaseVm>().goToHome();
                               },
                               textStyle: R.appTextStyle.poppins(
                                 fontSize: 16,
@@ -671,6 +678,8 @@ class _CreateHabitSheetState extends State<CreateHabitSheet>
               activeThumbColor: R.appColors.white,
               activeTrackColor: R.appColors.seaGreen,
               onChanged: vm.toggleMinimumVersion,
+              inactiveThumbColor: R.appColors.darkBlack,
+              inactiveTrackColor: R.appColors.cardBackground,
             ),
           ],
         ),
