@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
-import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/create_habit_sheet_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/profile_view.dart';
@@ -23,7 +23,6 @@ class BaseView extends StatefulWidget {
 class _BaseViewState extends State<BaseView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
@@ -44,12 +43,13 @@ class _BaseViewState extends State<BaseView> {
     final bool isPremium = args?['isPremium'] ?? false;
     return Consumer<BaseVm>(
       builder: (context, vm, _) {
+        final bool showHome = isPremium || vm.showHome;
         return Scaffold(
           body: IndexedStack(
             index: vm.currentIndex,
             children: [
-              if (isPremium == true) ...[
-                HomeView(isPremium: isPremium),
+              if (showHome) ...[
+                HomeView(isPremium: true),
               ] else ...[
                 PremiumSuccessView(),
               ],
@@ -80,9 +80,7 @@ class _BaseViewState extends State<BaseView> {
             _navItem(vm, 0),
             _navItem(vm, 1),
             GestureDetector(
-              onTap: () {
-                showCreateHabitSheetView(context);
-              },
+              onTap: () => showCreateHabitSheetView(context),
               child: Image.asset(R.appImages.upload, height: 30.px),
             ),
             _navItem(vm, 3),

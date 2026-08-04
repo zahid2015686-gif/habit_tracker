@@ -12,9 +12,13 @@ class BaseVm extends ChangeNotifier {
   ];
   // Variables
   int _currentIndex = 0;
+  bool _showHome = false;
+  bool _hasShownWelcomePremium = false;
 
   //Getter
   int get currentIndex => _currentIndex;
+  bool get showHome => _showHome;
+  bool get hasShownWelcomePremium => _hasShownWelcomePremium;
   List<BaseViewModel> get getBaseVm => _sideItems;
 
   void changeIndex(int index) {
@@ -22,5 +26,15 @@ class BaseVm extends ChangeNotifier {
 
     _currentIndex = index;
     notifyListeners();
+  }
+
+  void goToHome() {
+    _showHome = true;
+    _currentIndex = 0;
+    notifyListeners();
+  }
+
+  void markWelcomePremiumShown() {
+    _hasShownWelcomePremium = true;
   }
 }

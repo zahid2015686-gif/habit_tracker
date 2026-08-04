@@ -9,20 +9,20 @@ class OnboardingVm extends ChangeNotifier {
   // ---------------------------------------------------------------------
   final List<OnboardingModel> _pages = [
     OnboardingModel(
-      image: R.appImages.onboardingImage_1,
-      icon: R.appImages.onboardingIcon_1,
+      image: R.appImages.onboardingImage1,
+      icon: R.appImages.onboardingIcon1,
       titleKey: 'build_better_habits_capital_words'.L(),
       descKey: 'build_better_habits_description'.L(),
     ),
     OnboardingModel(
-      image: R.appImages.onboardingImage_2,
-      icon: R.appImages.onboardingIcon_2,
+      image: R.appImages.onboardingImage2,
+      icon: R.appImages.onboardingIcon2,
       titleKey: 'find_your_rhythm'.L(),
       descKey: 'find_your_rhythm_description'.L(),
     ),
     OnboardingModel(
-      image: R.appImages.onboardingImage_3,
-      icon: R.appImages.onboardingIcon_3,
+      image: R.appImages.onboardingImage3,
+      icon: R.appImages.onboardingIcon3,
       titleKey: 'stay_accountable'.L(),
       descKey: 'stay_accountable_description'.L(),
     ),

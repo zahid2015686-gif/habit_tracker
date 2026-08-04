@@ -203,10 +203,10 @@ class PremiumSuccessContent extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.edit_outlined,
-                size: 16.px,
-                color: R.appColors.darkBlack,
+              Image.asset(
+                R.appImages.buildYourOwnHabit,
+                color: R.appColors.textBlack,
+                width: 13.px,
               ),
               hSpacePx(8),
               Text(

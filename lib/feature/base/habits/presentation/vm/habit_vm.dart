@@ -6,7 +6,6 @@ import 'package:habit_tracker/feature/base/habits/data/models/habit_calendar_mod
 import 'package:habit_tracker/feature/base/habits/data/models/habit_model.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 
-
 class HabitVm extends ChangeNotifier {
   // ---------------- Icon selection ----------------
   int selectedIconIndex = 0;
@@ -33,7 +32,15 @@ class HabitVm extends ChangeNotifier {
   }
 
   // ---------------- Weekly - active days ----------------
-  final List<String> weekDays = const ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  final List<String> weekDays = const [
+    'Su',
+    'Mo',
+    'Tu',
+    'We',
+    'Th',
+    'Fr',
+    'Sa',
+  ];
   Set<int> selectedDays = {};
 
   void toggleDay(int index) {
@@ -134,37 +141,179 @@ class HabitVm extends ChangeNotifier {
     return 5;
   }
 
+  // ---------------- Create Habit form ----------------
+  static List<Color> habitColors = [
+    R.appColors.successGreen,
+    R.appColors.emeraldGreen,
+    R.appColors.lightGreen,
+    R.appColors.brightSkyBlue,
+    R.appColors.blue,
+    R.appColors.indigo,
+    R.appColors.softIndigo,
+    R.appColors.violet,
+  ];
+
+  static const List<String> habitCategories = [
+    'Health & Fitness',
+    'Mindfulness',
+    'Learning',
+    'Productivity',
+    'Social',
+    'Creative',
+    'Other',
+  ];
+
+  List<String> get habitIconImages => [
+    R.appImages.workout,
+    R.appImages.running,
+    R.appImages.drinkWater,
+    R.appImages.morningMeditation,
+    R.appImages.night,
+    R.appImages.morning,
+    R.appImages.walk,
+    R.appImages.bicycle,
+  ];
+
+  int selectedCategoryIndex = 0;
+  bool enableMinimumVersion = false;
+  int lightTarget = 1;
+  int? lightDurationMinutes;
+  DateTime calendarMonth = DateTime(2026, 7);
+  final Set<DateTime> selectedCustomDates = {};
+
+  void selectCategory(int index) {
+    selectedCategoryIndex = index;
+    notifyListeners();
+  }
+
+  void toggleMinimumVersion(bool value) {
+    enableMinimumVersion = value;
+    notifyListeners();
+  }
+
+  void incrementLightTarget() {
+    lightTarget++;
+    notifyListeners();
+  }
+
+  void decrementLightTarget() {
+    if (lightTarget > 1) {
+      lightTarget--;
+      notifyListeners();
+    }
+  }
+
+  void incrementLightDuration() {
+    lightDurationMinutes = (lightDurationMinutes ?? 0) + 5;
+    notifyListeners();
+  }
+
+  void decrementLightDuration() {
+    if (lightDurationMinutes == null) return;
+    if (lightDurationMinutes! <= 5) {
+      lightDurationMinutes = null;
+    } else {
+      lightDurationMinutes = lightDurationMinutes! - 5;
+    }
+    notifyListeners();
+  }
+
+  void changeCalendarMonth(int offset) {
+    calendarMonth = DateTime(calendarMonth.year, calendarMonth.month + offset);
+    notifyListeners();
+  }
+
+  DateTime _dateOnly(DateTime date) =>
+      DateTime(date.year, date.month, date.day);
+
+  void toggleCustomDate(DateTime date) {
+    final key = _dateOnly(date);
+    if (selectedCustomDates.any((d) => _dateOnly(d) == key)) {
+      selectedCustomDates.removeWhere((d) => _dateOnly(d) == key);
+    } else {
+      selectedCustomDates.add(key);
+    }
+    notifyListeners();
+  }
+
+  void removeCustomDate(DateTime date) {
+    final key = _dateOnly(date);
+    selectedCustomDates.removeWhere((d) => _dateOnly(d) == key);
+    notifyListeners();
+  }
+
+  bool isCustomDateSelected(DateTime date) {
+    final key = _dateOnly(date);
+    return selectedCustomDates.any((d) => _dateOnly(d) == key);
+  }
+
+  void resetCreateForm() {
+    selectedIconIndex = 0;
+    selectedColorIndex = 0;
+    selectedCategoryIndex = 0;
+    scheduleType = HabitScheduleType.daily;
+    selectedDays = {0, 1, 2, 3, 4};
+    customRepeatDays = 2;
+    reminderTime = const TimeOfDay(hour: 8, minute: 0);
+    target = 5;
+    durationMinutes = 10;
+    enableMinimumVersion = false;
+    lightTarget = 1;
+    lightDurationMinutes = null;
+    calendarMonth = DateTime(DateTime.now().year, DateTime.now().month);
+    selectedCustomDates.clear();
+    notifyListeners();
+  }
+
   // ---------------- Validation ----------------
   bool get canSave {
     if (scheduleType == HabitScheduleType.weekly && selectedDays.isEmpty) {
+      return false;
+    }
+    if (scheduleType == HabitScheduleType.custom &&
+        selectedCustomDates.isEmpty) {
       return false;
     }
     return true;
   }
 
   // ---------------- Save ----------------
-  void saveHabit(BuildContext context) {
+  void saveHabit(
+    BuildContext context, {
+    String? habitName,
+    String? description,
+    String? notes,
+    String? lightVersionName,
+  }) {
     if (!canSave) return;
 
     final habitData = {
+      'name': habitName,
+      'description': description,
+      'notes': notes,
+      'category': habitCategories[selectedCategoryIndex],
       'colorIndex': selectedColorIndex,
       'iconIndex': selectedIconIndex,
       'scheduleType': scheduleType.name,
       'activeDays': (selectedDays.toList()..sort()),
+      'customDates': selectedCustomDates
+          .map((e) => e.toIso8601String())
+          .toList(),
       'customRepeatDays': customRepeatDays,
       'reminderTime': formattedReminderTime,
       'target': target,
       'durationMinutes': durationMinutes,
+      'enableMinimumVersion': enableMinimumVersion,
+      'lightVersionName': lightVersionName,
+      'lightTarget': lightTarget,
+      'lightDurationMinutes': lightDurationMinutes,
     };
 
-    // TODO: yahan apna repository/usecase call karke habit save karein
     debugPrint('Habit saved: $habitData');
-
     Navigator.of(context).pop(habitData);
   }
 
   final List<HabitModel> _habits = [
-
     HabitModel(
       image: R.appImages.morningMeditation,
       imageColor: R.appColors.indigo,
@@ -344,11 +493,7 @@ class HabitVm extends ChangeNotifier {
       habitDifficulty: HabitDifficulty.hard,
       scheduleType: HabitScheduleType.weekly,
 
-      weekDays: [
-        DateTime.monday,
-        DateTime.tuesday,
-        DateTime.wednesday,
-      ],
+      weekDays: [DateTime.monday, DateTime.tuesday, DateTime.wednesday],
 
       reminderTime: DateTime(2026, 7, 1, 6, 30),
 
@@ -439,8 +584,7 @@ class HabitVm extends ChangeNotifier {
       image: R.appImages.eveningJournal,
       imageColor: R.appColors.sageGreen,
       title: "Morning Gratitude",
-      description:
-      "Write down 3 things you are grateful for every morning to ",
+      description: "Write down 3 things you are grateful for every morning to ",
       duration: "5 min",
       category: HabitDiscoverCategory.mindset,
       isPopular: true,
@@ -747,7 +891,8 @@ class HabitVm extends ChangeNotifier {
       image: R.appImages.walk,
       imageColor: R.appColors.seaGreen,
       title: "10K Steps Daily",
-      description: "Hit 10,000 steps every day. Walking is one of the best habits",
+      description:
+          "Hit 10,000 steps every day. Walking is one of the best habits",
       duration: "60 min",
       category: HabitDiscoverCategory.fitness,
     ),
@@ -940,7 +1085,8 @@ class HabitVm extends ChangeNotifier {
       final matchesCategory =
           selectedDiscoverCategory == HabitDiscoverCategory.all ||
           habit.category == selectedDiscoverCategory;
-      final matchesSearch = query.isEmpty ||
+      final matchesSearch =
+          query.isEmpty ||
           habit.title.toLowerCase().contains(query) ||
           habit.description.toLowerCase().contains(query);
       return matchesCategory && matchesSearch;

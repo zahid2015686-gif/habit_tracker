@@ -3,15 +3,16 @@ import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 Future<dynamic> showAddHabitTemplateSheet(
-    BuildContext context, {
-      required HabitTemplateModel habit,
-    }) {
+  BuildContext context, {
+  required HabitTemplateModel habit,
+}) {
   final vm = context.read<HabitVm>();
   vm.loadFromTemplate(habit);
 
@@ -23,10 +24,45 @@ Future<dynamic> showAddHabitTemplateSheet(
   );
 }
 
-class AddHabitTemplateSheet extends StatelessWidget {
+class AddHabitTemplateSheet extends StatefulWidget {
   final HabitTemplateModel habit;
 
   const AddHabitTemplateSheet({super.key, required this.habit});
+
+  @override
+  State<AddHabitTemplateSheet> createState() => _AddHabitTemplateSheetState();
+}
+
+class _AddHabitTemplateSheetState extends State<AddHabitTemplateSheet>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  static const _scheduleTypes = [
+    HabitScheduleType.daily,
+    HabitScheduleType.weekly,
+    HabitScheduleType.custom,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _scheduleTypes.length, vsync: this);
+    _tabController.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (_tabController.indexIsChanging) return;
+    context.read<HabitVm>().selectSchedule(
+      _scheduleTypes[_tabController.index],
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_onTabChanged);
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +75,7 @@ class AddHabitTemplateSheet extends StatelessWidget {
           child: Container(
             decoration: R.appDecorations.cardDecoration(
               color: R.appColors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24.px)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20.px)),
             ),
             child: SafeArea(
               top: false,
@@ -55,7 +91,7 @@ class AddHabitTemplateSheet extends StatelessWidget {
                         height: 4.px,
                         margin: EdgeInsets.only(bottom: 16.px),
                         decoration: R.appDecorations.cardDecoration(
-                          color: R.appColors.black.withValues(alpha: 0.12),
+                          color: R.appColors.border3,
                           borderRadius: BorderRadius.circular(100.px),
                         ),
                       ),
@@ -72,23 +108,23 @@ class AddHabitTemplateSheet extends StatelessWidget {
                     vSpacePx(16),
                     _fieldLabel('schedule'.L()),
                     vSpacePx(8),
-                    _scheduleSelector(vm),
-                    if (vm.scheduleType == HabitScheduleType.weekly) ...[
-                      vSpacePx(16),
-                      _fieldLabel('active_days'.L()),
-                      vSpacePx(8),
-                      _activeDaysRow(vm),
-                    ],
-                    if (vm.scheduleType == HabitScheduleType.custom) ...[
-                      vSpacePx(16),
-                      _fieldLabel('repeat_every'.L()),
-                      vSpacePx(8),
-                      _stepper(
-                        value: '${vm.customRepeatDays} day(s)',
-                        onMinus: vm.decrementCustomRepeat,
-                        onPlus: vm.incrementCustomRepeat,
+                    _scheduleTabBar(),
+                    vSpacePx(12),
+                    SizedBox(
+                      height: 56.px,
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          const SizedBox.shrink(),
+                          _activeDaysRow(vm),
+                          _stepper(
+                            value: '${vm.customRepeatDays} day(s)',
+                            onMinus: vm.decrementCustomRepeat,
+                            onPlus: vm.incrementCustomRepeat,
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                     vSpacePx(16),
                     _fieldLabel('duration_minutes'.L()),
                     vSpacePx(8),
@@ -110,7 +146,7 @@ class AddHabitTemplateSheet extends StatelessWidget {
                         ),
                         decoration: R.appDecorations.cardDecoration(
                           color: R.appColors.screenBackground2,
-                          borderRadius: BorderRadius.circular(14.px),
+                          borderRadius: BorderRadius.circular(16.px),
                           border: Border.all(color: R.appColors.cardBackground),
                         ),
                         child: Row(
@@ -119,16 +155,15 @@ class AddHabitTemplateSheet extends StatelessWidget {
                               child: Text(
                                 vm.formattedReminderTime,
                                 style: R.appTextStyle.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: R.appColors.darkBlack,
+                                  fontSize: 16,
+                                  color: R.appColors.darkSlate,
                                 ),
                               ),
                             ),
-                            Icon(
-                              Icons.access_time_rounded,
-                              size: 18.px,
+                            Image.asset(
+                              R.appImages.reminderTime,
                               color: R.appColors.slateGray,
+                              width: 14.px,
                             ),
                           ],
                         ),
@@ -138,53 +173,27 @@ class AddHabitTemplateSheet extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              height: 48.px,
-                              alignment: Alignment.center,
-                              decoration: R.appDecorations.cardDecoration(
-                                color: R.appColors.cardBackground.withValues(
-                                  alpha: 0.55,
-                                ),
-                                borderRadius: BorderRadius.circular(14.px),
-                              ),
-                              child: Text(
-                                'cancel'.L(),
-                                style: R.appTextStyle.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: R.appColors.darkBlack,
-                                ),
-                              ),
+                          child: AppButton(
+                            text: 'cancel'.L(),
+                            color: R.appColors.border,
+                            borderRadius: 12,
+                            textStyle: R.appTextStyle.poppins(
+                              color: R.appColors.textBlack,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                         hSpacePx(12),
                         Expanded(
-                          child: GestureDetector(
-                            onTap: vm.canSave
-                                ? () => vm.saveHabit(context)
-                                : null,
-                            child: Container(
-                              height: 48.px,
-                              alignment: Alignment.center,
-                              decoration: R.appDecorations.cardDecoration(
-                                color: vm.canSave
-                                    ? R.appColors.seaGreen
-                                    : R.appColors.seaGreen.withValues(
-                                        alpha: 0.40,
-                                      ),
-                                borderRadius: BorderRadius.circular(14.px),
-                              ),
-                              child: Text(
-                                'add_habit'.L(),
-                                style: R.appTextStyle.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: R.appColors.white,
-                                ),
-                              ),
+                          child: AppButton(
+                            text: 'add_habit'.L(),
+                            color: R.appColors.seaGreen,
+                            borderRadius: 12,
+                            textStyle: R.appTextStyle.poppins(
+                              color: R.appColors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -204,17 +213,14 @@ class AddHabitTemplateSheet extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 48.px,
-          height: 48.px,
+          width: 44.px,
+          height: 44.px,
           padding: EdgeInsets.all(12.px),
           decoration: R.appDecorations.cardDecoration(
-            color: R.appColors.warmCream,
-            borderRadius: BorderRadius.circular(14.px),
+            color: R.appColors.secondary.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(12.px),
           ),
-          child: Image.asset(
-            habit.image,
-            color: R.appColors.seaGreen,
-          ),
+          child: Image.asset(widget.habit.image, color: R.appColors.seaGreen),
         ),
         hSpacePx(12),
         Expanded(
@@ -222,7 +228,7 @@ class AddHabitTemplateSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                habit.title,
+                widget.habit.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: R.appTextStyle.poppins(
@@ -250,9 +256,9 @@ class AddHabitTemplateSheet extends StatelessWidget {
     return Text(
       text,
       style: R.appTextStyle.poppins(
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: FontWeight.w600,
-        color: R.appColors.darkBlack,
+        color: R.appColors.slate,
       ),
     );
   }
@@ -266,8 +272,8 @@ class AddHabitTemplateSheet extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.px, vertical: 8.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.screenBackground2,
-        borderRadius: BorderRadius.circular(14.px),
-        border: Border.all(color: R.appColors.cardBackground),
+        borderRadius: BorderRadius.circular(16.px),
+        border: Border.all(color: R.appColors.cardBackground, width: 2.px),
       ),
       child: Row(
         children: [
@@ -277,9 +283,9 @@ class AddHabitTemplateSheet extends StatelessWidget {
               value,
               textAlign: TextAlign.center,
               style: R.appTextStyle.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: R.appColors.darkBlack,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: R.appColors.darkSlate,
               ),
             ),
           ),
@@ -289,77 +295,51 @@ class AddHabitTemplateSheet extends StatelessWidget {
     );
   }
 
-  Widget _stepperButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
+  Widget _stepperButton({required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 32.px,
-        height: 32.px,
-        alignment: Alignment.center,
-        decoration: R.appDecorations.cardDecoration(
-          color: R.appColors.white,
-          borderRadius: BorderRadius.circular(10.px),
-          border: Border.all(color: R.appColors.cardBackground),
-        ),
-        child: Icon(icon, size: 16.px, color: R.appColors.darkBlack),
-      ),
+      child: Icon(icon, size: 16.px, color: R.appColors.textLightBlack),
     );
   }
 
-  Widget _scheduleSelector(HabitVm vm) {
-    final items = {
-      HabitScheduleType.daily: 'daily'.L(),
-      HabitScheduleType.weekly: 'weekly'.L(),
-      HabitScheduleType.custom: 'custom'.L(),
-    };
-
+  Widget _scheduleTabBar() {
     return Container(
+      height: 44.px,
       padding: EdgeInsets.all(4.px),
       decoration: R.appDecorations.cardDecoration(
-        color: R.appColors.cardBackground.withValues(alpha: 0.55),
-        borderRadius: BorderRadius.circular(14.px),
+        color: R.appColors.border,
+        borderRadius: BorderRadius.circular(100.px),
       ),
-      child: Row(
-        children: items.entries.map((entry) {
-          final isSelected = vm.scheduleType == entry.key;
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => vm.selectSchedule(entry.key),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.px),
-                decoration: R.appDecorations.cardDecoration(
-                  color: isSelected ? R.appColors.white : R.appColors.transparent,
-                  borderRadius: BorderRadius.circular(10.px),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: R.appColors.black.withValues(alpha: 0.06),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Center(
-                  child: Text(
-                    entry.value,
-                    style: R.appTextStyle.poppins(
-                      fontSize: 12,
-                      fontWeight:
-                          isSelected ? FontWeight.w700 : FontWeight.w500,
-                      color: isSelected
-                          ? R.appColors.darkBlack
-                          : R.appColors.textLightBlack,
-                    ),
-                  ),
-                ),
-              ),
+      child: TabBar(
+        controller: _tabController,
+        dividerColor: R.appColors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicator: BoxDecoration(
+          color: R.appColors.white,
+          borderRadius: BorderRadius.circular(100.px),
+          boxShadow: [
+            BoxShadow(
+              color: R.appColors.black.withValues(alpha: 0.05),
+              blurRadius: 2,
+              offset: const Offset(0, 1),
             ),
-          );
-        }).toList(),
+          ],
+        ),
+        labelColor: R.appColors.darkBlack,
+        unselectedLabelColor: R.appColors.textLightBlack,
+        labelStyle: R.appTextStyle.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: R.appTextStyle.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        tabs: [
+          Tab(text: 'daily'.L()),
+          Tab(text: 'weekly'.L()),
+          Tab(text: 'custom'.L()),
+        ],
       ),
     );
   }

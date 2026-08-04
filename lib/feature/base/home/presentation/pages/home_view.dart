@@ -3,13 +3,11 @@ import 'dart:ui';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/utils/extension_methods.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
-import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
@@ -28,8 +26,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  static bool _hasShownWelcomePremium = false;
-
   @override
   void initState() {
     super.initState();
@@ -44,18 +40,19 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
 
-    if (widget.isPremium!) {
+    if (widget.isPremium == true) {
       _maybeShowWelcomePremium();
     }
   }
 
   void _maybeShowWelcomePremium() {
-    if (_hasShownWelcomePremium) return;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
-      _hasShownWelcomePremium = true;
+      final baseVm = context.read<BaseVm>();
+      if (baseVm.hasShownWelcomePremium) return;
+
+      baseVm.markWelcomePremiumShown();
 
       showDialog(
         context: context,
@@ -926,9 +923,7 @@ class _HomeViewState extends State<HomeView> {
                 vSpacePx(20),
                 AppButton(
                   onTap: () {
-                    _hasShownWelcomePremium = false;
-                    context.read<BaseVm>().changeIndex(0);
-                    Get.offAllNamed(BaseView.route);
+                    Navigator.of(context).pop();
                   },
                   text: 'let_go'.L(),
                   textStyle: R.appTextStyle.poppins(

@@ -1,15 +1,15 @@
 class AppImages {
   final String logo = 'assets/images/logo.png';
   final String logoLight = 'assets/images/logo_light.png';
-  final String onboardingImage_1 = 'assets/images/onboarding_image_1.png';
-  final String onboardingImage_2 = 'assets/images/onboarding_image_2.png';
-  final String onboardingImage_3 = 'assets/images/onboarding_image_3.png';
-  final String onboardingIcon_1 = 'assets/images/onboarding_icon_1.png';
-  final String onboardingIcon_2 = 'assets/images/onboarding_icon_2.png';
-  final String onboardingIcon_3 = 'assets/images/onboarding_icon_3.png';
+  final String onboardingImage1 = 'assets/images/onboarding_image_1.png';
+  final String onboardingImage2 = 'assets/images/onboarding_image_2.png';
+  final String onboardingImage3 = 'assets/images/onboarding_image_3.png';
+  final String onboardingIcon1 = 'assets/images/onboarding_icon_1.png';
+  final String onboardingIcon2 = 'assets/images/onboarding_icon_2.png';
+  final String onboardingIcon3 = 'assets/images/onboarding_icon_3.png';
   final String googleIcon = 'assets/images/google_icon.png';
   final String appleIcon = 'assets/images/apple_icon.png';
-  final String facebookIcon = 'assets/images/facbook_icon.png';
+  final String facebookIcon = 'assets/images/facebook_icon.png';
   final String home = 'assets/images/home.png';
   final String habits = 'assets/images/habits.png';
   final String profile = 'assets/images/profile.png';
@@ -34,11 +34,12 @@ class AppImages {
   final String star4 = 'assets/images/star_4.png';
   final String star5 = 'assets/images/start_5.png';
   final String tickIcon = 'assets/images/tick_icon.png';
-  final String verifiedIcon = 'assets/images/verfied.png';
+  final String verifiedIcon = 'assets/images/verified.png';
   final String upcoming = 'assets/images/upcoming.png';
   final String quoteIcon = 'assets/images/quote_icon.png';
   final String quickStartTemplates = 'assets/images/quick_start_templates.png';
-  final String discoverHabitsBackground = 'assets/images/discover_habits_background.png';
+  final String discoverHabitsBackground =
+      'assets/images/discover_habits_background.png';
   final String discoverHabits = 'assets/images/discover_habits.png';
   final String wellness = 'assets/images/wellness.png';
   final String sleep = 'assets/images/sleep.png';
@@ -56,4 +57,6 @@ class AppImages {
   final String natureWalk = 'assets/images/nature_walk.png';
   final String listenToAPodcast = 'assets/images/listen_to_a_podcast.png';
   final String inboxZero = 'assets/images/iInbox_zero.png';
+  final String reminderTime = 'assets/images/reminder_time.png';
+  final String buildYourOwnHabit = 'assets/images/build_your_own_habit.png';
 }
