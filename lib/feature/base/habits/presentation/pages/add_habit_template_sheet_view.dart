@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:habit_tracker/core/constants/enums.dart';
 import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
+import 'package:habit_tracker/core/widgets/app_toast.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/pages/base_view.dart';
+import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/data/models/habit_template_model.dart';
+import 'package:habit_tracker/feature/base/habits/presentation/pages/habit_discover_view.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -12,16 +17,28 @@ import 'package:sizer/sizer.dart';
 Future<dynamic> showAddHabitTemplateSheet(
   BuildContext context, {
   required HabitTemplateModel habit,
-}) {
+}) async {
   final vm = context.read<HabitVm>();
   vm.loadFromTemplate(habit);
 
-  return showModalBottomSheet(
+  final result = await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (_) => AddHabitTemplateSheet(habit: habit),
   );
+
+  if (result == true && context.mounted) {
+    context.read<BaseVm>().goToHome(skipWelcomePremium: true);
+
+    if (Get.currentRoute == HabitDiscoverView.route) {
+      Get.until((route) => route.settings.name == BaseView.route || route.isFirst);
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAppToast('habit_created_successfully'.L());
+    });
+  }
 }
 
 class AddHabitTemplateSheet extends StatefulWidget {
@@ -177,6 +194,7 @@ class _AddHabitTemplateSheetState extends State<AddHabitTemplateSheet>
                             text: 'cancel'.L(),
                             color: R.appColors.border,
                             borderRadius: 12,
+                            onTap: () => Navigator.of(context).pop(),
                             textStyle: R.appTextStyle.poppins(
                               color: R.appColors.textBlack,
                               fontSize: 14,
@@ -190,6 +208,7 @@ class _AddHabitTemplateSheetState extends State<AddHabitTemplateSheet>
                             text: 'add_habit'.L(),
                             color: R.appColors.seaGreen,
                             borderRadius: 12,
+                            onTap: () => Navigator.of(context).pop(true),
                             textStyle: R.appTextStyle.poppins(
                               color: R.appColors.white,
                               fontSize: 14,

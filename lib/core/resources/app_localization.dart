@@ -118,6 +118,7 @@ class AppLocalization {
     "save_habit":"Save Habit",
     "habit_created":"Habit Created!",
     "habit_created_subtitle":"Your new habit is ready, keep that rhythm going.",
+    "habit_created_successfully":"Habit Created Successfully",
     "custom_schedule":"Custom Schedule",
     "date_selected":"date selected",
   };

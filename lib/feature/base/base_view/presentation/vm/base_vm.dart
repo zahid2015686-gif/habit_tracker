@@ -28,7 +28,10 @@ class BaseVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void goToHome() {
+  void goToHome({bool skipWelcomePremium = false}) {
+    if (skipWelcomePremium) {
+      _hasShownWelcomePremium = true;
+    }
     _showHome = true;
     _currentIndex = 0;
     notifyListeners();

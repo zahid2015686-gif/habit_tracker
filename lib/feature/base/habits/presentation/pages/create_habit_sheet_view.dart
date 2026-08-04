@@ -5,8 +5,8 @@ import 'package:habit_tracker/core/constants/width_height.dart';
 import 'package:habit_tracker/core/resources/app_localization.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
+import 'package:habit_tracker/core/widgets/app_toast.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
-import 'package:habit_tracker/feature/base/habits/presentation/widgets/habit_created_success_dialog.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +23,10 @@ Future<dynamic> showCreateHabitSheetView(BuildContext context) async {
   );
 
   if (result != null && context.mounted) {
-    await showHabitCreatedSuccessDialog(context);
-    if (context.mounted) {
-      context.read<BaseVm>().goToHome();
-    }
+    context.read<BaseVm>().goToHome(skipWelcomePremium: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAppToast('habit_created_successfully'.L());
+    });
   }
 }
 
