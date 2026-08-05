@@ -25,6 +25,11 @@ class AppColors {
   final Color softCyan = const Color(0xFF6BA8C4);
   final Color softMint = const Color(0xFF6FB58E);
   final Color oceanBlue = const Color(0xFF5CC4DC);
+  final Color paleSageGreen = const Color(0xFFE7EFD0);
+  final Color softLavenderBlue = const Color(0xFFE0E7FF);
+  final Color smokyGray = const Color(0xFF748297);
+  final Color goldenYellow = const Color(0xFFEAB308);
+  final Color herbGreen = const Color(0xFF98AE42);
 
   // Text
   final Color textGreen = const Color(0xFF15803D);
@@ -51,7 +56,8 @@ class AppColors {
   final Color border3 = const Color(0xFFCBD5E1);
   final Color softGold = const Color(0xFFFDE68A);
   final Color softPistachio = const Color(0xFFF5F8EB);
-  final Color herbGreen = const Color(0xFFBBC96F);
+  final Color leafGreen = const Color(0xFFBBC96F);
+  final Color warmAmber = const Color(0xFFFCD34D);
 
   // Gradient
   final Color oliveGreen = const Color(0xFFB7CE76);

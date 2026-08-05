@@ -25,30 +25,28 @@ class NotificationView extends StatelessWidget {
         automaticallyImplyLeading: false,
         titleSpacing: 16.px,
         title: _appBar(),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.px),
-          child: Divider(height: 1, thickness: 1, color: R.appColors.border),
-        ),
       ),
-      body: Consumer<NotificationVm>(
-        builder: (context, vm, _) {
-          return ListView(
-            padding: EdgeInsets.fromLTRB(20.px, 16.px, 20.px, 24.px),
-            children: [
-              if (vm.todayNotifications.isNotEmpty) ...[
-                _sectionLabel('today'.L()),
-                vSpacePx(12),
-                ..._notificationItems(vm.todayNotifications),
+      body: SafeArea(
+        child: Consumer<NotificationVm>(
+          builder: (context, vm, _) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(20.px, 16.px, 20.px, 24.px),
+              children: [
+                if (vm.todayNotifications.isNotEmpty) ...[
+                  _sectionLabel('today'.L()),
+                  vSpacePx(12),
+                  ..._notificationItems(vm.todayNotifications),
+                ],
+                if (vm.yesterdayNotifications.isNotEmpty) ...[
+                  vSpacePx(8),
+                  _sectionLabel('yesterday'.L()),
+                  vSpacePx(12),
+                  ..._notificationItems(vm.yesterdayNotifications),
+                ],
               ],
-              if (vm.yesterdayNotifications.isNotEmpty) ...[
-                vSpacePx(8),
-                _sectionLabel('yesterday'.L()),
-                vSpacePx(12),
-                ..._notificationItems(vm.yesterdayNotifications),
-              ],
-            ],
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -66,8 +64,8 @@ class NotificationView extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.px),
             ),
             child: Icon(
-              Icons.chevron_left,
-              color: R.appColors.darkBlack,
+              Icons.arrow_back_rounded,
+              color: R.appColors.slate,
               size: 22.px,
             ),
           ),
@@ -77,13 +75,12 @@ class NotificationView extends StatelessWidget {
             'notification'.L(),
             textAlign: TextAlign.center,
             style: R.appTextStyle.poppins(
-              fontSize: 17,
+              fontSize: 16,
               color: R.appColors.darkBlack,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
-        SizedBox(width: 36.px),
       ],
     );
   }
@@ -92,9 +89,9 @@ class NotificationView extends StatelessWidget {
     return Text(
       text,
       style: R.appTextStyle.poppins(
-        fontSize: 12,
+        fontSize: 11,
         color: R.appColors.slateGray,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w700,
       ),
     );
   }
@@ -125,9 +122,9 @@ class NotificationView extends StatelessWidget {
                     child: Text(
                       item.title,
                       style: R.appTextStyle.poppins(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: R.appColors.darkBlack,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -135,9 +132,8 @@ class NotificationView extends StatelessWidget {
                   Text(
                     item.timeLabel,
                     style: R.appTextStyle.poppins(
-                      fontSize: 11,
+                      fontSize: 10,
                       color: R.appColors.slateGray,
-                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
@@ -147,7 +143,7 @@ class NotificationView extends StatelessWidget {
                 item.body,
                 style: R.appTextStyle.poppins(
                   fontSize: 12,
-                  color: R.appColors.textLightBlack,
+                  color: R.appColors.slate,
                   height: 1.4,
                 ),
               ),
@@ -165,12 +161,12 @@ class NotificationView extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Container(
-          width: 44.px,
-          height: 44.px,
-          padding: EdgeInsets.all(11.px),
+          width: 40.px,
+          height: 40.px,
+          padding: EdgeInsets.all(13.px),
           decoration: R.appDecorations.cardDecoration(
-            color: Color.lerp(R.appColors.white, item.iconColor, 0.12)!,
-            borderRadius: BorderRadius.circular(14.px),
+            color: item.iconColor.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(16.px),
           ),
           child: Image.asset(item.icon, color: item.iconColor),
         ),
@@ -183,7 +179,7 @@ class NotificationView extends StatelessWidget {
               height: 10.px,
               decoration: R.appDecorations.cardDecoration(
                 shape: BoxShape.circle,
-                color: R.appColors.successGreen,
+                color: R.appColors.secondary,
                 border: Border.all(color: R.appColors.white, width: 1.5),
               ),
             ),
@@ -196,15 +192,15 @@ class NotificationView extends StatelessWidget {
     final (label, icon) = switch (category) {
       NotificationCategory.habitReminder => (
         'habit_reminder'.L(),
-        R.appImages.notification,
+        R.appImages.reminderTime,
       ),
       NotificationCategory.coachMessage => (
         'coach_message'.L(),
-        R.appImages.message,
+        R.appImages.coachMessage,
       ),
       NotificationCategory.coachReminder => (
         'coach_reminder'.L(),
-        R.appImages.upcoming,
+        R.appImages.coachReminders,
       ),
     };
 
@@ -213,17 +209,17 @@ class NotificationView extends StatelessWidget {
       children: [
         Image.asset(
           icon,
-          width: 12.px,
-          height: 12.px,
+          width: 11.px,
+          height: 11.px,
           color: R.appColors.slateGray,
         ),
         hSpacePx(4),
         Text(
           label,
           style: R.appTextStyle.poppins(
-            fontSize: 11,
+            fontSize: 10,
             color: R.appColors.slateGray,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],

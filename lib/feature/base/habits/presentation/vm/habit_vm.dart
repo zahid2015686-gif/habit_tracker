@@ -87,6 +87,19 @@ class HabitVm extends ChangeNotifier {
     return '$hour:$minute';
   }
 
+  // ---------------- Home rhythm month ----------------
+  DateTime rhythmMonth = DateTime(DateTime.now().year, DateTime.now().month);
+
+  void previousRhythmMonth() {
+    rhythmMonth = DateTime(rhythmMonth.year, rhythmMonth.month - 1);
+    notifyListeners();
+  }
+
+  void nextRhythmMonth() {
+    rhythmMonth = DateTime(rhythmMonth.year, rhythmMonth.month + 1);
+    notifyListeners();
+  }
+
   // ---------------- Target & Duration ----------------
   int target = 5;
   int durationMinutes = 10;
