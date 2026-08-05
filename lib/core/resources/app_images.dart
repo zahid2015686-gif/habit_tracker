@@ -64,4 +64,19 @@ class AppImages {
   final String coachIcon = 'assets/images/coach_icon.png';
   final String coachMessage = 'assets/images/coach_message.png';
   final String coachReminders = 'assets/images/coach_reminders.png';
+  final String celebrateTheMinimum = 'assets/images/celebrate_the_minimum.png';
+  final String coachProfilePic = 'assets/images/coach_profile_pic.png';
+  final String dayStreak = 'assets/images/day_streak.png';
+  final String environmentShapesBehavior =
+      'assets/images/environment_shapes_behavior.png';
+  final String experience = 'assets/images/experience.png';
+  final String messages = 'assets/images/messages.png';
+  final String neverMissTwice = 'assets/images/never_miss_twice.png';
+  final String recentMessages = 'assets/images/recent_messages.png';
+  final String requestSupport = 'assets/images/request_support.png';
+  final String scheduleAdjustmentRecommended =
+      'assets/images/schedule_adjustment_recommended.png';
+  final String sendMessage = 'assets/images/send_message.png';
+  final String weeklyReviewComplete =
+      'assets/images/weekly_review_complete.png';
 }

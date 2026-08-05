@@ -10,6 +10,7 @@ import 'package:habit_tracker/core/utils/extension_methods.dart';
 import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/base_view/presentation/vm/base_vm.dart';
 import 'package:habit_tracker/feature/base/habits/presentation/vm/habit_vm.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/coach_view.dart';
 import 'package:habit_tracker/feature/base/notification/presentation/pages/notification_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:intl/intl.dart';
@@ -186,15 +187,18 @@ class _HomeViewState extends State<HomeView>
           ),
         ),
         hSpacePx(10),
-        Container(
-          width: 40.px,
-          height: 40.px,
-          padding: EdgeInsets.all(12.px),
-          decoration: R.appDecorations.cardDecoration(
-            color: R.appColors.screenBackground2,
-            borderRadius: BorderRadius.circular(14.px),
+        GestureDetector(
+          onTap: () => Get.toNamed(CoachView.route),
+          child: Container(
+            width: 40.px,
+            height: 40.px,
+            padding: EdgeInsets.all(12.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: R.appColors.screenBackground2,
+              borderRadius: BorderRadius.circular(14.px),
+            ),
+            child: Image.asset(R.appImages.message),
           ),
-          child: Image.asset(R.appImages.message),
         ),
         hSpacePx(10),
         GestureDetector(
@@ -345,6 +349,7 @@ class _HomeViewState extends State<HomeView>
                   text: 'view'.L(),
                   color: R.appColors.seaGreen,
                   borderRadius: 8,
+                  onTap: () => Get.toNamed(CoachView.route),
                   textStyle: R.appTextStyle.poppins(
                     fontSize: 13,
                     color: R.appColors.white,
