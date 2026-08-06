@@ -8,6 +8,7 @@ import 'package:habit_tracker/feature/base/home/data/models/coach_insight_model.
 import 'package:habit_tracker/feature/base/home/data/models/coach_message_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_tip_model.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/coach_chat_view.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/request_support_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/vm/home_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -333,6 +334,7 @@ class CoachView extends StatelessWidget {
             iconColor: R.appColors.orange,
             title: 'request_support'.L(),
             subtitle: 'ask_for_help'.L(),
+            onTap: () => Get.toNamed(RequestSupportView.route),
           ),
         ),
         hSpacePx(10),
@@ -354,78 +356,82 @@ class CoachView extends StatelessWidget {
     required String title,
     String? titleSuffix,
     required String subtitle,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      height: 120,
-      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 8.px),
-      decoration: R.appDecorations.cardDecoration(
-        color: R.appColors.white,
-        borderRadius: BorderRadius.circular(16.px),
-        border: Border.all(color: R.appColors.cardBackground, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: R.appColors.black.withValues(alpha: 0.05),
-            offset: Offset(0, 1),
-            blurRadius: 2,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 32.px,
-            height: 32.px,
-            padding: EdgeInsets.all(10.px),
-            decoration: R.appDecorations.cardDecoration(
-              color: iconColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(12.px),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 120,
+        padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 8.px),
+        decoration: R.appDecorations.cardDecoration(
+          color: R.appColors.white,
+          borderRadius: BorderRadius.circular(16.px),
+          border: Border.all(color: R.appColors.cardBackground, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: R.appColors.black.withValues(alpha: 0.05),
+              offset: Offset(0, 1),
+              blurRadius: 2,
+              spreadRadius: 0,
             ),
-            child: Image.asset(icon, color: iconColor),
-          ),
-          vSpacePx(10),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: title,
-                  style: R.appTextStyle.poppins(
-                    fontSize: 10,
-                    color: R.appColors.darkSlate,
-                    fontWeight: FontWeight.w600,
-                    height: 1.25,
-                  ),
-                ),
-                if (titleSuffix != null)
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 32.px,
+              height: 32.px,
+              padding: EdgeInsets.all(10.px),
+              decoration: R.appDecorations.cardDecoration(
+                color: iconColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12.px),
+              ),
+              child: Image.asset(icon, color: iconColor),
+            ),
+            vSpacePx(10),
+            Text.rich(
+              TextSpan(
+                children: [
                   TextSpan(
-                    text: ' $titleSuffix',
+                    text: title,
                     style: R.appTextStyle.poppins(
                       fontSize: 10,
-                      color: R.appColors.textLightBlack,
-                      fontWeight: FontWeight.w500,
+                      color: R.appColors.darkSlate,
+                      fontWeight: FontWeight.w600,
                       height: 1.25,
                     ),
                   ),
-              ],
+                  if (titleSuffix != null)
+                    TextSpan(
+                      text: ' $titleSuffix',
+                      style: R.appTextStyle.poppins(
+                        fontSize: 10,
+                        color: R.appColors.textLightBlack,
+                        fontWeight: FontWeight.w500,
+                        height: 1.25,
+                      ),
+                    ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          vSpacePx(2),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: R.appTextStyle.poppins(
-              fontSize: 10,
-              color: R.appColors.textLightBlack,
+            vSpacePx(2),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: R.appTextStyle.poppins(
+                fontSize: 10,
+                color: R.appColors.textLightBlack,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

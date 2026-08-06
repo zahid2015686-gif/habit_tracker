@@ -5,6 +5,7 @@ import 'package:habit_tracker/feature/base/home/data/models/coach_insight_model.
 import 'package:habit_tracker/feature/base/home/data/models/coach_message_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_stat_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_tip_model.dart';
+import 'package:habit_tracker/feature/base/home/data/models/support_topic_model.dart';
 
 class HomeVm extends ChangeNotifier {
   // ---------------- Coach profile ----------------
@@ -264,9 +265,74 @@ class HomeVm extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ---------------- Request support ----------------
+  final TextEditingController supportMessageController =
+      TextEditingController();
+  String? selectedSupportTopicId;
+  static const int supportMessageMaxLength = 500;
+
+  final List<SupportTopicModel> supportTopics = [
+    SupportTopicModel(
+      id: 'low_motivation',
+      titleKey: 'low_motivation',
+      subtitleKey: 'low_motivation_desc',
+      icon: Icons.sentiment_dissatisfied_outlined,
+    ),
+    SupportTopicModel(
+      id: 'feeling_overwhelmed',
+      titleKey: 'feeling_overwhelmed',
+      subtitleKey: 'feeling_overwhelmed_desc',
+      icon: Icons.psychology_outlined,
+    ),
+    SupportTopicModel(
+      id: 'breaking_the_routine',
+      titleKey: 'breaking_the_routine',
+      subtitleKey: 'breaking_the_routine_desc',
+      icon: Icons.error_outline_rounded,
+    ),
+    SupportTopicModel(
+      id: 'need_encouragement',
+      titleKey: 'need_encouragement',
+      subtitleKey: 'need_encouragement_desc',
+      icon: Icons.favorite_border_rounded,
+    ),
+    SupportTopicModel(
+      id: 'habit_question',
+      titleKey: 'habit_question',
+      subtitleKey: 'habit_question_desc',
+      icon: Icons.help_outline_rounded,
+    ),
+    SupportTopicModel(
+      id: 'other',
+      titleKey: 'other',
+      subtitleKey: 'other_desc',
+      icon: Icons.more_horiz_rounded,
+    ),
+  ];
+
+  bool get canSendSupportRequest => selectedSupportTopicId != null;
+
+  void selectSupportTopic(String topicId) {
+    selectedSupportTopicId =
+        selectedSupportTopicId == topicId ? null : topicId;
+    notifyListeners();
+  }
+
+  void onSupportMessageChanged() {
+    notifyListeners();
+  }
+
+  void sendSupportRequest() {
+    if (!canSendSupportRequest) return;
+    selectedSupportTopicId = null;
+    supportMessageController.clear();
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     chatMessageController.dispose();
+    supportMessageController.dispose();
     super.dispose();
   }
 }

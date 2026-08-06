@@ -159,6 +159,34 @@ class AppLocalization {
     "day_streak": "Day Streak",
     "avg_reply": "Avg Reply",
     "message_coach_sarah": "Message Coach Sarah...",
+    "coach": "Coach",
+    "my_requests": "My Requests",
+    "request_support_intro":
+        "Your coach is here to help. Select what you are struggling with and add an optional message. Coach Sarah usually responds within 2 hours.",
+    "your_coach_sarah_is_online": "Your Coach Sarah is online",
+    "usually_replies_within_2_hours": "Usually replies within 2 hours",
+    "what_do_you_need_help_with": "What do you need help with?",
+    "low_motivation": "Low Motivation",
+    "low_motivation_desc":
+        "Feeling unmotivated and struggling to start or continue habits",
+    "feeling_overwhelmed": "Feeling Overwhelmed",
+    "feeling_overwhelmed_desc":
+        "Too many things to do, feeling stuck or paralyzed",
+    "breaking_the_routine": "Breaking the Routine",
+    "breaking_the_routine_desc":
+        "Consistency is slipping and old patterns are creeping back",
+    "need_encouragement": "Need Encouragement",
+    "need_encouragement_desc":
+        "Just need a boost and some positive words to keep going",
+    "habit_question": "Habit Question",
+    "habit_question_desc":
+        "Have a question about your habits, schedule, or approach",
+    "other": "Other",
+    "other_desc": "Something else you would like to discuss with your coach",
+    "additional_message_optional": "Additional message (optional)",
+    "tell_coach_sarah_more":
+        "Tell Coach Sarah more about what you are going through...",
+    "send_request": "Send Request",
   };
 
   static Map<String, String> get codesES => {};

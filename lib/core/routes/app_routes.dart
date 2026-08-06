@@ -6,6 +6,7 @@ import 'package:habit_tracker/feature/base/habits/presentation/pages/habits_view
 import 'package:habit_tracker/feature/base/home/presentation/pages/coach_chat_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/coach_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/pages/home_view.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/request_support_view.dart';
 import 'package:habit_tracker/feature/base/notification/presentation/pages/notification_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_success_view.dart';
 import 'package:habit_tracker/feature/base/profile/presentation/pages/premium_view.dart';
@@ -62,6 +63,12 @@ abstract class AppRoutes {
     GetPage(
       name: CoachChatView.route,
       page: () => const CoachChatView(),
+      curve: Curves.easeInOut,
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: RequestSupportView.route,
+      page: () => const RequestSupportView(),
       curve: Curves.easeInOut,
       transition: Transition.cupertino,
     ),
