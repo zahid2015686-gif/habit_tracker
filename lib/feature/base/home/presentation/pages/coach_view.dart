@@ -7,6 +7,7 @@ import 'package:habit_tracker/core/widgets/app_button.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_insight_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_message_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_tip_model.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/coach_chat_view.dart';
 import 'package:habit_tracker/feature/base/home/presentation/vm/home_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -138,15 +139,18 @@ class CoachView extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          width: 40.px,
-          height: 40.px,
-          padding: EdgeInsets.all(10.px),
-          decoration: R.appDecorations.cardDecoration(
-            color: R.appColors.border,
-            borderRadius: BorderRadius.circular(14.px),
+        GestureDetector(
+          onTap: () => Get.toNamed(CoachChatView.route),
+          child: Container(
+            width: 40.px,
+            height: 40.px,
+            padding: EdgeInsets.all(10.px),
+            decoration: R.appDecorations.cardDecoration(
+              color: R.appColors.border,
+              borderRadius: BorderRadius.circular(14.px),
+            ),
+            child: Image.asset(R.appImages.coachMessage),
           ),
-          child: Image.asset(R.appImages.coachMessage),
         ),
       ],
     );
@@ -289,6 +293,7 @@ class CoachView extends StatelessWidget {
                   text: 'start_conversation'.L(),
                   color: R.appColors.seaGreen,
                   borderRadius: 16,
+                  onTap: () => Get.toNamed(CoachChatView.route),
                   leftIcon: Image.asset(
                     R.appImages.messages,
                     width: 16.px,

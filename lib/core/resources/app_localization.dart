@@ -153,6 +153,12 @@ class AppLocalization {
     "about_your_coach": "About Your Coach",
     "specialties": "Specialties",
     "recent_messages": "Recent messages",
+    "online_now": "Online now",
+    "your_coaching_stats": "Your Coaching Stats",
+    "messages": "Messages",
+    "day_streak": "Day Streak",
+    "avg_reply": "Avg Reply",
+    "message_coach_sarah": "Message Coach Sarah...",
   };
 
   static Map<String, String> get codesES => {};

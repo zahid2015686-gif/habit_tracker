@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/core/resources/resources.dart';
+import 'package:habit_tracker/feature/base/home/data/models/coach_chat_message_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_insight_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_message_model.dart';
+import 'package:habit_tracker/feature/base/home/data/models/coach_stat_model.dart';
 import 'package:habit_tracker/feature/base/home/data/models/coach_tip_model.dart';
 
 class HomeVm extends ChangeNotifier {
@@ -160,4 +162,111 @@ class HomeVm extends ChangeNotifier {
       avatar: R.appImages.recentMessages,
     ),
   ];
+
+  // ---------------- Chat ----------------
+  final TextEditingController chatMessageController = TextEditingController();
+
+  final List<CoachStatModel> coachingStats = [
+    CoachStatModel(
+      value: '148',
+      label: 'messages',
+      icon: R.appImages.messages,
+      iconColor: R.appColors.successGreen,
+    ),
+    CoachStatModel(
+      value: '12',
+      label: 'day_streak',
+      icon: R.appImages.dayStreak,
+      iconColor: R.appColors.skyBlue,
+    ),
+    CoachStatModel(
+      value: '3m',
+      label: 'avg_reply',
+      icon: R.appImages.reminderTime,
+      iconColor: R.appColors.successGreen,
+    ),
+  ];
+
+  final List<CoachChatMessageModel> chatMessages = [
+    CoachChatMessageModel(
+      text:
+          'Good morning Ahmad! How are you feeling about your habits this week?',
+      timeLabel: '9:32 AM',
+      isFromCoach: true,
+    ),
+    CoachChatMessageModel(
+      text:
+          'Pretty good! Hit my meditation streak again today — 12 days now. Feeling more focused in the mornings.',
+      timeLabel: '9:34 AM',
+      isFromCoach: false,
+    ),
+    CoachChatMessageModel(
+      text:
+          'That\'s amazing progress! The morning focus is a real sign the habit is sticking. How\'s the evening journal going?',
+      timeLabel: '9:35 AM',
+      isFromCoach: true,
+    ),
+    CoachChatMessageModel(
+      text:
+          'Thanks! I struggled this morning though. Woke up late and almost skipped meditation entirely.',
+      timeLabel: '9:36 AM',
+      isFromCoach: false,
+    ),
+    CoachChatMessageModel(
+      text:
+          'That\'s completely okay. Those mornings happen to everyone — the fact you still showed up says a lot. What ended up getting you back on track?',
+      timeLabel: '9:37 AM',
+      isFromCoach: true,
+    ),
+    CoachChatMessageModel(
+      text:
+          'Honestly? Just starting small. I told myself I would only do 3 minutes of meditation instead of 10, and once I started I ended up doing the full session.',
+      timeLabel: '9:38 AM',
+      isFromCoach: false,
+    ),
+    CoachChatMessageModel(
+      text:
+          'That\'s the secret right there — lowering the barrier. A 3-minute meditation is infinitely better than a skipped one. Let\'s carry that mindset into this afternoon too. What\'s your one small win you\'re aiming for today?',
+      timeLabel: '9:39 AM',
+      isFromCoach: true,
+    ),
+    CoachChatMessageModel(
+      text:
+          'I think getting my evening journal done before dinner this time — not leaving it until I\'m exhausted...',
+      timeLabel: '9:40 AM',
+      isFromCoach: false,
+    ),
+    CoachChatMessageModel(
+      text:
+          'Great focus. Even 2-3 sentences at 5pm counts as a win. You\'ve got this — I\'ll check in later today to see how it went.',
+      timeLabel: '9:41 AM',
+      isFromCoach: true,
+    ),
+  ];
+
+  void sendChatMessage() {
+    final text = chatMessageController.text.trim();
+    if (text.isEmpty) return;
+
+    final now = TimeOfDay.now();
+    final hour = now.hourOfPeriod == 0 ? 12 : now.hourOfPeriod;
+    final minute = now.minute.toString().padLeft(2, '0');
+    final period = now.period == DayPeriod.am ? 'AM' : 'PM';
+
+    chatMessages.add(
+      CoachChatMessageModel(
+        text: text,
+        timeLabel: '$hour:$minute $period',
+        isFromCoach: false,
+      ),
+    );
+    chatMessageController.clear();
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    chatMessageController.dispose();
+    super.dispose();
+  }
 }
