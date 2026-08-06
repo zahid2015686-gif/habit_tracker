@@ -30,6 +30,9 @@ class AppColors {
   final Color smokyGray = const Color(0xFF748297);
   final Color goldenYellow = const Color(0xFFEAB308);
   final Color herbGreen = const Color(0xFF98AE42);
+  final Color aliceBlue = const Color(0xFFF0F9FF);
+  final Color indigoMist = const Color(0xFFEEF2FF);
+  final Color skyMist = const Color(0xFFBAE6FD);
 
   // Text
   final Color textGreen = const Color(0xFF15803D);
@@ -58,6 +61,7 @@ class AppColors {
   final Color softPistachio = const Color(0xFFF5F8EB);
   final Color leafGreen = const Color(0xFFBBC96F);
   final Color warmAmber = const Color(0xFFFCD34D);
+  final Color forestOlive = const Color(0xFF607622);
 
   // Gradient
   final Color oliveGreen = const Color(0xFFB7CE76);

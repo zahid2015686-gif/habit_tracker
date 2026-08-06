@@ -13,7 +13,7 @@ class HomeVm extends ChangeNotifier {
       'Your personal habit coach — here to help you build a rhythm that lasts. Consistency over perfection, always.';
   final String coachAbout =
       'Certified habit-building coach with 6+ years of experience helping people transform their daily routines. I believe in consistency over perfection — your habits should work with your life, not against it. Together we will build a rhythm that feels natural, sustainable, and uniquely yours.';
-  final String experienceYears = '8yrs';
+  final String experienceYears = '8';
   final String coachProfileImage = R.appImages.coachProfilePic;
 
   final List<String> specialties = const [
@@ -33,8 +33,8 @@ class HomeVm extends ChangeNotifier {
       dateLabel: 'Jul 21',
       tag: 'review',
       icon: R.appImages.weeklyReviewComplete,
-      iconColor: R.appColors.violet,
-      tagColor: R.appColors.successGreen,
+      iconColor: R.appColors.indigo,
+      tagColor: R.appColors.forestOlive,
     ),
     CoachInsightModel(
       title: 'Schedule Adjustment Recommended',
@@ -129,9 +129,7 @@ class HomeVm extends ChangeNotifier {
 
   List<CoachTipModel> get filteredTips {
     if (selectedTipCategory == 'all') return tips;
-    return tips
-        .where((tip) => tip.category == selectedTipCategory)
-        .toList();
+    return tips.where((tip) => tip.category == selectedTipCategory).toList();
   }
 
   void selectTipCategory(String category) {
@@ -153,13 +151,13 @@ class HomeVm extends ChangeNotifier {
       text:
           'Good morning Ahmad! How are you feeling about your habits this week?',
       timeLabel: 'Jul 21, 08:02 AM',
-      avatar: R.appImages.coachProfilePic,
+      avatar: R.appImages.recentMessages,
     ),
     CoachMessageModel(
       text:
           'Morning Coach! Feeling pretty good honestly — meditation streak is going strong',
       timeLabel: 'Jul 21, 08:04 AM',
-      avatar: R.appImages.profile,
+      avatar: R.appImages.recentMessages,
     ),
   ];
 }

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:habit_tracker/core/routes/app_routes.dart';
 import 'package:habit_tracker/core/utils/global_functions.dart';
-import 'package:habit_tracker/feature/landing/presentation/pages/splash_view.dart';
+import 'package:habit_tracker/feature/base/home/presentation/pages/coach_view.dart';
 import 'package:habit_tracker/injector.dart';
 import 'package:sizer/sizer.dart';
 
@@ -38,8 +38,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      initialRoute: SplashView.route,
-      //initialRoute: HabitDiscoverView.route,
+      //initialRoute: SplashView.route,
+      initialRoute: CoachView.route,
       getPages: AppRoutes.pages,
     );
   }

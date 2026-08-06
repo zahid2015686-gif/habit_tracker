@@ -135,6 +135,7 @@ class AppLocalization {
     "senior_habit_coach": "Senior Habit Coach",
     "start_conversation": "Start Conversation",
     "experience": "Experience",
+    "yrs": "yrs",
     "request_support": "Request Support",
     "ask_for_help": "Ask for help",
     "schedule_call": "Schedule Call",

@@ -50,8 +50,8 @@ class CoachView extends StatelessWidget {
                 Text(
                   'todays_tip'.L(),
                   style: R.appTextStyle.poppins(
-                    fontSize: 15,
-                    color: R.appColors.darkSlate,
+                    fontSize: 16,
+                    color: R.appColors.darkBlack,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -61,8 +61,8 @@ class CoachView extends StatelessWidget {
                 Text(
                   'all_tips'.L(),
                   style: R.appTextStyle.poppins(
-                    fontSize: 15,
-                    color: R.appColors.darkSlate,
+                    fontSize: 16,
+                    color: R.appColors.darkBlack,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -75,16 +75,16 @@ class CoachView extends StatelessWidget {
                     child: _tipCard(vm: vm, tip: tip),
                   ),
                 ),
-                vSpacePx(12),
+                vSpacePx(5),
                 Text(
                   'about_your_coach'.L(),
                   style: R.appTextStyle.poppins(
-                    fontSize: 15,
-                    color: R.appColors.darkSlate,
+                    fontSize: 16,
+                    color: R.appColors.darkBlack,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                vSpacePx(12),
+                vSpacePx(10),
                 _aboutCard(vm),
               ],
             );
@@ -160,66 +160,96 @@ class CoachView extends StatelessWidget {
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(20.px),
         border: Border.all(color: R.appColors.cardBackground, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: const Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0,
+          ),
+        ],
       ),
-      child: Column(
+      child: Stack(
         children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.fromLTRB(20.px, 22.px, 20.px, 18.px),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  R.appColors.softLavenderBlue.withValues(alpha: 0.75),
-                  R.appColors.paleSageGreen.withValues(alpha: 0.55),
-                  R.appColors.white,
-                ],
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 100.px,
+            child: Container(
+              decoration: R.appDecorations.cardDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.px),
+                  topRight: Radius.circular(20.px),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    R.appColors.herbGreen.withValues(alpha: 0.15),
+                    R.appColors.softIndigo.withValues(alpha: 0.15),
+                    R.appColors.brightSkyBlue.withValues(alpha: 0.10),
+                  ],
+                  stops: const [0.0, 0.45, 1.0],
+                ),
               ),
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.px, 28.px, 20.px, 20.px),
             child: Column(
               children: [
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Container(
-                      width: 88.px,
-                      height: 88.px,
+                      width: 82.px,
+                      height: 82.px,
                       padding: EdgeInsets.all(3.px),
                       decoration: R.appDecorations.cardDecoration(
                         shape: BoxShape.circle,
-                        color: R.appColors.white,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [R.appColors.herbGreen, R.appColors.indigo],
+                        ),
                       ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          vm.coachProfileImage,
-                          fit: BoxFit.cover,
+                      child: Container(
+                        decoration: R.appDecorations.cardDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            vm.coachProfileImage,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
                     Positioned(
-                      right: 4.px,
-                      bottom: 4.px,
+                      right: 1.px,
+                      bottom: 5.px,
                       child: Container(
-                        width: 14.px,
-                        height: 14.px,
+                        width: 20.px,
+                        height: 20.px,
                         decoration: R.appDecorations.cardDecoration(
                           shape: BoxShape.circle,
                           color: R.appColors.successGreen,
                           border: Border.all(
                             color: R.appColors.white,
-                            width: 2,
+                            width: 2.8,
                           ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                vSpacePx(12),
+                vSpacePx(14),
                 Text(
                   vm.coachFullTitle,
+                  textAlign: TextAlign.center,
                   style: R.appTextStyle.poppins(
-                    fontSize: 16,
+                    fontSize: 18,
                     color: R.appColors.darkSlate,
                     fontWeight: FontWeight.w700,
                   ),
@@ -228,18 +258,18 @@ class CoachView extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 10.px,
-                    vertical: 4.px,
+                    vertical: 2.px,
                   ),
                   decoration: R.appDecorations.cardDecoration(
-                    color: R.appColors.screenBackground4,
+                    color: R.appColors.softPistachio,
                     borderRadius: BorderRadius.circular(100.px),
                   ),
                   child: Text(
                     'senior_habit_coach'.L(),
                     style: R.appTextStyle.poppins(
-                      fontSize: 11,
-                      color: R.appColors.textGreen,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: R.appColors.forestOlive,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -250,24 +280,23 @@ class CoachView extends StatelessWidget {
                   style: R.appTextStyle.poppins(
                     fontSize: 12,
                     color: R.appColors.textLightBlack,
-                    fontWeight: FontWeight.w500,
-                    height: 1.45,
+                    height: 1.5,
                   ),
                 ),
-                vSpacePx(16),
+                vSpacePx(18),
                 AppButton(
-                  height: 44,
+                  height: 46,
                   text: 'start_conversation'.L(),
                   color: R.appColors.seaGreen,
-                  borderRadius: 12,
+                  borderRadius: 16,
                   leftIcon: Image.asset(
-                    R.appImages.sendMessage,
+                    R.appImages.messages,
                     width: 16.px,
                     height: 16.px,
                     color: R.appColors.white,
                   ),
                   textStyle: R.appTextStyle.poppins(
-                    fontSize: 13,
+                    fontSize: 14,
                     color: R.appColors.white,
                     fontWeight: FontWeight.w600,
                   ),
@@ -285,9 +314,10 @@ class CoachView extends StatelessWidget {
       children: [
         Expanded(
           child: _actionCard(
-            icon: R.appImages.experience,
+            icon: R.appImages.coachExperience,
             iconColor: R.appColors.skyBlue,
             title: vm.experienceYears,
+            titleSuffix: 'yrs'.L(),
             subtitle: 'experience'.L(),
           ),
         ),
@@ -303,8 +333,8 @@ class CoachView extends StatelessWidget {
         hSpacePx(10),
         Expanded(
           child: _actionCard(
-            icon: R.appImages.coachReminders,
-            iconColor: R.appColors.successGreen,
+            icon: R.appImages.upcoming,
+            iconColor: R.appColors.textGreen,
             title: 'schedule_call'.L(),
             subtitle: 'book_15_min_call'.L(),
           ),
@@ -317,39 +347,67 @@ class CoachView extends StatelessWidget {
     required String icon,
     required Color iconColor,
     required String title,
+    String? titleSuffix,
     required String subtitle,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 14.px),
+      height: 120,
+      padding: EdgeInsets.symmetric(horizontal: 10.px, vertical: 8.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(16.px),
         border: Border.all(color: R.appColors.cardBackground, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 36.px,
-            height: 36.px,
-            padding: EdgeInsets.all(9.px),
+            width: 32.px,
+            height: 32.px,
+            padding: EdgeInsets.all(10.px),
             decoration: R.appDecorations.cardDecoration(
-              shape: BoxShape.circle,
-              color: Color.lerp(R.appColors.white, iconColor, 0.12),
+              color: iconColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12.px),
             ),
             child: Image.asset(icon, color: iconColor),
           ),
           vSpacePx(10),
-          Text(
-            title,
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: title,
+                  style: R.appTextStyle.poppins(
+                    fontSize: 10,
+                    color: R.appColors.darkSlate,
+                    fontWeight: FontWeight.w600,
+                    height: 1.25,
+                  ),
+                ),
+                if (titleSuffix != null)
+                  TextSpan(
+                    text: ' $titleSuffix',
+                    style: R.appTextStyle.poppins(
+                      fontSize: 10,
+                      color: R.appColors.textLightBlack,
+                      fontWeight: FontWeight.w500,
+                      height: 1.25,
+                    ),
+                  ),
+              ],
+            ),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: R.appTextStyle.poppins(
-              fontSize: 11,
-              color: R.appColors.darkSlate,
-              fontWeight: FontWeight.w700,
-              height: 1.25,
-            ),
           ),
           vSpacePx(2),
           Text(
@@ -360,7 +418,6 @@ class CoachView extends StatelessWidget {
             style: R.appTextStyle.poppins(
               fontSize: 10,
               color: R.appColors.textLightBlack,
-              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -374,8 +431,8 @@ class CoachView extends StatelessWidget {
         Text(
           'coach_insights'.L(),
           style: R.appTextStyle.poppins(
-            fontSize: 15,
-            color: R.appColors.darkSlate,
+            fontSize: 16,
+            color: R.appColors.darkBlack,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -395,11 +452,19 @@ class CoachView extends StatelessWidget {
   Widget _insightCard(CoachInsightModel insight) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(14.px),
+      padding: EdgeInsets.all(17.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(16.px),
         border: Border.all(color: R.appColors.cardBackground, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,10 +475,10 @@ class CoachView extends StatelessWidget {
               Container(
                 width: 36.px,
                 height: 36.px,
-                padding: EdgeInsets.all(9.px),
+                padding: EdgeInsets.all(11.px),
                 decoration: R.appDecorations.cardDecoration(
-                  color: Color.lerp(R.appColors.white, insight.iconColor, 0.12),
-                  borderRadius: BorderRadius.circular(10.px),
+                  color: Color.lerp(R.appColors.white, insight.iconColor, 0.10),
+                  borderRadius: BorderRadius.circular(12.px),
                 ),
                 child: Image.asset(insight.icon, color: insight.iconColor),
               ),
@@ -422,23 +487,23 @@ class CoachView extends StatelessWidget {
                 child: Text(
                   insight.title,
                   style: R.appTextStyle.poppins(
-                    fontSize: 13,
+                    fontSize: 14,
                     color: R.appColors.darkSlate,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
               hSpacePx(8),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.px, vertical: 3.px),
+                padding: EdgeInsets.symmetric(horizontal: 6.px, vertical: 2.px),
                 decoration: R.appDecorations.cardDecoration(
-                  color: Color.lerp(R.appColors.white, insight.tagColor, 0.14),
+                  color: insight.tagColor.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(100.px),
                 ),
                 child: Text(
                   insight.tag.L(),
                   style: R.appTextStyle.poppins(
-                    fontSize: 10,
+                    fontSize: 9,
                     color: insight.tagColor,
                     fontWeight: FontWeight.w600,
                   ),
@@ -446,23 +511,21 @@ class CoachView extends StatelessWidget {
               ),
             ],
           ),
-          vSpacePx(10),
+          vSpacePx(8),
           Text(
             insight.body,
             style: R.appTextStyle.poppins(
               fontSize: 12,
-              color: R.appColors.textLightBlack,
-              fontWeight: FontWeight.w500,
+              color: R.appColors.slate,
               height: 1.45,
             ),
           ),
-          vSpacePx(10),
+          vSpacePx(3),
           Text(
             insight.dateLabel,
             style: R.appTextStyle.poppins(
-              fontSize: 11,
+              fontSize: 10,
               color: R.appColors.slateGray,
-              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -475,19 +538,24 @@ class CoachView extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(14.px),
       decoration: R.appDecorations.cardDecoration(
-        color: R.appColors.softLavenderBlue.withValues(alpha: 0.35),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [R.appColors.aliceBlue, R.appColors.indigoMist],
+        ),
         borderRadius: BorderRadius.circular(16.px),
+        border: Border.all(color: R.appColors.skyMist, width: 1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 36.px,
-            height: 36.px,
-            padding: EdgeInsets.all(9.px),
+            width: 44.px,
+            height: 44.px,
+            padding: EdgeInsets.all(15.px),
             decoration: R.appDecorations.cardDecoration(
-              color: Color.lerp(R.appColors.white, tip.iconColor, 0.14),
-              borderRadius: BorderRadius.circular(10.px),
+              color: tip.iconColor.withValues(alpha: 0.10),
+              borderRadius: BorderRadius.circular(16.px),
             ),
             child: Image.asset(tip.icon, color: tip.iconColor),
           ),
@@ -498,29 +566,27 @@ class CoachView extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        tip.title,
-                        style: R.appTextStyle.poppins(
-                          fontSize: 13,
-                          color: R.appColors.darkSlate,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    Text(
+                      tip.title,
+                      style: R.appTextStyle.poppins(
+                        color: R.appColors.darkSlate,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
+                    hSpacePx(10),
                     Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 8.px,
-                        vertical: 3.px,
+                        horizontal: 6.px,
+                        vertical: 2.px,
                       ),
                       decoration: R.appDecorations.cardDecoration(
-                        color: R.appColors.softLavenderBlue,
+                        color: R.appColors.skyBlue.withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(100.px),
                       ),
                       child: Text(
                         tip.category.L(),
                         style: R.appTextStyle.poppins(
-                          fontSize: 10,
+                          fontSize: 9,
                           color: R.appColors.skyBlue,
                           fontWeight: FontWeight.w600,
                         ),
@@ -533,8 +599,8 @@ class CoachView extends StatelessWidget {
                   tip.body,
                   style: R.appTextStyle.poppins(
                     fontSize: 12,
-                    color: R.appColors.textLightBlack,
-                    fontWeight: FontWeight.w500,
+                    color: R.appColors.slate,
+                    fontWeight: FontWeight.w400,
                     height: 1.45,
                   ),
                 ),
@@ -553,13 +619,13 @@ class CoachView extends StatelessWidget {
         children: vm.tipCategories.map((category) {
           final selected = vm.selectedTipCategory == category;
           return Padding(
-            padding: EdgeInsets.only(right: 8.px),
+            padding: EdgeInsets.only(right: 4.px),
             child: GestureDetector(
               onTap: () => vm.selectTipCategory(category),
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 14.px,
-                  vertical: 7.px,
+                  horizontal: 12.px,
+                  vertical: 6.px,
                 ),
                 decoration: R.appDecorations.cardDecoration(
                   color: selected ? R.appColors.seaGreen : R.appColors.border,
@@ -568,8 +634,10 @@ class CoachView extends StatelessWidget {
                 child: Text(
                   category.L(),
                   style: R.appTextStyle.poppins(
-                    fontSize: 12,
-                    color: selected ? R.appColors.white : R.appColors.darkSlate,
+                    fontSize: 11,
+                    color: selected
+                        ? R.appColors.white
+                        : R.appColors.textLightBlack,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -588,11 +656,19 @@ class CoachView extends StatelessWidget {
       onTap: () => vm.toggleTipExpanded(tip.id),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(14.px),
+        padding: EdgeInsets.all(16.px),
         decoration: R.appDecorations.cardDecoration(
           color: R.appColors.white,
           borderRadius: BorderRadius.circular(16.px),
           border: Border.all(color: R.appColors.cardBackground, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: R.appColors.black.withValues(alpha: 0.05),
+              offset: Offset(0, 1),
+              blurRadius: 2,
+              spreadRadius: 0,
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -617,16 +693,16 @@ class CoachView extends StatelessWidget {
                       Text(
                         tip.title,
                         style: R.appTextStyle.poppins(
-                          fontSize: 13,
-                          color: R.appColors.darkSlate,
+                          fontSize: 14,
+                          color: R.appColors.darkBlack,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       Text(
                         tip.category.L(),
                         style: R.appTextStyle.poppins(
-                          fontSize: 11,
-                          color: R.appColors.softIndigo,
+                          fontSize: 10,
+                          color: R.appColors.slateGray,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -648,8 +724,7 @@ class CoachView extends StatelessWidget {
                 tip.body,
                 style: R.appTextStyle.poppins(
                   fontSize: 12,
-                  color: R.appColors.textLightBlack,
-                  fontWeight: FontWeight.w500,
+                  color: R.appColors.slate,
                   height: 1.45,
                 ),
               ),
@@ -663,11 +738,19 @@ class CoachView extends StatelessWidget {
   Widget _aboutCard(HomeVm vm) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.px),
+      padding: EdgeInsets.all(17.px),
       decoration: R.appDecorations.cardDecoration(
         color: R.appColors.white,
         borderRadius: BorderRadius.circular(16.px),
         border: Border.all(color: R.appColors.cardBackground, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: R.appColors.black.withValues(alpha: 0.05),
+            offset: Offset(0, 1),
+            spreadRadius: 0,
+            blurRadius: 2,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -676,8 +759,7 @@ class CoachView extends StatelessWidget {
             vm.coachAbout,
             style: R.appTextStyle.poppins(
               fontSize: 12,
-              color: R.appColors.textLightBlack,
-              fontWeight: FontWeight.w500,
+              color: R.appColors.slate,
               height: 1.5,
             ),
           ),
@@ -687,9 +769,9 @@ class CoachView extends StatelessWidget {
           Text(
             'specialties'.L(),
             style: R.appTextStyle.poppins(
-              fontSize: 12,
-              color: R.appColors.slate,
-              fontWeight: FontWeight.w700,
+              fontSize: 11,
+              color: R.appColors.textLightBlack,
+              fontWeight: FontWeight.w600,
             ),
           ),
           vSpacePx(10),
@@ -699,8 +781,8 @@ class CoachView extends StatelessWidget {
             children: vm.specialties.map((item) {
               return Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 12.px,
-                  vertical: 7.px,
+                  horizontal: 11.px,
+                  vertical: 5.px,
                 ),
                 decoration: R.appDecorations.cardDecoration(
                   color: R.appColors.screenBackground2,
@@ -713,8 +795,8 @@ class CoachView extends StatelessWidget {
                 child: Text(
                   item,
                   style: R.appTextStyle.poppins(
-                    fontSize: 11,
-                    color: R.appColors.darkSlate,
+                    fontSize: 10,
+                    color: R.appColors.slate,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -727,15 +809,15 @@ class CoachView extends StatelessWidget {
           Text(
             'recent_messages'.L(),
             style: R.appTextStyle.poppins(
-              fontSize: 12,
-              color: R.appColors.slate,
-              fontWeight: FontWeight.w700,
+              fontSize: 11,
+              color: R.appColors.textLightBlack,
+              fontWeight: FontWeight.w600,
             ),
           ),
           vSpacePx(12),
           ...vm.recentMessages.map(
             (message) => Padding(
-              padding: EdgeInsets.only(bottom: 14.px),
+              padding: EdgeInsets.only(bottom: 12.px),
               child: _messageTile(message),
             ),
           ),
@@ -748,14 +830,30 @@ class CoachView extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClipOval(
-          child: Image.asset(
-            message.avatar,
-            width: 28.px,
-            height: 28.px,
-            fit: BoxFit.cover,
+        Container(
+          width: 28.px,
+          height: 28.px,
+          padding: EdgeInsets.all(1.5.px),
+          decoration: R.appDecorations.cardDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [R.appColors.herbGreen, R.appColors.indigo],
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(1.5.px),
+            decoration: R.appDecorations.cardDecoration(
+              shape: BoxShape.circle,
+              color: R.appColors.white,
+            ),
+            child: ClipOval(
+              child: Image.asset(message.avatar, fit: BoxFit.cover),
+            ),
           ),
         ),
+
         hSpacePx(10),
         Expanded(
           child: Column(
@@ -765,8 +863,7 @@ class CoachView extends StatelessWidget {
                 message.text,
                 style: R.appTextStyle.poppins(
                   fontSize: 12,
-                  color: R.appColors.textBlack,
-                  fontWeight: FontWeight.w500,
+                  color: R.appColors.slate,
                   height: 1.4,
                 ),
               ),
@@ -776,7 +873,6 @@ class CoachView extends StatelessWidget {
                 style: R.appTextStyle.poppins(
                   fontSize: 10,
                   color: R.appColors.slateGray,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],

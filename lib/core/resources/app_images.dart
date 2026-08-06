@@ -77,6 +77,7 @@ class AppImages {
   final String scheduleAdjustmentRecommended =
       'assets/images/schedule_adjustment_recommended.png';
   final String sendMessage = 'assets/images/send_message.png';
+  final String coachExperience = 'assets/images/coach_experience.png';
   final String weeklyReviewComplete =
       'assets/images/weekly_review_complete.png';
 }
